@@ -14,12 +14,12 @@ public class AccountService(UserManager<AppUser> userManager, IMapper mapper, IT
     public async Task Register(RegisterDto registerDto)
     {
         if (await userManager.Users.AnyAsync(x => StringComparer.CurrentCultureIgnoreCase.Compare(x.UserName, registerDto.UserName.ToLower()) == 0)) {
-            ValidationResult.Add(statusCode: StatusCodes.Status401Unauthorized, message: "Já existe cadastro com este usuário.");
+            ValidationResult.Add(statusCode: StatusCodes.Status400BadRequest, message: "Já existe cadastro com este usuário.");
             return;
         }
         
         if (await userManager.Users.AnyAsync(x => StringComparer.CurrentCultureIgnoreCase.Compare(x.Email, registerDto.Email.ToLower()) == 0)) {
-            ValidationResult.Add(statusCode: StatusCodes.Status401Unauthorized, message: "Já existe cadastro com este Email.");
+            ValidationResult.Add(statusCode: StatusCodes.Status400BadRequest, message: "Já existe cadastro com este Email.");
             return;
         }
 
@@ -42,10 +42,9 @@ public class AccountService(UserManager<AppUser> userManager, IMapper mapper, IT
 
     public async Task Login(LoginDto loginDto)
     {
-        var teste = StringComparer.CurrentCultureIgnoreCase.Compare("adm.castro", loginDto.UserName.ToLower());
         var user = userManager.Users.SingleOrDefault(x => StringComparer.CurrentCultureIgnoreCase.Compare(x.UserName, loginDto.UserName.ToLower()) == 0);
         if (user == null) {
-            ValidationResult.Add(statusCode: StatusCodes.Status404NotFound, message: "Usuário não existe.");
+            ValidationResult.Add(statusCode: StatusCodes.Status401Unauthorized, message: "Usuário não existe.");
             return;            
         }
 
@@ -55,7 +54,7 @@ public class AccountService(UserManager<AppUser> userManager, IMapper mapper, IT
             return;                        
         };
 
-        ValidationResult.Add(statusCode: StatusCodes.Status200OK, message: "Login realizado com sucesso!", data: await MapToDtoAndCreateTokenAsync(user));
+        ValidationResult.Add(statusCode: StatusCodes.Status200OK, data: await MapToDtoAndCreateTokenAsync(user));
     }
 
     private async Task<UserDto> MapToDtoAndCreateTokenAsync(AppUser user)

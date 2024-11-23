@@ -7,13 +7,16 @@ import { Subscription, filter } from 'rxjs';
 import { LayoutService } from '../../service/app.layout.service';
 import { AppConfigComponent } from '../../config/app.config.component';
 import { CommonModule } from '@angular/common';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [HeaderComponent, FooterComponent, SidebarComponent, AppConfigComponent, RouterOutlet, CommonModule],
+    imports: [HeaderComponent, FooterComponent, SidebarComponent, AppConfigComponent, RouterOutlet, CommonModule, ToastModule],
     templateUrl: './layout.component.html',
-    styles: ``
+    styles: ``,
+    providers: [ MessageService ]
 })
 export class LayoutComponent implements OnDestroy {
     @ViewChild(SidebarComponent) appSidebar!: SidebarComponent;

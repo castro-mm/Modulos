@@ -1,0 +1,119 @@
+<div class="formgrid grid">
+    <div class="field col">
+        <div class="field">
+            <label for="nome" class="block text-600 text-xl font-medium">Nome *</label>
+            <input id="nome"
+                #nome="ngModel"
+                [(ngModel)]="register.nome" 
+                [ngModelOptions]="{standalone: true}" 
+                type="text" 
+                placeholder="Nome Completo" 
+                pInputText 
+                required 
+                autofocus 
+                class="w-full" 
+                [ngClass]="{'ng-invalid ng-dirty': formSubmitted && !register.nome}"
+                style="padding:1rem"
+                autocomplete="off"
+            />      
+            <div *ngIf="nome.errors && formSubmitted" style="color: red;" class="mt-2">
+                <div *ngIf="nome.hasError('required')" >Campo obrigatório</div>
+            </div>
+        </div>
+        <div class="field">
+            <label for="email" class="block text-600 text-xl font-medium">E-Mail *</label>
+            <input id="email"
+                #email="ngModel"
+                [(ngModel)]="register.email" 
+                [ngModelOptions]="{standalone: true}" 
+                type="text" 
+                placeholder="E-mail" 
+                pInputText 
+                required 
+                email
+                autofocus 
+                class="w-full" 
+                [ngClass]="{'ng-invalid ng-dirty': formSubmitted && !register.email}"
+                style="padding:1rem"
+                autocomplete="off"
+            />      
+            <div *ngIf="email.errors && formSubmitted" style="color: red;" class="mt-2">
+                <div *ngIf="email.hasError('required')" >Campo obrigatório</div>
+                <div *ngIf="email.hasError('email')" >Email com formato inválido</div>
+            </div>
+        </div>
+        <div class="field">
+            <label for="userName" class="block text-900 text-xl font-medium">Usuário *</label>
+            <input 
+                id="userName"
+                #userName="ngModel"
+                [(ngModel)]="register.userName" 
+                [ngModelOptions]="{standalone: true}" 
+                type="text" 
+                placeholder="Usuário" 
+                pInputText 
+                required 
+                autofocus 
+                class="w-full mt-2" 
+                [ngClass]="{'ng-invalid ng-dirty': formSubmitted && !register.userName}"
+                style="padding:1rem"
+                autocomplete="off"
+            />      
+            <div *ngIf="userName.errors && formSubmitted" style="color: red;" class="mt-2">
+                <div *ngIf="userName.hasError('required')" >Campo obrigatório</div>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="password" class="block text-600 text-xl font-medium">Senha: *</label>
+                <input 
+                    id="password" 
+                    #password="ngModel"
+                    [(ngModel)]="register.password" 
+                    [ngModelOptions]="{standalone: true}" 
+                    type="password" 
+                    placeholder="Senha" 
+                    pInputText 
+                    required 
+                    minlength="8"
+                    class="w-full mt-2" 
+                    [ngClass]="{'ng-invalid ng-dirty': formSubmitted && !register.confirmPassword}"
+                    style="padding:1rem" 
+                    autocomplete="off"
+                />
+                <div *ngIf="password.errors && formSubmitted" style="color: red;" class="mt-2">
+                    <div *ngIf="password.hasError('required')" >Campo obrigatório</div>
+                    <div *ngIf="password.hasError('minlength')" >Digite o mínimo de 08 caracteres</div>
+                </div>
+            </div>
+            <div class="field col">
+                <label for="confirmPassword" class="block text-600 text-xl font-medium">Confirmaçao de Senha: *</label>
+                <input 
+                    id="confirmPassword" 
+                    #confirmPassword="ngModel"
+                    [(ngModel)]="register.confirmPassword" 
+                    [ngModelOptions]="{standalone: true}" 
+                    type="password" 
+                    placeholder="Confirmação de Senha" 
+                    pInputText 
+                    required 
+                    class="w-full mt-2" 
+                    [ngClass]="{'ng-invalid ng-dirty': formSubmitted && !register.confirmPassword}"
+                    style="padding:1rem" 
+                    autocomplete="off"
+                />
+                <div *ngIf="confirmPassword.errors && formSubmitted" style="color: red;" class="mt-2">
+                    <div *ngIf="confirmPassword.hasError('required')" >Campo obrigatório</div>
+                </div>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="col">
+                <button class="w-full mt-2" pButton label="Teste" severity="secondary"></button>
+            </div>
+            <div class="col">
+                <button class="w-full mt-2" pButton label="Cadastrar"></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middlewares;
+using Core.Entities.Identity;
 using Infrastructure.Data;
 
 // Add services to the container.
@@ -17,6 +18,7 @@ app.UseAuthorization(); // Check what you are allowed to do on the app
 
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
+app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 app.MapControllers();

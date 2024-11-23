@@ -1,0 +1,65 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <p-toast />
+        <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="logo" class="mb-5 w-6rem flex-shrink-0">
+        <form #form="ngForm" (ngSubmit)="login()" novalidate>
+            <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+                <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                    <div>
+                        <div class="field">
+                            <label for="userName" class="block text-900 text-xl font-medium">Usuário</label>
+                            <input 
+                                id="userName"
+                                #userName="ngModel"
+                                [(ngModel)]="auth.userName" 
+                                [ngModelOptions]="{standalone: true}" 
+                                type="text" 
+                                placeholder="Usuário" 
+                                pInputText 
+                                required 
+                                autofocus 
+                                class="w-full md:w-30rem mt-2" 
+                                [ngClass]="{'ng-invalid ng-dirty': formSubmitted && !auth.userName}"
+                                style="padding:1rem"
+                                autocomplete="off"
+                            />      
+                            <div *ngIf="userName.errors && formSubmitted" style="color: red;" class="mt-2">
+                                <div *ngIf="userName.hasError('required')" >Campo obrigatório</div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="password" class="block text-900 font-medium text-xl mt-5">Senha</label>
+                            <input 
+                                id="password" 
+                                #password="ngModel"
+                                [(ngModel)]="auth.password" 
+                                [ngModelOptions]="{standalone: true}" 
+                                type="password" 
+                                placeholder="Senha" 
+                                pInputText 
+                                required 
+                                class="w-full md:w-30rem mt-2" 
+                                [ngClass]="{'ng-invalid ng-dirty': formSubmitted && !auth.password}"
+                                style="padding:1rem" 
+                                autocomplete="off"
+                            />
+                            <div *ngIf="password.errors && formSubmitted" style="color: red;" class="mt-2">
+                                <div *ngIf="password.hasError('required')">Campo obrigatório</div>
+                            </div>
+                        </div>
+                        <div class="flex align-items-center justify-content-between mt-5 gap-5">
+                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Esqueceu a Senha?</a>
+                            <a (click)="showRegister()" class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Cadastrar</a>
+                        </div>
+                        <button pButton label="Entrar" [disabled]="!isValidForm" type="submit" class="w-full p-3 text-xl mt-5"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<p-dialog header="Cadastro de Usuário" [modal]="true" [(visible)]="dialogVisible" [style]="{ width: '50rem' }">
+    <!-- <app-register></app-register> -->
+</p-dialog>
+
+

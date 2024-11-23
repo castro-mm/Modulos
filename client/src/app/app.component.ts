@@ -1,19 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PrimeNGConfig } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { AccountService } from './shared/services/account.service';
+import { User } from './shared/models/user';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet],
+    imports: [ RouterOutlet ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
 
-    constructor(private primengConfig: PrimeNGConfig) { }
+    constructor(private accountService: AccountService) { }
     
     ngOnInit(): void {
-        this.primengConfig.ripple = true;
+        this.setCurrentUser();
+    }
+
+    setCurrentUser() {
+        const user: User = JSON.parse(localStorage.getItem('user')!);        
+        if (user) this.accountService.setCurrentUser(user);
     }
 }

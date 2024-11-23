@@ -1,8 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { LayoutService } from '../../service/app.layout.service';
 import { MenuItem } from 'primeng/api';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AccountService } from '../../../shared/services/account.service';
 
 @Component({
   selector: 'app-header',
@@ -18,5 +19,10 @@ export class HeaderComponent {
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService, private accountService: AccountService, private router: Router) { }
+
+    logout() {
+        this.accountService.logout();
+        this.router.navigate(['/login'], {queryParams: {logout: 'ok'}});
+    }
 }
