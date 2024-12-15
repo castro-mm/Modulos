@@ -1,6 +1,5 @@
 using System.Net;
 using Infrastructure.Services;
-using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Base.Controllers;
@@ -24,7 +23,7 @@ public class ApiBaseController : ControllerBase
             HttpStatusCode.Unauthorized => Unauthorized(validationResult),
             HttpStatusCode.NotFound => NotFound(validationResult),
             HttpStatusCode.Created => Created(Url.Action(methodName, new { id }) ?? $"/{id}", validationResult),
-            _ => NotFound()
+            _ => NotFound(validationResult)
         };
     }    
 }

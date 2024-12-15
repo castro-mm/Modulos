@@ -2,8 +2,12 @@
     <div class="col-12">
         <div class="card">
             <h4>Empty Page</h4>
-            <p>{{value}}</p>
+            <p>{{user | json}}</p>
         </div>
     </div>
+    <div class="col-6">
+        <div class="card">
+            <button pButton pRipple label="Teste Loading" type="button" (click)="submit()"></button>
+        </div>                
+    </div>
 </div>
-

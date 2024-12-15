@@ -25,7 +25,7 @@ public class AccountService(UserManager<AppUser> userManager, IMapper mapper, IT
 
         var user = mapper.Map<AppUser>(registerDto);
         
-        var identityResult = await userManager.CreateAsync(user);
+        var identityResult = await userManager.CreateAsync(user, registerDto.Password);
         if(!identityResult.Succeeded) {
             ValidationResult.Add(statusCode: StatusCodes.Status400BadRequest, message: "Houve um erro ao cadastrar o usuário.", data: identityResult.Errors);
             return;
@@ -37,7 +37,7 @@ public class AccountService(UserManager<AppUser> userManager, IMapper mapper, IT
             return;
         }
 
-        ValidationResult.Add(statusCode: StatusCodes.Status201Created, message: "Cadastro realizado com sucesso!", data: await MapToDtoAndCreateTokenAsync(user));
+        ValidationResult.Add(statusCode: StatusCodes.Status200OK, message: "Cadastro realizado com sucesso!", data: await MapToDtoAndCreateTokenAsync(user));
     }
 
     public async Task Login(LoginDto loginDto)

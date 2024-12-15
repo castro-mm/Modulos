@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule} from '@angular/router';
+import { Router, RouterModule} from '@angular/router';
 
 import { PasswordModule } from 'primeng/password';
-import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
@@ -23,61 +22,72 @@ import { DialogService } from 'primeng/dynamicdialog';
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [PasswordModule, CheckboxModule, FormsModule, InputTextModule, ButtonModule, ToastModule, CommonModule, RouterModule, DialogModule],
+    imports: [
+        ReactiveFormsModule,
+        PasswordModule, 
+        FormsModule, 
+        InputTextModule, 
+        ButtonModule, 
+        ToastModule, 
+        CommonModule, 
+        RouterModule, 
+        DialogModule
+    ],
     templateUrl: './login.component.html',
     providers: [MessageService, ModalService, DialogService]
 })
-export class LoginComponent implements AfterViewInit {
-    @ViewChild('form', { static: false }) form?: NgForm
-    auth: Auth = {} as Auth;
-    formSubmitted: boolean = false;
-    dialogVisible: boolean = false;
+export class LoginComponent implements OnInit {
+    form: FormGroup = new FormGroup({});
+    model: Auth = {} as Auth;
     modalComponent = RegisterComponent;
 
-    constructor(public layoutService: LayoutService, private accountService: AccountService, private router: Router, private actvatedRoute: ActivatedRoute, private messageService: MessageService, private modalService: ModalService) { }
+    isLoading: boolean = false;
+    dialogVisible: boolean = false;    
 
-    ngAfterViewInit(): void {
-        this.actvatedRoute.queryParams.subscribe({
-            next: (params) => {
-                if (params['accessDenied']) {
-                    this.messageService.add({ severity: 'error', summary: 'Acesso Negado', detail: 'Sessão expirada! Entre novamente.' });
-                }
-                if (params['logout']) {
-                    this.messageService.add({ severity: 'success', summary: 'Saída Confirmada', detail: 'Sua sessão foi encerrada.' });
-                }
-            }
-        })
+    constructor(public layoutService: LayoutService, private accountService: AccountService, private router: Router, private messageService: MessageService, private modalService: ModalService, private fb: FormBuilder) {
+        if (this.accountService.currentUser()) {
+            this.router.navigateByUrl('secure/model-page');
+        }
     }
 
-    login() {        
-        this.formSubmitted = true;
-        
-        if(this.isValidForm) {
-            this.accountService.login(this.auth).subscribe({
+    ngOnInit(): void {
+        this.form = this.fb.group(
+            {
+                userName: ['', [ Validators.required ]],
+                password: ['', [ Validators.required ]]
+            }
+        )
+    }
+
+    login() {
+        this.model = this.form.value as Auth;
+        this.isLoading = true;        
+
+        if(this.model) {
+            this.accountService.login(this.model).subscribe({
                 next: () => {
-                    if (this.accountService.currentUser()) {
+                    setInterval(() => {
+                        if (!this.accountService.currentUser()) {
+                            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Houve um erro na autenticação. Se o problema persistir, entre em contato com o suporte.' });
+                            return;
+                        } 
                         this.router.navigateByUrl('secure/model-page');
-                    }
+                        this.isLoading = false;
+                    }, 1500);                
                 },
                 error: (e) => {
                     const result: ValidationResult = e.error;
-                    this.messageService.add({ severity: 'error', summary: 'Atenção', detail: result.message });
-                    this.resetForm()
+                    this.messageService.add({ severity: 'error', summary: 'Erro', detail: result.message });
+                    this.isLoading = false;
                 }
             });    
         }
     }
 
-    private resetForm() {
-        this.form!.resetForm();
-        this.formSubmitted = false;
-    }
-
-    get isValidForm() {
-        return this.auth.userName && this.auth.password;
-    }
-
-    showRegister() {
-        this.modalService.show(this.modalComponent, 'Cadastro de Usuário', 600)
+    showRegisterDialog() { 
+        this.modalService.show(this.modalComponent, 'Cadastro de Usuário', 60).subscribe({
+            next: (result: ValidationResult) => { // when "this.ref.close(this.model);" is called from modal dialog page, this method is invoked.
+            }
+        })
     }
 }

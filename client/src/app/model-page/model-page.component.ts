@@ -1,24 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../shared/services/account.service';
 import { User } from '../shared/models/user';
+import { JsonPipe } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-model-page',
     standalone: true,
-    imports: [],
+    imports: [JsonPipe, ButtonModule, RippleModule],
     templateUrl: './model-page.component.html',
     styles: ``
 })
 export class ModelPageComponent implements OnInit {
     user: User = {} as User;
-    value: any = {};
-
-    constructor(private accountService: AccountService) { }
+ 
+    constructor(private accountService: AccountService, private messageService: MessageService) { }
 
     ngOnInit(): void {
         this.user = this.accountService.currentUser() as User;
-        if (this.user) {
-            this.value = JSON.stringify(this.user);
-        } 
+    }
+
+    submit() {
+        this.messageService.add({severity: 'success', summary: 'Teste', detail: 'Teste de mensagem'})
+        console.log(this.user);
     }
 }

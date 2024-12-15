@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MessageService } from 'primeng/api';
 import { AccountService } from './shared/services/account.service';
 import { User } from './shared/models/user';
 

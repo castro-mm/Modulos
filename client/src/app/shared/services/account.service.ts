@@ -4,6 +4,8 @@ import { User } from '../models/user';
 import { tap } from 'rxjs';
 import { ValidationResult } from '../models/validationResult';
 import { environment } from '../../../environments/environment.development';
+import { Auth } from '../../account/models/auth';
+import { Register } from '../../account/models/register';
 
 @Injectable({
     providedIn: 'root',
@@ -14,11 +16,19 @@ export class AccountService {
 
     constructor(private http: HttpClient) { }
 
-    register() {
-
+    register(register: Register) {
+        return this.http.post(this.apiUrl+'register', register)
+            .pipe(
+                tap((result: any) => {
+                    const validationResult: ValidationResult = result as ValidationResult;
+                    if(validationResult.statusCode == 200) {
+                        this.setCurrentUser(validationResult.data[0]);
+                    }
+                })
+            )   
     }
     
-    login(auth: any) {
+    login(auth: Auth) {
         return this.http.post(this.apiUrl+'login', auth)
             .pipe(
                 tap((result: any) => {
@@ -40,7 +50,6 @@ export class AccountService {
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUser.set(user);        
     }
-
 
     logout() {
         localStorage.removeItem('user');
