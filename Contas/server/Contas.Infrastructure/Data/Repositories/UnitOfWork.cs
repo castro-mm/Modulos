@@ -1,11 +1,10 @@
 using System.Collections.Concurrent;
 using Contas.Core.Entities.Base;
 using Contas.Core.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace Contas.Infrastructure.Data.Repositories;
 
-public class UnitOfWork(DbContext context) : IUnitOfWork
+public class UnitOfWork(ContasContext context) : IUnitOfWork
 {
     private readonly ConcurrentDictionary<string, object> _repositories = new();
 
@@ -23,6 +22,7 @@ public class UnitOfWork(DbContext context) : IUnitOfWork
     {
         return await context.SaveChangesAsync() > 0;
     }
+
     public void Dispose()
     {
         context.Dispose();

@@ -15,35 +15,39 @@ public class SegmentoDoCredorService(IUnitOfWork unitOfWork) : ISegmentoDoCredor
     {
         var segmentoDoCredor = await unitOfWork.Repository<SegmentoDoCredor>().GetByIdAsync(id);
 
-        if (segmentoDoCredor == null)
-            throw new ArgumentNullException(nameof(segmentoDoCredor), "O segmento do credor não foi encontrado.");
-
-        return segmentoDoCredor;
+        return await Task.FromResult(segmentoDoCredor ?? null!);
     }
 
     public async Task<bool> AddSegmentoDoCredorAsync(SegmentoDoCredor segmentoDoCredor)
     {
-        if (segmentoDoCredor == null)
-            throw new ArgumentNullException(nameof(segmentoDoCredor), "O segmento do credor não foi informado.");
-
         await unitOfWork.Repository<SegmentoDoCredor>().AddAsync(segmentoDoCredor);
 
         return await unitOfWork.SaveAllAsync();
     }
 
-    public async Task<bool> UpdateSegmentoDoCredorAsync(SegmentoDoCredor segmentoDoCredor)
+    public async Task<SegmentoDoCredor> UpdateSegmentoDoCredorAsync(SegmentoDoCredor segmentoDoCredor)
     {
-        unitOfWork.Repository<SegmentoDoCredor>().Update(segmentoDoCredor);
+        var segmentoDoCredorExistente = await unitOfWork.Repository<SegmentoDoCredor>().GetByIdAsync(segmentoDoCredor.Id);
 
-        return await unitOfWork.SaveAllAsync();
-    }
+        if (segmentoDoCredorExistente == null)
+            return null!;
+
+        segmentoDoCredorExistente.Nome = segmentoDoCredor.Nome;
+        segmentoDoCredorExistente.DataDeAtualizacao = segmentoDoCredor.DataDeAtualizacao;
+
+        unitOfWork.Repository<SegmentoDoCredor>().Update(segmentoDoCredorExistente);
+
+        await unitOfWork.SaveAllAsync();
+
+        return segmentoDoCredorExistente;
+    }    
 
     public async Task<bool> DeleteSegmentoDoCredorAsync(int id)
     {
         var segmentoDoCredor = await unitOfWork.Repository<SegmentoDoCredor>().GetByIdAsync(id);
 
         if (segmentoDoCredor == null)
-            throw new ArgumentNullException(nameof(segmentoDoCredor), "O segmento do credor não foi encontrado.");
+            return false;            
 
         unitOfWork.Repository<SegmentoDoCredor>().Delete(segmentoDoCredor);
         
@@ -52,9 +56,6 @@ public class SegmentoDoCredorService(IUnitOfWork unitOfWork) : ISegmentoDoCredor
 
     public async Task<bool> ExistsSegmentoDoCredorAsync(int id)
     {
-        if (id <= 0)
-            throw new ArgumentException("O ID do segmento do credor deve ser maior que zero.", nameof(id));
-
         return await unitOfWork.Repository<SegmentoDoCredor>().ExistsAsync(id);
     }
 }

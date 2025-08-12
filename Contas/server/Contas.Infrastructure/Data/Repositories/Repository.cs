@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Contas.Infrastructure.Data.Repositories;
 
-public class Repository<T>(DbContext context) : IRepository<T> where T : Entity
+public class Repository<T>(ContasContext context) : IRepository<T> where T : Entity
 {
     public async Task<IEnumerable<T>> GetAllAsync()
     {
@@ -36,7 +36,7 @@ public class Repository<T>(DbContext context) : IRepository<T> where T : Entity
     {
         return await context.Set<T>().AnyAsync(x => x.Id == id);
     }
-    
+
     public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
     {
         return await context.Set<T>().Where(predicate).ToListAsync();
