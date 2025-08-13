@@ -7,19 +7,19 @@ namespace Contas.Infrastructure.Data.Repositories;
 
 public class Repository<T>(ContasContext context) : IRepository<T> where T : Entity
 {
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await context.Set<T>().ToListAsync();
+        return await context.Set<T>().ToListAsync(cancellationToken);
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Set<T>().FindAsync(id);
+        return await context.Set<T>().FindAsync(id, cancellationToken);
     }
 
-    public async Task AddAsync(T entity)
+    public async Task AddAsync(T entity, CancellationToken cancellationToken)
     {
-        await context.Set<T>().AddAsync(entity);
+        await context.Set<T>().AddAsync(entity, cancellationToken);
     }
 
     public void Delete(T entity)
@@ -32,13 +32,13 @@ public class Repository<T>(ContasContext context) : IRepository<T> where T : Ent
         context.Entry(entity).State = EntityState.Modified;
     }
 
-    public async Task<bool> ExistsAsync(int id)
+    public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Set<T>().AnyAsync(x => x.Id == id);
+        return await context.Set<T>().AnyAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
+    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
-        return await context.Set<T>().Where(predicate).ToListAsync();
+        return await context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
     }
 }

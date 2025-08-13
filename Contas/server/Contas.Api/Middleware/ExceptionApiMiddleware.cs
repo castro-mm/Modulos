@@ -26,9 +26,9 @@ public class ExceptionApiMiddleware(IHostEnvironment env, RequestDelegate next)
                 var response = new ApiResponse(
                     httpContext.Response.StatusCode,
                     httpContext.Response.StatusCode == StatusCodes.Status200OK ? "Success" : "Error",
-                    JsonSerializer.Deserialize<object>(originalResponse)
+                    data: JsonSerializer.Deserialize<object>(originalResponse)
                 );
-                
+
                 httpContext.Response.Body = originalBodyStream; // Restaura o stream original
 
                 await httpContext.Response.WriteAsJsonAsync(response, new JsonSerializerOptions
@@ -44,27 +44,33 @@ public class ExceptionApiMiddleware(IHostEnvironment env, RequestDelegate next)
                 await memoryStream.CopyToAsync(originalBodyStream);
             }
         }
+        catch (OperationCanceledException) when (httpContext.RequestAborted.IsCancellationRequested)
+        {
+            // Trata exceções e retorna uma resposta padronizada
+            await HandleOperationCancelledAsync(httpContext, originalBodyStream);
+        }
         catch (Exception ex)
         {
             // Trata exceções e retorna uma resposta padronizada
-            await HandleExceptionAsync(httpContext, ex);
+            await HandleExceptionAsync(httpContext, ex, originalBodyStream);
         }
         finally
         {
             // Garante que o stream original seja restaurado
-            httpContext.Response.Body = originalBodyStream; 
+            httpContext.Response.Body = originalBodyStream;
         }
     }
 
-    private Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
+    private Task HandleExceptionAsync(HttpContext httpContext, Exception exception, Stream originalBodyStream)
     {
         httpContext.Response.ContentType = "application/json";
+        httpContext.Response.Body = originalBodyStream;
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-        var response = new ApiExceptionResponse(
+        var response = new ApiResponse(
             httpContext.Response.StatusCode,
             exception.Message,
-            env.IsDevelopment() ? exception.StackTrace : "Internal Server Error");
+            details: env.IsDevelopment() ? exception.StackTrace : "Internal Server Error");
 
         // TODO: Log the exception (e.g., using a logging framework)
         // TODO: Consider using a logging framework like Serilog or NLog to log the exception details.
@@ -76,4 +82,23 @@ public class ExceptionApiMiddleware(IHostEnvironment env, RequestDelegate next)
             WriteIndented = true
         });
     }
+    
+    private static Task HandleOperationCancelledAsync(HttpContext httpContext, Stream originalBodyStream)
+    {
+        httpContext.Response.ContentType = "application/json";
+        httpContext.Response.Body = originalBodyStream;
+        httpContext.Response.StatusCode = StatusCodes.Status499ClientClosedRequest;
+
+        var response = new ApiResponse(
+            httpContext.Response.StatusCode,
+            "Operação cancelada pelo cliente.",
+            details: "Client Closed Request");
+
+        return httpContext.Response.WriteAsJsonAsync(response, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true
+        });
+    }
+    
 }
