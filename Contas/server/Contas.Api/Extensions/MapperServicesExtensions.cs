@@ -1,7 +1,7 @@
 using Contas.Core.Interfaces.Repositories;
-using Contas.Core.Interfaces.Services;
 using Contas.Infrastructure.Data.Repositories;
 using Contas.Infrastructure.Services;
+using Contas.Infrastructure.Services.Interfaces;
 
 namespace Contas.Api.Extensions;
 

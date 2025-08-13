@@ -1,6 +1,5 @@
-using Contas.Api.Extensions.Mappings;
-using Contas.Core.Interfaces.Services;
 using Contas.Infrastructure.Services.Dtos;
+using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Contas.Api.Controllers
@@ -17,7 +16,7 @@ namespace Contas.Api.Controllers
             if (lista == null || !lista.Any())
                 return NotFound("Nenhum segmento do credor encontrado.");
 
-            return Ok(lista.Select(x => x.ToDto())); // Esta conversão deve ser feita no serviço.
+            return Ok(lista);
         }
 
         [HttpGet("{id:int}")]
@@ -29,11 +28,11 @@ namespace Contas.Api.Controllers
             if (!await service.ExistsSegmentoDoCredorAsync(id))
                 return NotFound("O segmento do credor informado não existe.");
 
-            var segmentoDoCredor = await service.GetSegmentoDoCredorByIdAsync(id);
-            if (segmentoDoCredor == null)
+            var segmentoDoCredorDto = await service.GetSegmentoDoCredorByIdAsync(id);
+            if (segmentoDoCredorDto == null)
                 return BadRequest("Erro ao buscar o segmento do credor.");
 
-            return Ok(segmentoDoCredor.ToDto());
+            return Ok(segmentoDoCredorDto);
         }
 
         [HttpPost]
@@ -42,13 +41,11 @@ namespace Contas.Api.Controllers
             if (segmentoDoCredorDto == null)
                 return BadRequest("O segmento do credor não foi informado.");
 
-            var segmentoDoCredor = segmentoDoCredorDto.ToEntity();
-
-            var result = await service.AddSegmentoDoCredorAsync(segmentoDoCredor);
-            if (!result)
+            var result = await service.CreateSegmentoDoCredorAsync(segmentoDoCredorDto);
+            if (result == null)
                 return BadRequest("Erro ao adicionar o segmento do credor.");
 
-            return CreatedAtAction(nameof(GetById), new { id = segmentoDoCredor.Id }, segmentoDoCredor.ToDto());
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
         [HttpPut("{id:int}")]
@@ -63,13 +60,11 @@ namespace Contas.Api.Controllers
             if (!await service.ExistsSegmentoDoCredorAsync(id))
                 return NotFound("O segmento do credor informado não existe.");
 
-            var segmentoDoCredor = segmentoDoCredorDto.ToEntity();
-
-            var result = await service.UpdateSegmentoDoCredorAsync(segmentoDoCredor);
+            var result = await service.UpdateSegmentoDoCredorAsync(segmentoDoCredorDto);
             if (result == null)
                 return BadRequest("Erro ao atualizar o segmento do credor.");
 
-            return Ok(result.ToDto());
+            return Ok(result);
         }
 
         [HttpDelete("{id:int}")]

@@ -1,7 +1,7 @@
 using Contas.Core.Entities;
 using Contas.Infrastructure.Services.Dtos;
 
-namespace Contas.Api.Extensions.Mappings;
+namespace Contas.Infrastructure.Extensions;
 
 public static class SegmentoDoCredorMappingExtensions
 {
@@ -31,14 +31,4 @@ public static class SegmentoDoCredorMappingExtensions
         };
     }
 
-    public static void UpdateFromDto(this SegmentoDoCredor segmentoDoCredor, SegmentoDoCredorDto segmentoDoCredorDto)
-    {
-        ArgumentNullException.ThrowIfNull(segmentoDoCredorDto);
-        ArgumentNullException.ThrowIfNull(segmentoDoCredor);
-
-        segmentoDoCredor.Id = segmentoDoCredorDto.Id;
-        segmentoDoCredor.Nome = segmentoDoCredorDto.Nome;
-        segmentoDoCredor.DataDeCriacao = segmentoDoCredorDto.DataDeCriacao;       
-        segmentoDoCredor.DataDeAtualizacao = segmentoDoCredorDto.DataDeAtualizacao;
-    }
 }
