@@ -1,13 +1,9 @@
-using Contas.Infrastructure.Services.Dtos;
+using Contas.Core.Dtos;
 
 namespace Contas.Infrastructure.Services.Interfaces;
 
-public interface ISegmentoDoCredorService 
+public interface ISegmentoDoCredorService : IService<SegmentoDoCredorDto>
 {
-    public Task<IEnumerable<SegmentoDoCredorDto>> GetAllSegimentoDoCredorAsync(CancellationToken cancellationToken);
-    public Task<SegmentoDoCredorDto> GetSegmentoDoCredorByIdAsync(int id, CancellationToken cancellationToken);
-    public Task<SegmentoDoCredorDto> CreateSegmentoDoCredorAsync(SegmentoDoCredorDto segmentoDoCredorDto, CancellationToken cancellationToken);
-    public Task<SegmentoDoCredorDto> UpdateSegmentoDoCredorAsync(SegmentoDoCredorDto segmentoDoCredorDto, CancellationToken cancellationToken);
-    public Task<bool> DeleteSegmentoDoCredorAsync(int id, CancellationToken cancellationToken);
-    public Task<bool> ExistsSegmentoDoCredorAsync(int id, CancellationToken cancellationToken);
+    // Define any additional methods specific to SegmentoDoCredor if needed
+    // For example, you might want to add methods for specific queries or operations
 }

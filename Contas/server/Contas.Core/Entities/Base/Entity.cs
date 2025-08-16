@@ -1,3 +1,5 @@
+using Contas.Core.Interfaces;
+
 namespace Contas.Core.Entities.Base;
 
 public class Entity
