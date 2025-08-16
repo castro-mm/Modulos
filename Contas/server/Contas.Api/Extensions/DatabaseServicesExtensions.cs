@@ -9,6 +9,7 @@ public static class DatabaseServicesExtensions
     {
         services.AddDbContext<ContasContext>(option =>
         {
+            option.UseLazyLoadingProxies();
             option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
     }

@@ -18,6 +18,6 @@ public class RegistroDaConta : Entity
     public required byte[] BoletoBancario { get; set; }
     public byte[]? ComprovanteDePagamento { get; set; }
 
-    public required Credor Credor { get; set; }
-    public required Pagador Pagador { get; set; }
+    public required virtual Credor Credor { get; set; }
+    public required virtual Pagador Pagador { get; set; }
 }

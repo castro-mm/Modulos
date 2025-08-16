@@ -9,6 +9,6 @@ public class Credor : Entity
     public required string NomeFantasia { get; set; }
     public long CNPJ { get; set; }
 
-    public ICollection<RegistroDaConta>? RegistrosDaConta { get; set; }   
-    public required SegmentoDoCredor SegmentoDoCredor { get; set; } 
+    public virtual ICollection<RegistroDaConta>? RegistrosDaConta { get; set; }   
+    public required virtual SegmentoDoCredor SegmentoDoCredor { get; set; } 
 }
