@@ -1,16 +1,24 @@
 using Contas.Infrastructure.Data;
+using Contas.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Contas.Api.Extensions;
 
 public static class DatabaseServicesExtensions
 {
-    public static void AddDatabaseServices(this IServiceCollection services, ConfigurationManager configuration)
+    public static void AddDatabaseServices(this IServiceCollection services, WebApplicationBuilder builder)
     {
-        services.AddDbContext<ContasContext>(option =>
+        services.AddHttpContextAccessor();
+        services.AddScoped<AuditSaveChangesInterceptor>();
+
+        services.AddDbContext<ContasContext>(options =>
         {
-            option.UseLazyLoadingProxies();
-            option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options
+                .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+                .UseLazyLoadingProxies();
+            
+            if (builder.Environment.IsDevelopment())
+                options.EnableSensitiveDataLogging();
         });
     }
 }

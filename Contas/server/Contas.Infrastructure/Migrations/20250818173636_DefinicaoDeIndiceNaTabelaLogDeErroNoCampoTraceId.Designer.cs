@@ -4,6 +4,7 @@ using Contas.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Contas.Infrastructure.Migrations
 {
     [DbContext(typeof(ContasContext))]
-    partial class ContasContextModelSnapshot : ModelSnapshot
+    [Migration("20250818173636_DefinicaoDeIndiceNaTabelaLogDeErroNoCampoTraceId")]
+    partial class DefinicaoDeIndiceNaTabelaLogDeErroNoCampoTraceId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,7 +196,7 @@ namespace Contas.Infrastructure.Migrations
 
                     b.Property<string>("Caminho")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(MAX)");
+                        .HasColumnType("VARCHAR(max)");
 
                     b.Property<DateTime>("DataDeAtualizacao")
                         .ValueGeneratedOnAdd()
@@ -224,7 +227,7 @@ namespace Contas.Infrastructure.Migrations
 
                     b.Property<string>("Metodo")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(MAX)");
+                        .HasColumnType("VARCHAR(max)");
 
                     b.Property<string>("Navegador")
                         .IsRequired()

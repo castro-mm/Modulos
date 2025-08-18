@@ -31,7 +31,7 @@ public static class SegmentoDoCredorMappingExtensions
         };
     }
 
-    public static void UpdateFromDto(this SegmentoDoCredor segmentoDoCredor, SegmentoDoCredorDto segmentoDoCredorDto)
+    public static void FromDto(this SegmentoDoCredor segmentoDoCredor, SegmentoDoCredorDto segmentoDoCredorDto)
     {
         ArgumentNullException.ThrowIfNull(segmentoDoCredorDto);
         ArgumentNullException.ThrowIfNull(segmentoDoCredor);

@@ -4,6 +4,7 @@ using Contas.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Contas.Infrastructure.Migrations
 {
     [DbContext(typeof(ContasContext))]
-    partial class ContasContextModelSnapshot : ModelSnapshot
+    [Migration("20250818142722_DefinicaoDoCampoHashNaTabelaTrilhaDeAuditoria")]
+    partial class DefinicaoDoCampoHashNaTabelaTrilhaDeAuditoria
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,7 +196,7 @@ namespace Contas.Infrastructure.Migrations
 
                     b.Property<string>("Caminho")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(MAX)");
+                        .HasColumnType("VARCHAR(max)");
 
                     b.Property<DateTime>("DataDeAtualizacao")
                         .ValueGeneratedOnAdd()
@@ -224,16 +227,11 @@ namespace Contas.Infrastructure.Migrations
 
                     b.Property<string>("Metodo")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(MAX)");
+                        .HasColumnType("VARCHAR(max)");
 
                     b.Property<string>("Navegador")
                         .IsRequired()
                         .HasColumnType("VARCHAR(200)");
-
-                    b.Property<string>("TraceId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("VARCHAR(36)");
 
                     b.Property<string>("Usuario")
                         .IsRequired()
@@ -241,9 +239,6 @@ namespace Contas.Infrastructure.Migrations
                         .HasColumnType("VARCHAR(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TraceId")
-                        .IsUnique();
 
                     b.ToTable("LogDeErro", (string)null);
                 });
@@ -261,15 +256,8 @@ namespace Contas.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("VARCHAR(200)");
 
-                    b.Property<DateTime>("DataDeAtualizacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
                     b.Property<DateTime>("DataDeCriacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Entidade")
                         .IsRequired()
@@ -298,11 +286,6 @@ namespace Contas.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("VARCHAR(20)");
-
-                    b.Property<string>("TraceId")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("VARCHAR(36)");
 
                     b.Property<string>("Usuario")
                         .IsRequired()
