@@ -16,5 +16,9 @@ public static class MapperServicesExtensions
         services.AddScoped<ISegmentoDoCredorService, SegmentoDoCredorService>();
         services.AddScoped<ILogDeErroService, LogDeErroService>();
         services.AddScoped<ITrilhaDeAuditoriaService, TrilhaDeAuditoriaService>();
+        services.AddScoped<IArquivoService, ArquivoService>();
+        services.AddScoped<IRegistroDaContaService, RegistroDaContaService>();
+        services.AddScoped<ICredorService, CredorService>();
+        services.AddScoped<IPagadorService, PagadorService>();
     }
 }

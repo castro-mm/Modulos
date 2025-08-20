@@ -52,7 +52,6 @@ public static class TrilhaDeAuditoriaExtensions
         ArgumentNullException.ThrowIfNull(dto);
         ArgumentNullException.ThrowIfNull(trilhaDeAuditoria);
 
-        trilhaDeAuditoria.Id = dto.Id;
         trilhaDeAuditoria.Entidade = dto.Entidade;
         trilhaDeAuditoria.Metodo = dto.Metodo;
         trilhaDeAuditoria.Caminho = dto.Caminho;

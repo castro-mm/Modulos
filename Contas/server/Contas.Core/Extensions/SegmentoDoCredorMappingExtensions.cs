@@ -36,7 +36,6 @@ public static class SegmentoDoCredorMappingExtensions
         ArgumentNullException.ThrowIfNull(segmentoDoCredorDto);
         ArgumentNullException.ThrowIfNull(segmentoDoCredor);
 
-        segmentoDoCredor.Id = segmentoDoCredorDto.Id;
         segmentoDoCredor.Nome = segmentoDoCredorDto.Nome;
         segmentoDoCredor.DataDeAtualizacao = segmentoDoCredorDto.DataDeAtualizacao;
     }}

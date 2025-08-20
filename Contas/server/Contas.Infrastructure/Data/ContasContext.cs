@@ -14,11 +14,11 @@ public class ContasContext(DbContextOptions options, AuditSaveChangesInterceptor
     public DbSet<Credor> Credores { get; set; }
     public DbSet<SegmentoDoCredor> SegmentosDoCredor { get; set; }
     public DbSet<RegistroDaConta> RegistrosDaConta { get; set; }
+    public DbSet<Arquivo> Arquivos { get; set; }
 
     override protected void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ContasContext).Assembly);
     }
 

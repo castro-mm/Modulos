@@ -10,13 +10,20 @@ public class RegistroDaContaConfiguration : IEntityTypeConfiguration<RegistroDaC
     {
         ConfigureTable(builder);
 
-        builder.Property(x => x.Valor).HasColumnType("decimal(18,2)").IsRequired();
-        builder.Property(x => x.ValorDosJuros).HasColumnType("decimal(18,2)").IsRequired();
-        builder.Property(x => x.ValorPago).HasColumnType("decimal(18,2)").IsRequired();
-        builder.Property(x => x.ValorDoDesconto).HasColumnType("decimal(18,2)").IsRequired();
+        builder.Property(x => x.CredorId).IsRequired();
+        builder.Property(x => x.PagadorId).IsRequired();
+        builder.Property(x => x.Mes).IsRequired();
+        builder.Property(x => x.Ano).IsRequired();
+        builder.Property(x => x.Descricao).HasMaxLength(200).HasColumnType("VARCHAR(200)").IsRequired();
+        builder.Property(x => x.DataDeVencimento).HasColumnType("DATETIME").IsRequired();
+        builder.Property(x => x.DataDePagamento).HasColumnType("DATETIME2");
+        builder.Property(x => x.Valor).HasColumnType("DECIMAL(18,2)").IsRequired();
+        builder.Property(x => x.ValorDosJuros).HasColumnType("DECIMAL(18,2)").IsRequired();
+        builder.Property(x => x.ValorPago).HasColumnType("DECIMAL(18,2)").IsRequired();
+        builder.Property(x => x.ValorDoDesconto).HasColumnType("DECIMAL(18,2)").IsRequired();
         builder.Property(x => x.CodigoDeBarras).HasMaxLength(100).HasColumnType("VARCHAR(100)").IsRequired();
-        builder.Property(x => x.BoletoBancario).HasColumnType("VARBINARY(MAX)").IsRequired();
-        builder.Property(x => x.ComprovanteDePagamento).HasColumnType("VARBINARY(MAX)");
+        builder.Property(x => x.Observacoes).HasMaxLength(500).HasColumnType("VARCHAR(500)").IsRequired();
+        builder.Property(x => x.Status).IsRequired().HasConversion<string>();
     }
     private void ConfigureTable(EntityTypeBuilder<RegistroDaConta> builder)
     {

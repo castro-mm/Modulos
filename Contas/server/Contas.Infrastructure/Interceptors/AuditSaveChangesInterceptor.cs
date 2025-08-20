@@ -56,7 +56,7 @@ public class AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> lo
                 Caminho = httpContext.Request.Path,
                 Operacao = entry.State.ToString().ToUpper(),
                 ValoresAntigos =
-                    entry.State is EntityState.Modified
+                    entry.State is EntityState.Modified or EntityState.Deleted
                     ? JsonSerializer.Serialize(entry.OriginalValues.Properties.ToDictionary(p => p.Name, p => entry.OriginalValues[p]))
                     : null,
                 ValoresNovos =

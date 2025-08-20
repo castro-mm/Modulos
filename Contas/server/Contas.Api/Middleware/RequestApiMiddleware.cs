@@ -63,7 +63,9 @@ public class RequestApiMiddleware(
             httpContext,
             originalBodyStream,
             exception.Message,
-            details: env.IsDevelopment() ? exception.StackTrace : "Internal Server Error"
+            details: env.IsDevelopment()
+                ? (exception.InnerException == null ? (exception.StackTrace ?? "Detalhamento não disponível") : exception.InnerException.Message)
+                : "Internal Server Error"
         );
 
         logger.LogError(exception, "Exception on path: {Path}.", httpContext.Request.Path);
@@ -72,7 +74,7 @@ public class RequestApiMiddleware(
         var logDeErro = new LogDeErroDto
         {
             Mensagem = exception.Message,
-            Detalhes = exception.StackTrace ?? "Detalhamento não disponível",
+            Detalhes = exception.InnerException == null ? (exception.StackTrace ?? "Detalhamento não disponível") : exception.InnerException.Message,
             Metodo = httpContext.Request.Method,
             Caminho = httpContext.Request.Path,
             Ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "IP não disponível",

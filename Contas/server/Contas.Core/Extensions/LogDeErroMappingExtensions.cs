@@ -51,7 +51,6 @@ public static class LogDeErroMappingExtensions
         ArgumentNullException.ThrowIfNull(logDeErroDto);
         ArgumentNullException.ThrowIfNull(logDeErro);
 
-        logDeErro.Id = logDeErroDto.Id;
         logDeErro.Mensagem = logDeErroDto.Mensagem;
         logDeErro.Detalhes = logDeErroDto.Detalhes;
         logDeErro.Metodo = logDeErroDto.Metodo;
