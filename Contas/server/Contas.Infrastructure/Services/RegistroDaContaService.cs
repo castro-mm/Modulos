@@ -8,5 +8,5 @@ namespace Contas.Infrastructure.Services;
 
 public class RegistroDaContaService(IUnitOfWork unitOfWork) : Service<RegistroDaContaDto, RegistroDaConta>(unitOfWork), IRegistroDaContaService
 {
-    
+          
 }

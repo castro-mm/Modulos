@@ -6,17 +6,11 @@ using Contas.Infrastructure.Services.Interfaces.System;
 
 namespace Contas.Infrastructure.Services.System;
 
-public class LogDeErroService : Service<LogDeErroDto, LogDeErro>, ILogDeErroService
+public class LogDeErroService(IUnitOfWork unitOfWork) : Service<LogDeErroDto, LogDeErro>(unitOfWork), ILogDeErroService
 {
-    private readonly IUnitOfWork unitOfWork;
-
-    public LogDeErroService(IUnitOfWork unitOfWork) : base(unitOfWork)
-    {
-        this.unitOfWork = unitOfWork;
-    }
+    private readonly IUnitOfWork unitOfWork = unitOfWork;
 
     // Avaliar o uso do Specification Pattern para consultas complexas
-
     public async Task<LogDeErroDto> GetLogByTraceIdAsync(string traceId, CancellationToken cancellationToken)
     {
         var logDeErroList = await unitOfWork.Repository<LogDeErro>().GetAllAsync(cancellationToken);

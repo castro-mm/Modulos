@@ -1,7 +1,7 @@
 using Contas.Core.Entities;
 using Contas.Core.Extensions;
 using Contas.Core.Interfaces;
-using static Contas.Core.Objects.Enums;
+using static Contas.Core.Objects.Enumerations;
 
 namespace Contas.Core.Dtos;
 
@@ -24,6 +24,9 @@ public class RegistroDaContaDto : IDto, IConvertibleToEntity<RegistroDaConta>
     public required StatusDaConta Status { get; set; }
     public DateTime DataDeCriacao { get; set; } = DateTime.Now;
     public DateTime DataDeAtualizacao { get; set; } = DateTime.Now;
+    public CredorDto? Credor { get; set; }
+    public PagadorDto? Pagador { get; set; }
+    public virtual List<ArquivoDto>? Arquivos { get; set; }
 
     public RegistroDaConta ConvertToEntity() => this.ToEntity();
 }

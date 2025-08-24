@@ -5,24 +5,6 @@ namespace Contas.Core.Extensions;
 
 public static class ArquivoExtensions
 {
-    public static ArquivoDto ToDto(this Arquivo arquivo)
-    {
-        ArgumentNullException.ThrowIfNull(arquivo);
-
-        return new ArquivoDto
-        {
-            Id = arquivo.Id,
-            RegistroDaContaId = arquivo.RegistroDaContaId,
-            Nome = arquivo.Nome,
-            Extensao = arquivo.Extensao,
-            Tamanho = arquivo.Tamanho,
-            Conteudo = arquivo.Conteudo,
-            Tipo = arquivo.Tipo,
-            DataDeCriacao = arquivo.DataDeCriacao,
-            DataDeAtualizacao = arquivo.DataDeAtualizacao
-        };
-    }
-
     public static Arquivo ToEntity(this ArquivoDto arquivoDto)
     {
         ArgumentNullException.ThrowIfNull(arquivoDto);
@@ -37,7 +19,27 @@ public static class ArquivoExtensions
             Conteudo = arquivoDto.Conteudo,
             Tipo = arquivoDto.Tipo,
             DataDeCriacao = arquivoDto.DataDeCriacao,
-            DataDeAtualizacao = arquivoDto.DataDeAtualizacao
+            DataDeAtualizacao = arquivoDto.DataDeAtualizacao,
+            RegistroDaConta = null! 
+        };
+    }
+
+    public static ArquivoDto ToDto(this Arquivo arquivo)
+    {
+        ArgumentNullException.ThrowIfNull(arquivo);
+
+        return new ArquivoDto
+        {
+            Id = arquivo.Id,
+            RegistroDaContaId = arquivo.RegistroDaContaId,
+            Nome = arquivo.Nome,
+            Extensao = arquivo.Extensao,
+            Tamanho = arquivo.Tamanho,
+            Conteudo = arquivo.Conteudo,
+            Tipo = arquivo.Tipo,
+            DataDeCriacao = arquivo.DataDeCriacao,
+            DataDeAtualizacao = arquivo.DataDeAtualizacao,
+            RegistroDaConta = arquivo.RegistroDaConta?.ToDto()
         };
     }
 
@@ -56,9 +58,10 @@ public static class ArquivoExtensions
         arquivo.DataDeAtualizacao = arquivoDto.DataDeAtualizacao;
     }
     
-    // public static List<ArquivoDto> ToDtoList(List<Arquivo> arquivos)
-    // {
-    //     ArgumentNullException.ThrowIfNull(arquivos);
-    //     return arquivos.Select(ToDto).ToList();
-    // }
+    public static List<ArquivoDto> ToDtoList(this List<Arquivo> arquivos)
+    {
+        ArgumentNullException.ThrowIfNull(arquivos);
+
+        return [.. arquivos.Select(ToDto)];
+    }
 }

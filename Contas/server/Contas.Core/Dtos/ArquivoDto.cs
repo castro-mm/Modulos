@@ -1,7 +1,7 @@
 using Contas.Core.Entities;
 using Contas.Core.Extensions;
 using Contas.Core.Interfaces;
-using static Contas.Core.Objects.Enums;
+using static Contas.Core.Objects.Enumerations;
 
 namespace Contas.Core.Dtos;
 
@@ -16,6 +16,7 @@ public class ArquivoDto : IDto, IConvertibleToEntity<Arquivo>
     public TipoDeArquivo Tipo { get; set; }
     public DateTime DataDeCriacao { get; set; } = DateTime.Now;
     public DateTime DataDeAtualizacao { get; set; } = DateTime.Now;
+    public RegistroDaContaDto? RegistroDaConta { get; set; }
 
     public Arquivo ConvertToEntity() => this.ToEntity();
 }

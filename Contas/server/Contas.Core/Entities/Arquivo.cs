@@ -2,7 +2,7 @@ using Contas.Core.Dtos;
 using Contas.Core.Entities.Base;
 using Contas.Core.Extensions;
 using Contas.Core.Interfaces;
-using static Contas.Core.Objects.Enums;
+using static Contas.Core.Objects.Enumerations;
 
 namespace Contas.Core.Entities;
 
@@ -15,7 +15,7 @@ public class Arquivo : Entity, IConvertibleToDto<ArquivoDto>
     public required byte[] Conteudo { get; set; }
     public TipoDeArquivo Tipo { get; set; }
 
-    public virtual RegistroDaConta RegistroDaConta { get; set; } = null!;
+    public required virtual RegistroDaConta RegistroDaConta { get; set; }
 
     public ArquivoDto ConvertToDto() => this.ToDto();
     public void ConvertFromDto(ArquivoDto dto) => this.FromDto(dto);

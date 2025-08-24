@@ -1,3 +1,4 @@
+using Contas.Core.Entities.Base;
 using Contas.Core.Interfaces;
 using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,9 @@ namespace Contas.Api.Controllers.Base;
 
 [Route("api/[controller]")]
 [ApiController]
-public abstract class BaseApiController<TDto>(IService<TDto> service) : ControllerBase where TDto : IDto
+public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> service) : ControllerBase 
+    where TDto : IDto
+    where TEntity : Entity
 {
     // This class can be extended with common functionality for all API controllers
     // For example, logging, error handling, or shared services can be injected here.
@@ -22,7 +25,6 @@ public abstract class BaseApiController<TDto>(IService<TDto> service) : Controll
             return NotFound("Nenhum item encontrado.");
         
         return Ok(lista);
-
     }
 
     [HttpGet("{id:int}"/*, Name = nameof(GetByIdAsync)*/)]
@@ -43,7 +45,7 @@ public abstract class BaseApiController<TDto>(IService<TDto> service) : Controll
             return BadRequest("Erro ao buscar o item.");
 
         return Ok(dto);
-    }
+    }    
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]

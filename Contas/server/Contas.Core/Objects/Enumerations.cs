@@ -1,6 +1,6 @@
 namespace Contas.Core.Objects;
 
-public class Enums
+public class Enumerations
 {
     public enum TipoDeArquivo
     {

@@ -13,6 +13,8 @@ public class CredorDto : IDto, IConvertibleToEntity<Credor>
     public required long CNPJ { get; set; }
     public DateTime DataDeCriacao { get; set; } = DateTime.Now;
     public DateTime DataDeAtualizacao { get; set; } = DateTime.Now;
+    public SegmentoDoCredorDto? SegmentoDoCredor { get; set; }
+    public List<RegistroDaContaDto>? RegistrosDaConta { get; set; }
 
     public Credor ConvertToEntity() => this.ToEntity();
 }

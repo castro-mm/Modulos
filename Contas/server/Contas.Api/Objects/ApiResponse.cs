@@ -5,7 +5,7 @@ namespace Contas.Api.Objects;
 public class ApiResponse(int statusCode, string message, DateTime timeStamp, string apiPath, Guid traceId, object? data = null, string? details = null)
 {
     public int StatusCode { get; set; } = statusCode;
-    public string Message { get; set; } = message;
+    public string? Message { get; set; } = message;
     public string? Details { get; set; } = details;
     public object? Data { get; set; } = data;
     public DateTime TimeStamp { get; set; } = timeStamp;

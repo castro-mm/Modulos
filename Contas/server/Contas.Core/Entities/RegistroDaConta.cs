@@ -2,7 +2,7 @@ using Contas.Core.Dtos;
 using Contas.Core.Entities.Base;
 using Contas.Core.Extensions;
 using Contas.Core.Interfaces;
-using static Contas.Core.Objects.Enums;
+using static Contas.Core.Objects.Enumerations;
 
 namespace Contas.Core.Entities;
 
@@ -25,7 +25,7 @@ public class RegistroDaConta : Entity, IConvertibleToDto<RegistroDaContaDto>
 
     public required virtual Credor Credor { get; set; }
     public required virtual Pagador Pagador { get; set; }
-    public virtual ICollection<Arquivo>? Arquivos { get; set; }
+    public virtual ICollection<Arquivo> Arquivos { get; set; } = [];
 
     public RegistroDaContaDto ConvertToDto() => this.ToDto();
     public void ConvertFromDto(RegistroDaContaDto dto) => this.FromDto(dto);

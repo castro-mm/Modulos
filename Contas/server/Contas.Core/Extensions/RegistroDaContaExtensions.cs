@@ -27,7 +27,9 @@ public static class RegistroDaContaExtensions
             Observacoes = registroDaConta.Observacoes,
             Status = registroDaConta.Status,
             DataDeCriacao = registroDaConta.DataDeCriacao,
-            DataDeAtualizacao = registroDaConta.DataDeAtualizacao
+            DataDeAtualizacao = registroDaConta.DataDeAtualizacao,
+            Credor = registroDaConta.Credor?.ToDto(),
+            Pagador = registroDaConta.Pagador?.ToDto(),
         };
     }
 

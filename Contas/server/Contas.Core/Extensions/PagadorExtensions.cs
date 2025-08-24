@@ -5,21 +5,6 @@ namespace Contas.Core.Extensions;
 
 public static class PagadorExtensions
 {
-    public static PagadorDto ToDto(this Pagador pagador)
-    {
-        ArgumentNullException.ThrowIfNull(pagador, nameof(pagador));
-
-        return new PagadorDto
-        {
-            Id = pagador.Id,
-            Nome = pagador.Nome,
-            Email = pagador.Email,
-            CPF = pagador.CPF,
-            DataDeCriacao = pagador.DataDeCriacao,
-            DataDeAtualizacao = pagador.DataDeAtualizacao
-        };
-    }
-
     public static Pagador ToEntity(this PagadorDto pagadorDto)
     {
         ArgumentNullException.ThrowIfNull(pagadorDto, nameof(pagadorDto));
@@ -34,6 +19,20 @@ public static class PagadorExtensions
             DataDeAtualizacao = pagadorDto.DataDeAtualizacao
         };
     }
+    public static PagadorDto ToDto(this Pagador pagador)
+    {
+        ArgumentNullException.ThrowIfNull(pagador, nameof(pagador));
+
+        return new PagadorDto
+        {
+            Id = pagador.Id,
+            Nome = pagador.Nome,
+            Email = pagador.Email,
+            CPF = pagador.CPF,
+            DataDeCriacao = pagador.DataDeCriacao,
+            DataDeAtualizacao = pagador.DataDeAtualizacao
+        };
+    }    
 
     public static void FromDto(this Pagador pagador, PagadorDto pagadorDto)
     {

@@ -12,6 +12,7 @@ public class PagadorDto : IDto, IConvertibleToEntity<Pagador>
     public required long CPF { get; set; }
     public DateTime DataDeCriacao { get; set; } = DateTime.Now;
     public DateTime DataDeAtualizacao { get; set; } = DateTime.Now;
+    public List<RegistroDaContaDto>? RegistrosDaConta { get; set; }
 
     public Pagador ConvertToEntity() => this.ToEntity();
 }
