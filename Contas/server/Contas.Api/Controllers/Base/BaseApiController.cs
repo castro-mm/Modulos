@@ -1,5 +1,7 @@
 using Contas.Core.Entities.Base;
+using Contas.Core.Helpers;
 using Contas.Core.Interfaces;
+using Contas.Core.Specifications.Base;
 using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,24 +9,23 @@ namespace Contas.Api.Controllers.Base;
 
 [Route("api/[controller]")]
 [ApiController]
-public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> service) : ControllerBase 
+public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> service) : ControllerBase
     where TDto : IDto
     where TEntity : Entity
 {
-    // This class can be extended with common functionality for all API controllers
-    // For example, logging, error handling, or shared services can be injected here.
-    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public virtual async Task<ActionResult> GetAllAsync(CancellationToken cancellationToken)
-    {        
-        var lista = await service.GetAllAsync(cancellationToken);
+    public virtual async Task<ActionResult> GetAllAsync([FromQuery]SpecificationParams specParams, CancellationToken cancellationToken)
+    {              
+        var specs = FactoryHelper.CreateInstance<Specification<TEntity>>(specParams);
 
-        if (lista == null || !lista.Any())
-            return NotFound("Nenhum item encontrado.");
-        
-        return Ok(lista);
+        var pagedResult = await service.GetPagedResultWithSpecAsync(specs, specParams.PageIndex, specParams.PageSize, cancellationToken);
+
+        if (pagedResult == null || !pagedResult.Itens.Any())
+            return NotFound("Nenhum registro encontrado.");
+
+        return Ok(pagedResult);
     }
 
     [HttpGet("{id:int}"/*, Name = nameof(GetByIdAsync)*/)]
@@ -45,7 +46,7 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
             return BadRequest("Erro ao buscar o item.");
 
         return Ok(dto);
-    }    
+    }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -106,6 +107,6 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
             return NoContent();
 
         return BadRequest("Erro ao excluir o registro.");
-    }
+    }    
 }
 

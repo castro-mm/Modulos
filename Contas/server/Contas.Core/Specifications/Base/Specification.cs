@@ -4,16 +4,21 @@ using Contas.Core.Interfaces;
 
 namespace Contas.Core.Specifications.Base;
 
-public abstract class Specification<T> : ISpecification<T> where T : Entity
+public class Specification<T> : ISpecification<T> where T : Entity
 {
+    public Specification(SpecificationParams specParams)
+    {
+        ApplyPaging(specParams.PageSize * (specParams.PageIndex - 1), specParams.PageSize);        
+    }
+
     public Expression<Func<T, bool>>? Criteria { get; private set; }
     public Expression<Func<T, object>>? OrderBy { get; private set; }
     public Expression<Func<T, object>>? OrderByDescending { get; private set; }
     public Expression<Func<T, object>>? GroupBy { get; private set; }
     public List<Expression<Func<T, object>>> Includes { get; } = [];
     public List<Expression<Func<T, object>>> ThenIncludes { get; } = [];
-    public int? Skip { get; private set; }
-    public int? Take { get; private set; }
+    public int Skip { get; private set; }
+    public int Take { get; private set; }
     public bool AsNoTracking { get; private set; } = true;
     public bool IsDistinct { get; private set; } = false;
     public bool IsPageEnabled { get; private set; } = false;
@@ -26,6 +31,12 @@ public abstract class Specification<T> : ISpecification<T> where T : Entity
     protected void AddThenInclude(Expression<Func<T, object>> thenInclude) => ThenIncludes.Add(thenInclude);
     protected void ApplyAsNoTracking(bool asNoTracking = true) => AsNoTracking = asNoTracking;
     protected void ApplyIsDistinct(bool isDistinct = true) => IsDistinct = isDistinct;
-    protected void ApplyPaging(int skip, int take) { IsPageEnabled = true; Skip = skip; Take = take; }    
-}
+    protected void ApplyPaging(int skip, int take) { IsPageEnabled = true; Skip = skip; Take = take; }  
 
+    public IQueryable<T> ApplyCriteria(IQueryable<T> query)
+    {
+        if (Criteria != null) query = query.Where(Criteria);
+
+        return query;
+    }  
+}

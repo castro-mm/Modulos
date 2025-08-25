@@ -1,14 +1,26 @@
 using Contas.Core.Entities.Base;
+using Contas.Core.Helpers;
 using Contas.Core.Interfaces;
 using Contas.Core.Interfaces.Repositories;
+using Contas.Core.Objects;
 using Contas.Infrastructure.Services.Interfaces;
 
 namespace Contas.Infrastructure.Services.Base;
 
-public abstract class Service<TDto, TEntity>(IUnitOfWork unitOfWork) : IService<TDto, TEntity> 
+public abstract class Service<TDto, TEntity>(IUnitOfWork unitOfWork) : IService<TDto, TEntity>
     where TDto : IDto, IConvertibleToEntity<TEntity>
     where TEntity : Entity, IConvertibleToDto<TDto>
 {
+    public async Task<PagedResult<TDto>> GetPagedResultWithSpecAsync(ISpecification<TEntity> spec, int pageIndex, int pageSize, CancellationToken cancellationToken)
+    {
+        var itens = await unitOfWork.Repository<TEntity>().GetAsyncWithSpec(spec, cancellationToken);
+        var count = await unitOfWork.Repository<TEntity>().CountAsync(spec, cancellationToken);
+
+        var pagination = new PagedResult<TDto>(pageIndex, pageSize, count, itens.Select(x => x.ConvertToDto()));
+
+        return pagination;
+    }
+
     public virtual async Task<IEnumerable<TDto>> GetAllAsync(CancellationToken cancellationToken)
     {
         var lista = await unitOfWork.Repository<TEntity>().GetAllAsync(cancellationToken);
@@ -23,7 +35,7 @@ public abstract class Service<TDto, TEntity>(IUnitOfWork unitOfWork) : IService<
         if (entity == null)
             return default!;
 
-        return entity.ConvertToDto();        
+        return entity.ConvertToDto();
     }
 
     public virtual async Task<TDto> CreateAsync(TDto dto, CancellationToken cancellationToken)

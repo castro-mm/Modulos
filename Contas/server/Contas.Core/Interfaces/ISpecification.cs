@@ -11,9 +11,11 @@ public interface ISpecification<T> where T : Entity
     Expression<Func<T, object>>? GroupBy { get; }
     List<Expression<Func<T, object>>> Includes { get; }
     List<Expression<Func<T, object>>> ThenIncludes { get; }
-    int? Skip { get; }
-    int? Take { get; }
+    int Skip { get; }
+    int Take { get; }
     bool AsNoTracking { get; }
     bool IsDistinct { get; }
     bool IsPageEnabled { get; }
+
+    IQueryable<T> ApplyCriteria(IQueryable<T> query);
 }

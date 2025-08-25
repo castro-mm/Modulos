@@ -7,15 +7,12 @@ namespace Contas.Core.Specifications;
 
 public class RegistroDaContaSpecification : Specification<RegistroDaConta>
 {
-    public RegistroDaContaSpecification()
+    public RegistroDaContaSpecification(RegistroDaContaSpecParams specParams) : base(specParams)
     {
         AddInclude(x => x.Credor);
         AddInclude(x => x.Pagador);
         AddInclude(x => x.Arquivos);
-    }
 
-    public RegistroDaContaSpecification(RegistroDaContaSpecParams specParams) : this()
-    {
         AddCriteria(x =>
             (x.PagadorId == specParams.PagadorId || specParams.PagadorId == null || specParams.PagadorId == 0)
             && (x.CredorId == specParams.CredorId || specParams.CredorId == null || specParams.CredorId == 0)

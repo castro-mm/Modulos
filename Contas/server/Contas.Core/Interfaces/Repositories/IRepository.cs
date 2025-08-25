@@ -13,4 +13,5 @@ public interface IRepository<T> where T : Entity
     Task<bool> ExistsAsync(int id, CancellationToken cancellationToken);
     Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
     Task<IEnumerable<T>> GetAsyncWithSpec(ISpecification<T> spec, CancellationToken cancellationToken);
+    Task<int> CountAsync(ISpecification<T> spec, CancellationToken cancellationToken);
 }

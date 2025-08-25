@@ -6,6 +6,6 @@ namespace Contas.Core.Specifications;
 
 public class PagadorSpecification : Specification<Pagador>
 {
-    public PagadorSpecification() { }
-    public PagadorSpecification(PagadorParams specParams) : this() => AddCriteria(x => x.Nome.Contains(specParams.Nome ?? string.Empty) || string.IsNullOrEmpty(specParams.Nome));
+    public PagadorSpecification(PagadorParams specParams) : base(specParams)
+        => AddCriteria(x => x.Nome.Contains(specParams.Nome ?? string.Empty) || string.IsNullOrEmpty(specParams.Nome));
 }

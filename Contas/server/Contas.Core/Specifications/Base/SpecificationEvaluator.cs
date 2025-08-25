@@ -15,10 +15,8 @@ public static class SpecificationEvaluator
         query = spec.OrderByDescending != null ? query.OrderByDescending(spec.OrderByDescending) : query;
         query = spec.GroupBy != null ? query.GroupBy(spec.GroupBy).SelectMany(g => g) : query;
         query = spec.IsDistinct ? query.Distinct() : query;
-        query = spec.Skip.HasValue ? query.Skip(spec.Skip.Value) : query;
-        query = spec.Take.HasValue ? query.Take(spec.Take.Value) : query;
         query = spec.AsNoTracking ? query.AsNoTracking() : query;
-        query = spec.IsPageEnabled ? query.Skip(spec.Skip ?? 0).Take(spec.Take ?? int.MaxValue) : query;
+        query = spec.IsPageEnabled ? query.Skip(spec.Skip).Take(spec.Take) : query;
         query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
 
         return query;

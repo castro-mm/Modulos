@@ -6,9 +6,9 @@ namespace Contas.Core.Specifications;
 
 public class SegmentoDoCredorSpecification : Specification<SegmentoDoCredor>
 {
-    public SegmentoDoCredorSpecification() => AddInclude(x => x.Credores);
-    public SegmentoDoCredorSpecification(SegmentoDoCredorParams specParams) : this()
-        => AddCriteria(x =>
-            x.Nome.Contains(specParams.Nome ?? string.Empty) || string.IsNullOrEmpty(specParams.Nome)
-            );    
+    public SegmentoDoCredorSpecification(SegmentoDoCredorParams specParams) : base(specParams)
+    {
+        AddInclude(x => x.Credores);
+        AddCriteria(x => x.Nome.Contains(specParams.Nome ?? string.Empty) || string.IsNullOrEmpty(specParams.Nome));
+    }
 }

@@ -1,21 +1,14 @@
-using System.Collections.Concurrent;
 using Contas.Core.Entities.Base;
+using Contas.Core.Helpers;
 using Contas.Core.Interfaces.Repositories;
 
 namespace Contas.Infrastructure.Data.Repositories;
 
 public class UnitOfWork(ContasContext context) : IUnitOfWork
 {
-    private readonly ConcurrentDictionary<string, object> _repositories = new();
-
     public IRepository<T> Repository<T>() where T : Entity
     {
-        var type = typeof(T).Name;
-        return (IRepository<T>)_repositories.GetOrAdd(type, t =>
-        {
-            var repositoryType = typeof(Repository<>).MakeGenericType(typeof(T));
-            return Activator.CreateInstance(repositoryType, context) ?? throw new InvalidOperationException($"Não foi possível criar a instancia de {t}");
-        });
+        return FactoryHelper.CreateInstance<Repository<T>>(context);
     }
 
     public async Task<bool> SaveAllAsync()

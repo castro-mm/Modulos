@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Contas.Core.Entities;
 using Contas.Core.Entities.Base;
 using Contas.Core.Interfaces;
 using Contas.Core.Interfaces.Repositories;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Contas.Infrastructure.Data.Repositories;
 
 public class Repository<T>(ContasContext context) : IRepository<T> where T : Entity
-{
+{    
     public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await context.Set<T>().ToListAsync(cancellationToken);
@@ -49,5 +50,14 @@ public class Repository<T>(ContasContext context) : IRepository<T> where T : Ent
         var result = SpecificationEvaluator.GetQuery(context.Set<T>().AsQueryable(), spec);
 
         return await result.ToListAsync(cancellationToken);
+    }
+
+    public async Task<int> CountAsync(ISpecification<T> spec, CancellationToken cancellationToken)
+    {
+        var query = context.Set<T>().AsQueryable();
+
+        query = spec.ApplyCriteria(query);
+
+        return await query.CountAsync(cancellationToken);
     }
 }
