@@ -20,7 +20,6 @@ public class SegmentoDoCredorController(ISegmentoDoCredorService service) : Base
             return BadRequest("Os parâmetros de consulta não foram informados.");
 
         var spec = new SegmentoDoCredorSpecification(specParams);
-
         var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult.Itens == null || pagedResult.Count == 0)

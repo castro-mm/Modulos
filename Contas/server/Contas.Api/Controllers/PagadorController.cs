@@ -20,11 +20,11 @@ public class PagadorController(IPagadorService service) : BaseApiController<Paga
             return BadRequest("Os parâmetros de consulta não foram informados.");
 
         var spec = new PagadorSpecification(specParams);
-        var lista = await service.GetAsyncWithSpec(spec, cancellationToken);
+        var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken); 
 
-        if (lista == null || !lista.Any())
-            return NotFound("Nenhum pagador encontrado com o nome informado");
+        if (pagedResult == null || !pagedResult.Itens.Any())
+            return NotFound("Nenhum registro encontrado com os parâmetros informados.");
 
-        return Ok(lista);
+        return Ok(pagedResult);
     }
 }

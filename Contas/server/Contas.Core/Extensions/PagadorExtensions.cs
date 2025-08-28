@@ -30,7 +30,7 @@ public static class PagadorExtensions
             Email = pagador.Email,
             CPF = pagador.CPF,
             DataDeCriacao = pagador.DataDeCriacao,
-            DataDeAtualizacao = pagador.DataDeAtualizacao
+            DataDeAtualizacao = pagador.DataDeAtualizacao,
         };
     }    
 

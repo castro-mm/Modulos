@@ -38,8 +38,7 @@ public static class ArquivoExtensions
             Conteudo = arquivo.Conteudo,
             Tipo = arquivo.Tipo,
             DataDeCriacao = arquivo.DataDeCriacao,
-            DataDeAtualizacao = arquivo.DataDeAtualizacao,
-            RegistroDaConta = arquivo.RegistroDaConta?.ToDto()
+            DataDeAtualizacao = arquivo.DataDeAtualizacao
         };
     }
 

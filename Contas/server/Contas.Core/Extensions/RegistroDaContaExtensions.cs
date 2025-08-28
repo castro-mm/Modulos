@@ -30,6 +30,7 @@ public static class RegistroDaContaExtensions
             DataDeAtualizacao = registroDaConta.DataDeAtualizacao,
             Credor = registroDaConta.Credor?.ToDto(),
             Pagador = registroDaConta.Pagador?.ToDto(),
+            Arquivos = registroDaConta.Arquivos?.Select(a => a.ToDto()).ToList() ?? [],
         };
     }
 
@@ -57,7 +58,8 @@ public static class RegistroDaContaExtensions
             DataDeCriacao = dto.DataDeCriacao,
             DataDeAtualizacao = dto.DataDeAtualizacao,
             Credor = null!,
-            Pagador = null!            
+            Pagador = null!
+                     
         };
     }
 

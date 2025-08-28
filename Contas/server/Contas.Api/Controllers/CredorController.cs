@@ -14,14 +14,17 @@ public class CredorController(ICredorService service) : BaseApiController<Credor
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> GetAsync([FromQuery] CredorParams credorParams, CancellationToken cancellationToken)
+    public async Task<ActionResult> GetAsync([FromQuery] CredorParams specParams, CancellationToken cancellationToken)
     {        
-        var spec = new CredorSpecification(credorParams);
-        var lista = await service.GetAsyncWithSpec(spec, cancellationToken);
+        if (specParams == null)
+            return BadRequest("Os parâmetros de consulta não foram informados.");
 
-        if (lista == null || !lista.Any())
+        var spec = new CredorSpecification(specParams);
+        var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
+
+        if (pagedResult == null || !pagedResult.Itens.Any())
             return NotFound("Nenhum registro encontrado com os parâmetros informados.");
         
-        return Ok(lista);
+        return Ok(pagedResult);
     }
 }

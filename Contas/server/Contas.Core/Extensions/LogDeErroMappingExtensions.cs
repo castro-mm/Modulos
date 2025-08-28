@@ -5,26 +5,6 @@ namespace Contas.Core.Extensions;
 
 public static class LogDeErroMappingExtensions
 {
-    public static LogDeErroDto ToDto(this LogDeErro logDeErro)
-    {
-        ArgumentNullException.ThrowIfNull(logDeErro);
-
-        return new LogDeErroDto
-        {
-            Id = logDeErro.Id,
-            Mensagem = logDeErro.Mensagem,
-            Detalhes = logDeErro.Detalhes,
-            Metodo = logDeErro.Metodo,
-            Caminho = logDeErro.Caminho,
-            Ip = logDeErro.Ip,
-            Navegador = logDeErro.Navegador,
-            DataDeCriacao = logDeErro.DataDeCriacao,
-            DataDeAtualizacao = logDeErro.DataDeAtualizacao,
-            Usuario = logDeErro.Usuario,
-            TraceId = logDeErro.TraceId
-        };
-    }
-
     public static LogDeErro ToEntity(this LogDeErroDto logDeErroDto)
     {
         ArgumentNullException.ThrowIfNull(logDeErroDto);
@@ -43,6 +23,26 @@ public static class LogDeErroMappingExtensions
             Usuario = logDeErroDto.Usuario,
             TraceId = logDeErroDto.TraceId,
             Hash = logDeErroDto.Hash
+        };
+    }
+
+    public static LogDeErroDto ToDto(this LogDeErro logDeErro)
+    {
+        ArgumentNullException.ThrowIfNull(logDeErro);
+
+        return new LogDeErroDto
+        {
+            Id = logDeErro.Id,
+            Mensagem = logDeErro.Mensagem,
+            Detalhes = logDeErro.Detalhes,
+            Metodo = logDeErro.Metodo,
+            Caminho = logDeErro.Caminho,
+            Ip = logDeErro.Ip,
+            Navegador = logDeErro.Navegador,
+            DataDeCriacao = logDeErro.DataDeCriacao,
+            DataDeAtualizacao = logDeErro.DataDeAtualizacao,
+            Usuario = logDeErro.Usuario,
+            TraceId = logDeErro.TraceId
         };
     }
 
