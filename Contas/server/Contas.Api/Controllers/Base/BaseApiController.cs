@@ -28,7 +28,7 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
         return Ok(pagedResult);
     }
 
-    [HttpGet("{id:int}"/*, Name = nameof(GetByIdAsync)*/)]
+    [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,8 +62,6 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
             return BadRequest("Erro ao adicionar as informações enviadas.");
 
         return Ok(result);
-
-        //return CreatedAtRoute(nameof(GetByIdAsync), new { id = result.Id }, result);
     }
 
     [HttpPut("{id:int}")]

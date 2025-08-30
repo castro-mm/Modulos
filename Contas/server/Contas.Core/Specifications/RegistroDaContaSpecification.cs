@@ -1,4 +1,5 @@
 using Contas.Core.Entities;
+using Contas.Core.Extensions;
 using Contas.Core.Specifications.Base;
 using Contas.Core.Specifications.Params;
 using static Contas.Core.Objects.Enumerations;
@@ -13,12 +14,14 @@ public class RegistroDaContaSpecification : Specification<RegistroDaConta>
         AddInclude(x => x.Pagador);
         AddInclude(x => x.Arquivos);
 
+        var statusDaConta = specParams.StatusDaConta.ToEnum<StatusDaConta>();
+
         AddCriteria(x =>
             (x.PagadorId == specParams.PagadorId || specParams.PagadorId == null || specParams.PagadorId == 0)
             && (x.CredorId == specParams.CredorId || specParams.CredorId == null || specParams.CredorId == 0)
             && (x.Mes == specParams.Mes || specParams.Mes == null || specParams.Mes == 0)
             && (x.Ano == specParams.Ano || specParams.Ano == null || specParams.Ano == 0)
-            && (x.Status == (StatusDaConta)specParams.StatusDaConta || specParams.StatusDaConta == -1)
+            && (x.Status == statusDaConta || statusDaConta == StatusDaConta.Todos)
         );
     }
 }

@@ -3,7 +3,7 @@ using Contas.Core.Entities;
 
 namespace Contas.Core.Extensions;
 
-public static class RegistroDaContaExtensions
+public static class RegistroDaContaMappingExtensions
 {
     public static RegistroDaContaDto ToDto(this RegistroDaConta registroDaConta)
     {

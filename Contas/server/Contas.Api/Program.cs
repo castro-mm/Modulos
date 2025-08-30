@@ -5,6 +5,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddInterceptorsServices();
 builder.Services.AddDatabaseServices(builder);
 builder.Services.AddMappingServices();
 builder.Services.AddControllersServices();

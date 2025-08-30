@@ -3,7 +3,7 @@ using Contas.Core.Entities;
 
 namespace Contas.Core.Extensions;
 
-public static class PagadorExtensions
+public static class PagadorMappingExtensions
 {
     public static Pagador ToEntity(this PagadorDto pagadorDto)
     {

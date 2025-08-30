@@ -8,5 +8,5 @@ public class RegistroDaContaSpecParams : SpecificationParams
     public int? Ano { get; set; }
     public int? PagadorId { get; set; }
     public int? CredorId { get; set; }
-    public int StatusDaConta { get; set; } = -1;
+    public int StatusDaConta { get; set; } = 99;
 }

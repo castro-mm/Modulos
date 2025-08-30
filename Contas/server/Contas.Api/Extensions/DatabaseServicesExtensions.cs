@@ -7,10 +7,7 @@ namespace Contas.Api.Extensions;
 public static class DatabaseServicesExtensions
 {
     public static void AddDatabaseServices(this IServiceCollection services, WebApplicationBuilder builder)
-    {
-        services.AddHttpContextAccessor();
-        services.AddScoped<AuditSaveChangesInterceptor>();
-
+    { 
         services.AddDbContext<ContasContext>(options =>
         {
             options

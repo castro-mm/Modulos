@@ -3,7 +3,7 @@ using Contas.Core.Entities;
 
 namespace Contas.Core.Extensions;
 
-public static class ArquivoExtensions
+public static class ArquivoMappingExtensions
 {
     public static Arquivo ToEntity(this ArquivoDto arquivoDto)
     {
@@ -55,12 +55,5 @@ public static class ArquivoExtensions
         arquivo.Conteudo = arquivoDto.Conteudo;
         arquivo.Tipo = arquivoDto.Tipo;
         arquivo.DataDeAtualizacao = arquivoDto.DataDeAtualizacao;
-    }
-    
-    public static List<ArquivoDto> ToDtoList(this List<Arquivo> arquivos)
-    {
-        ArgumentNullException.ThrowIfNull(arquivos);
-
-        return [.. arquivos.Select(ToDto)];
     }
 }

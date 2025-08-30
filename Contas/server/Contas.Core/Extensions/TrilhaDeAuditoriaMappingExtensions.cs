@@ -3,7 +3,7 @@ using Contas.Core.Entities.System;
 
 namespace Contas.Core.Extensions;
 
-public static class TrilhaDeAuditoriaExtensions
+public static class TrilhaDeAuditoriaMappingExtensions
 {
     public static TrilhaDeAuditoriaDto ToDto(this TrilhaDeAuditoria trilhaDeAuditoria)
     {
@@ -32,7 +32,7 @@ public static class TrilhaDeAuditoriaExtensions
 
         return new TrilhaDeAuditoria
         {
-            Id = trilhaDeAuditoriaDto.Id,            
+            Id = trilhaDeAuditoriaDto.Id,
             Entidade = trilhaDeAuditoriaDto.Entidade,
             Metodo = trilhaDeAuditoriaDto.Metodo,
             Caminho = trilhaDeAuditoriaDto.Caminho,

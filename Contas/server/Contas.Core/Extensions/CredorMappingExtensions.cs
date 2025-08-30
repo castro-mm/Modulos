@@ -3,7 +3,7 @@ using Contas.Core.Entities;
 
 namespace Contas.Core.Extensions;
 
-public static class CredorExtensions
+public static class CredorMappingExtensions
 {
     public static Credor ToEntity(this CredorDto dto)
     {
