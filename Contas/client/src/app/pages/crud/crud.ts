@@ -145,8 +145,8 @@ interface ExportColumn {
                 </tr>
             </ng-template>
         </p-table>
-
-        <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true">
+        <!-- TODO: O dialog sera implementado no typescript como servico (avaliar) -->
+        <p-dialog [(visible)]="productDialog" [style]="{ width: '900px' }" header="Product Details" [modal]="true">
             <ng-template #content>
                 <div class="flex flex-col gap-6">
                     <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-4" *ngIf="product.image" />
@@ -309,7 +309,7 @@ export class Crud implements OnInit {
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.products.set(this.products().filter((val) => val.id !== product.id));
+                this.products.set(this.products().filter((val) => val.id !== product.id));  
                 this.product = {};
                 this.messageService.add({
                     severity: 'success',

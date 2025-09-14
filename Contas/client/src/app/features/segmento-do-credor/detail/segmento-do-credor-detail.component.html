@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <form #f [formGroup]="form" (submit)="salvar()">
+        <div class="row mt-1">
+            <div class="col-12">
+                <p-floatlabel class="mb-1" variant="on">
+                    <label for="nome" class="block font-bold mb-3">Nome</label>
+                    <input id="nome" formControlName="nome" pInputText required autofocus fluid />
+                </p-floatlabel>
+                @if (form.get('nome')?.invalid && (form.get('nome')?.touched || form.get('nome')?.dirty)) {
+                    @if (form.get('nome')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">O Nome é obrigatório.</p-message>
+                    }
+                    @if (form.get('nome')?.errors?.['minlength']) {
+                        <p-message severity="error" size="small" variant="simple">O Nome deve ter pelo menos 03 caracteres.</p-message>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12 text-end">
+                <p-button icon="pi pi-times" label="Fechar" class="me-2" text (click)="closeDialog()"/>
+                <p-button icon="pi pi-check" [label]="isLoading ? 'Executando...' : 'Salvar'" type="submit" [disabled]="form.invalid || isLoading"/>
+            </div>    
+        </div>
+    </form>    
+</div>

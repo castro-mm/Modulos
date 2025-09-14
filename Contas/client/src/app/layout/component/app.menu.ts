@@ -1,25 +1,43 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
 
 @Component({
     selector: 'app-menu',
-    standalone: true,
     imports: [CommonModule, AppMenuitem, RouterModule],
-    template: `<ul class="layout-menu">
-        <ng-container *ngFor="let item of model; let i = index">
-            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-            <li *ngIf="item.separator" class="menu-separator"></li>
-        </ng-container>
-    </ul> `
+    template: `
+        <ul class="layout-menu">
+            @for (item of model; track $index) {
+                <ng-container>
+                    @if (!item.separator) {
+                        <li app-menuitem [item]="item" [index]="$index" [root]="true"></li>
+                    } @else {
+                        <li class="menu-separator"></li>
+                    }
+                </ng-container>
+            }
+        </ul> 
+    `
 })
 export class AppMenu {
-    model: MenuItem[] = [];
+    model: MenuItem[] = [];   
 
     ngOnInit() {
         this.model = [
+            {
+                label: 'Contas',
+                items: [
+                    { 
+                        label: 'Segmentos do Credor', 
+                        icon: 'pi pi-fw pi-home', 
+                        routerLink: ['/contas/segmento-do-credor'], 
+                        routerLinkActiveOptions: { exact: true }, 
+                        command: (event) => this.onMenuClick(event)
+                    }
+                ]
+            },
             {
                 label: 'Home',
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
@@ -153,5 +171,34 @@ export class AppMenu {
                 ]
             }
         ];
+    }
+
+    private onMenuClick(event: MenuItemCommandEvent) {
+        if (!event.item) return;
+        
+        const path = this.findMenuPath(event.item, this.model);
+        const breadcrumbItems = path ? path.map(p => ({ label: p.label, routerLink: p.routerLink, icon: p.icon })) : [];
+
+        const storedBreadcrumb = localStorage.getItem('breadcrumb');
+        if (storedBreadcrumb) {
+            localStorage.removeItem('breadcrumb');
+        }
+
+        localStorage.setItem('breadcrumb', JSON.stringify(breadcrumbItems));
+    }
+
+    private findMenuPath(item: MenuItem, items: MenuItem[], path: MenuItem[] = []): MenuItem[] | null {
+        for (let menuItem of items) {
+            if (menuItem === item) {
+                return [...path, menuItem];
+            }
+            if (menuItem.items) {
+                const foundPath = this.findMenuPath(item, menuItem.items, [...path, menuItem]);
+                if (foundPath) {
+                    return foundPath;
+                }
+            }
+        }
+        return null;
     }
 }

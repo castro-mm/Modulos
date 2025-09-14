@@ -13,7 +13,8 @@ export const appRoutes: Routes = [
             { path: '', component: Dashboard },
             { path: 'uikit', loadChildren: () => import('@/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
-            { path: 'pages', loadChildren: () => import('@/pages/pages.routes') }
+            { path: 'pages', loadChildren: () => import('@/pages/pages.routes') },
+            { path: 'contas', loadChildren: () => import('@/features/features.routes') }
         ]
     },
     { path: 'landing', component: Landing },
