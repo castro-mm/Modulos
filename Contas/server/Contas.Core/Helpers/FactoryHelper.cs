@@ -12,10 +12,9 @@ public static class FactoryHelper
         keyValuePairs = new();
 
         var type = typeof(T).Name;
-        return (T)keyValuePairs.GetOrAdd(type, t =>
-        {
-            var tType = typeof(T);
-            return Activator.CreateInstance(tType, args) ?? throw new InvalidOperationException($"Não foi possível criar a instancia de {t}");
-        });
+        return (T)keyValuePairs.GetOrAdd(
+            type,
+            t => Activator.CreateInstance(typeof(T), args) ?? throw new InvalidOperationException($"Não foi possível criar a instancia de {t}")
+        );
     }
 }

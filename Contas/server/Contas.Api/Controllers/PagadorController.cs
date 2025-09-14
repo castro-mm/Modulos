@@ -11,9 +11,6 @@ namespace Contas.Api.Controllers;
 public class PagadorController(IPagadorService service) : BaseApiController<PagadorDto, Pagador>(service)
 {
     [HttpGet("get-by")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]    
     public async Task<ActionResult> GetAsync([FromQuery] PagadorParams specParams, CancellationToken cancellationToken)
     {
         if (specParams == null)
@@ -22,7 +19,7 @@ public class PagadorController(IPagadorService service) : BaseApiController<Paga
         var spec = new PagadorSpecification(specParams);
         var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken); 
 
-        if (pagedResult == null || !pagedResult.Itens.Any())
+        if (pagedResult == null || !pagedResult.Items.Any())
             return NotFound("Nenhum registro encontrado com os parâmetros informados.");
 
         return Ok(pagedResult);

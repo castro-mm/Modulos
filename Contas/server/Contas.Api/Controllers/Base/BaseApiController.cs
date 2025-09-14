@@ -13,26 +13,19 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
     where TDto : IDto
     where TEntity : Entity
 {
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public virtual async Task<ActionResult> GetAllAsync([FromQuery]SpecificationParams specParams, CancellationToken cancellationToken)
-    {              
+    public virtual async Task<ActionResult> GetAllAsync([FromQuery] SpecificationParams specParams, CancellationToken cancellationToken)
+    {
         var specs = FactoryHelper.CreateInstance<Specification<TEntity>>(specParams);
 
         var pagedResult = await service.GetPagedResultWithSpecAsync(specs, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
-        if (pagedResult == null || !pagedResult.Itens.Any())
+        if (pagedResult == null || !pagedResult.Items.Any())
             return NotFound("Nenhum registro encontrado.");
 
         return Ok(pagedResult);
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public virtual async Task<ActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         if (id <= 0)
@@ -43,15 +36,12 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
 
         var dto = await service.GetByIdAsync(id, cancellationToken);
         if (dto == null)
-            return BadRequest("Erro ao buscar o item.");
+            return BadRequest("Erro ao buscar o item. Entre em contato com o administrador do sistema.");   
 
         return Ok(dto);
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public virtual async Task<ActionResult> CreateAsync([FromBody] TDto dto, CancellationToken cancellationToken)
     {
         if (dto == null)
@@ -59,16 +49,12 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
 
         var result = await service.CreateAsync(dto, cancellationToken);
         if (result == null)
-            return BadRequest("Erro ao adicionar as informações enviadas.");
+            return BadRequest("Erro ao adicionar as informações enviadas. Entre em contato com o administrador do sistema.");
 
         return Ok(result);
     }
 
     [HttpPut("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public virtual async Task<ActionResult> UpdateAsync(int id, [FromBody] TDto dto, CancellationToken cancellationToken)
     {
         if (dto == null)
@@ -82,16 +68,12 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
 
         var result = await service.UpdateAsync(dto, cancellationToken);
         if (result == null)
-            return BadRequest("Erro ao atualizar as informações.");
+            return BadRequest("Erro ao atualizar as informações. Entre em contato com o administrador do sistema.");
 
         return Ok(result);
     }
 
     [HttpDelete("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public virtual async Task<ActionResult> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         if (id <= 0)
@@ -102,9 +84,22 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
 
         var result = await service.DeleteAsync(id, cancellationToken);
         if (result)
-            return NoContent();
+            return Ok("Registro excluído com sucesso.");
 
-        return BadRequest("Erro ao excluir o registro.");
-    }    
+        return BadRequest("Erro ao excluir o registro. Entre em contato com o administrador do sistema.");
+    }
+
+    [HttpDelete("delete-range")]
+    public virtual async Task<ActionResult> DeleteRangeAsync([FromBody] IEnumerable<int> ids, CancellationToken cancellationToken)
+    {
+        if (ids == null || !ids.Any() || ids.Any(id => id <= 0))
+            return BadRequest("Os IDs informados são inválidos.");
+
+        var result = await service.DeleteRangeAsync(ids, cancellationToken);
+        if (result)
+            return Ok($"Os {ids.Count()} registro(s) foi(ram) excluído(s) com sucesso.");
+
+        return BadRequest("Erro ao excluir os registros. Entre em contato com o administrador do sistema.");
+    }
 }
 

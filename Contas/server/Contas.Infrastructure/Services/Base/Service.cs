@@ -77,6 +77,18 @@ public abstract class Service<TDto, TEntity>(IUnitOfWork unitOfWork) : IService<
         return await unitOfWork.SaveAllAsync();
     }
 
+    public virtual async Task<bool> DeleteRangeAsync(IEnumerable<int> ids, CancellationToken cancellationToken)
+    {
+        var entities = await unitOfWork.Repository<TEntity>().FindAsync(x => ids.Contains(x.Id), cancellationToken);
+
+        if (!entities.Any())
+            return false;
+
+        unitOfWork.Repository<TEntity>().DeleteRange(entities);
+
+        return await unitOfWork.SaveAllAsync();
+    }
+
     public virtual async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
     {
         return await unitOfWork.Repository<TEntity>().ExistsAsync(id, cancellationToken);

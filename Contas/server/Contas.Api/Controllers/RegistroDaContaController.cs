@@ -19,7 +19,7 @@ public class RegistroDaContaController(IRegistroDaContaService service) : BaseAp
         var spec = new RegistroDaContaSpecification(specParams);
         var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
-        if (pagedResult.Itens == null || pagedResult.Count == 0)
+        if (pagedResult.Items == null || pagedResult.Count == 0)
             return NotFound("Nenhum registro encontrado com os parâmetros informados.");
 
         return Ok(pagedResult);

@@ -22,7 +22,7 @@ public class CredorController(ICredorService service) : BaseApiController<Credor
         var spec = new CredorSpecification(specParams);
         var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
-        if (pagedResult == null || !pagedResult.Itens.Any())
+        if (pagedResult == null || !pagedResult.Items.Any())
             return NotFound("Nenhum registro encontrado com os parâmetros informados.");
         
         return Ok(pagedResult);

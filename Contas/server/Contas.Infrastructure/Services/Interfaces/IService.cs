@@ -15,6 +15,7 @@ public interface IService<TDto, TEntity>
     Task<TDto> CreateAsync(TDto dto, CancellationToken cancellationToken);
     Task<TDto> UpdateAsync(TDto dto, CancellationToken cancellationToken);
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<bool> DeleteRangeAsync(IEnumerable<int> ids, CancellationToken cancellationToken);
     Task<bool> ExistsAsync(int id, CancellationToken cancellationToken);
     Task<IEnumerable<TDto>> GetAsyncWithSpec(ISpecification<TEntity> spec, CancellationToken cancellationToken);
 }

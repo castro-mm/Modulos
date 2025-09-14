@@ -35,6 +35,11 @@ public class Repository<T>(ContasContext context) : IRepository<T> where T : Ent
         context.Entry(entity).State = EntityState.Modified;
     }
 
+    public void DeleteRange(IEnumerable<T> entities)
+    {
+        context.Set<T>().RemoveRange(entities);
+    }
+
     public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
     {
         return await context.Set<T>().AnyAsync(x => x.Id == id, cancellationToken);
