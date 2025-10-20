@@ -9,5 +9,4 @@ export class CredorService extends EntityService<Credor> {
     constructor() {
         super('credor');
     }
-  
 }

@@ -1,0 +1,89 @@
+<div class="container-fluid">
+    <form #f [formGroup]="form" (submit)="salvar()">
+        <p-divider class="mt-1" />
+        <div class="row mt-2">
+            <div class="col-8">
+                <label for="nome" class="mb-1">Nome:</label>
+                <input 
+                    id="nome" 
+                    formControlName="nome" 
+                    pInputText 
+                    required 
+                    autofocus 
+                    fluid />
+                @if (form.get('nome')?.invalid && (form.get('nome')?.touched || form.get('nome')?.dirty)) {
+                    @if (form.get('nome')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">O Nome é obrigatória.</p-message>
+                    }
+                    @if (form.get('nome')?.errors?.['minlength']) {
+                        <p-message severity="error" size="small" variant="simple">O Nome deve ter pelo menos 10 caracteres.</p-message>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-8">
+                <label for="email" class="mb-1">Email</label>
+                <input 
+                    id="email" 
+                    type="email"
+                    formControlName="email" 
+                    pInputText 
+                    required 
+                    autofocus 
+                    fluid />
+
+                @if (form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) {
+                    @if (form.get('email')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">O Email é obrigatório.</p-message>
+                    }
+                    @if (form.get('email')?.errors?.['email']) {
+                        <p-message severity="error" size="small" variant="simple">O Email deve ser um endereço de email válido.</p-message>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-4">
+                <label for="cpf" class="mb-1">CPF:</label>
+                <input 
+                    id="cpf" 
+                    formControlName="cpf" 
+                    pInputText 
+                    required 
+                    autofocus 
+                    mask="000.000.000-00" 
+                    [showMaskTyped]="true" 
+                    [dropSpecialCharacters]="true"
+                    [validation]="true"
+                    fluid />
+
+                @if (form.get('cpf')?.invalid && (form.get('cpf')?.touched || form.get('cpf')?.dirty)) {
+                    @if (form.get('cpf')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">O CPF é obrigatório.</p-message>
+                    }
+                    @if (form.get('cpf')?.errors?.['invalidCpf']) {
+                        <p-message severity="error" size="small" variant="simple">O CPF deve seguir o formato válido.</p-message>
+                    }
+                }
+            </div>
+        </div>
+        <p-divider class="mt-3" />
+        <div class="row mt-2">
+            <div class="col-12 text-end">
+                <p-button 
+                    icon="pi pi-times" 
+                    label="Fechar" 
+                    class="me-2" 
+                    text 
+                    (click)="closeDialog()"/>
+                <p-button 
+                    icon="pi pi-check" 
+                    [label]="isLoading ? 'Executando...' : 'Salvar'" 
+                    [loading]="isLoading" 
+                    type="submit" 
+                    [disabled]="form.invalid || isLoading"/>
+            </div>    
+        </div>
+    </form>
+</div>

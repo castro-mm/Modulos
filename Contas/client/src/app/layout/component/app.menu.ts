@@ -43,6 +43,13 @@ export class AppMenu {
                         routerLink: ['/contas/segmento-do-credor'], 
                         routerLinkActiveOptions: { exact: true }, 
                         command: (event) => this.onMenuClick(event)
+                    },
+                    { 
+                        label: 'Pagador', 
+                        icon: 'pi pi-fw pi-bars', 
+                        routerLink: ['/contas/pagador'], 
+                        routerLinkActiveOptions: { exact: true }, 
+                        command: (event) => this.onMenuClick(event)
                     }
                 ]
             },

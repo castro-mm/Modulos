@@ -10,17 +10,22 @@ namespace Contas.Api.Controllers.Base;
 
 [Route("api/[controller]")]
 [ApiController]
-public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> service) : ControllerBase
-    where TDto : IDto
-    where TEntity : Entity
+public abstract class BaseApiController<TDto, TEntity> : ControllerBase where TDto : IDto where TEntity : Entity
 {
+    private readonly IService<TDto, TEntity> _service;
+
+    public BaseApiController(IService<TDto, TEntity> service)
+    {
+        this._service = service;
+    }
+
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public virtual async Task<ActionResult> GetAllAsync([FromQuery] SpecificationParams specParams, CancellationToken cancellationToken)
     {
         var specs = FactoryHelper.CreateInstance<Specification<TEntity>>(specParams);
 
-        var pagedResult = await service.GetPagedResultWithSpecAsync(specs, specParams.PageIndex, specParams.PageSize, cancellationToken);
+        var pagedResult = await _service.GetPagedResultWithSpecAsync(specs, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult == null || !pagedResult.Items.Any())
             return NotFound("Nenhum registro encontrado.");
@@ -37,10 +42,10 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
         if (id <= 0)
             return BadRequest("O ID deve ser maior que zero.");
 
-        if (!await service.ExistsAsync(id, cancellationToken))
+        if (!await _service.ExistsAsync(id, cancellationToken))
             return NotFound("O item informado não existe.");
 
-        var dto = await service.GetByIdAsync(id, cancellationToken);
+        var dto = await _service.GetByIdAsync(id, cancellationToken);
         if (dto == null)
             return BadRequest("Erro ao buscar o item. Entre em contato com o administrador do sistema.");
 
@@ -55,7 +60,7 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
         if (dto == null)
             return BadRequest("Os dados não foram informados.");
 
-        var result = await service.CreateAsync(dto, cancellationToken);
+        var result = await _service.CreateAsync(dto, cancellationToken);
         if (result == null)
             return BadRequest("Erro ao adicionar as informações enviadas. Entre em contato com o administrador do sistema.");
 
@@ -74,10 +79,10 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
         if (dto.Id != id)
             return BadRequest("O ID do registro não corresponde ao ID da URL.");
 
-        if (!await service.ExistsAsync(id, cancellationToken))
+        if (!await _service.ExistsAsync(id, cancellationToken))
             return NotFound("O registro com o ID informado não existe.");
 
-        var result = await service.UpdateAsync(dto, cancellationToken);
+        var result = await _service.UpdateAsync(dto, cancellationToken);
         if (result == null)
             return BadRequest("Erro ao atualizar as informações. Entre em contato com o administrador do sistema.");
 
@@ -93,10 +98,10 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
         if (id <= 0)
             return BadRequest("O ID informado deve ser maior que zero.");
 
-        if (!await service.ExistsAsync(id, cancellationToken))
+        if (!await _service.ExistsAsync(id, cancellationToken))
             return NotFound("O registro com o ID informado não existe."); 
 
-        var result = await service.DeleteAsync(id, cancellationToken);
+        var result = await _service.DeleteAsync(id, cancellationToken);
         if (result)
             return Ok("Registro excluído com sucesso.");
 
@@ -112,7 +117,7 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
         if (ids == null || !ids.Any() || ids.Any(id => id <= 0))
             return BadRequest("Os IDs informados são inválidos.");
 
-        var result = await service.DeleteRangeAsync(ids, cancellationToken);
+        var result = await _service.DeleteRangeAsync(ids, cancellationToken);
         if (result)
             return Ok($"Os {ids.Count()} registro(s) foi(ram) excluído(s) com sucesso.");
 

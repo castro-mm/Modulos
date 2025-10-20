@@ -5,16 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Contas.Infrastructure.Data;
 
-public class ContasContext(DbContextOptions options, AuditSaveChangesInterceptor auditInterceptor) : DbContext(options)
+public class ContasContext : DbContext
 {
+    private readonly AuditSaveChangesInterceptor _auditInterceptor;
+
+    public ContasContext(DbContextOptions options, AuditSaveChangesInterceptor auditInterceptor) : base(options)
+    {
+        _auditInterceptor = auditInterceptor;
+    }
+
+    #region [ System ]
+
     public DbSet<TrilhaDeAuditoria> TrilhasDeAuditoria { get; set; } 
     public DbSet<LogDeErro> LogsDeErro { get; set; }
+
+    #endregion
+
+    #region [ Entities ]
 
     public DbSet<Pagador> Pagadores { get; set; }
     public DbSet<Credor> Credores { get; set; }
     public DbSet<SegmentoDoCredor> SegmentosDoCredor { get; set; }
     public DbSet<RegistroDaConta> RegistrosDaConta { get; set; }
     public DbSet<Arquivo> Arquivos { get; set; }
+
+    #endregion
 
     override protected void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +40,6 @@ public class ContasContext(DbContextOptions options, AuditSaveChangesInterceptor
     override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.AddInterceptors(auditInterceptor);
+        optionsBuilder.AddInterceptors(_auditInterceptor);
     }
 }

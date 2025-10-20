@@ -16,12 +16,10 @@ public class RegistroDaContaSpecification : Specification<RegistroDaConta>
 
         var statusDaConta = specParams.StatusDaConta.ToEnum<StatusDaConta>();
 
-        AddCriteria(x =>
-            (x.PagadorId == specParams.PagadorId || specParams.PagadorId == null || specParams.PagadorId == 0)
-            && (x.CredorId == specParams.CredorId || specParams.CredorId == null || specParams.CredorId == 0)
-            && (x.Mes == specParams.Mes || specParams.Mes == null || specParams.Mes == 0)
-            && (x.Ano == specParams.Ano || specParams.Ano == null || specParams.Ano == 0)
-            && (x.Status == statusDaConta || statusDaConta == StatusDaConta.Todos)
-        );
+        AddCriteria(x => x.PagadorId == specParams.PagadorId || specParams.PagadorId == null || specParams.PagadorId == 0);
+        AddCriteria(x => x.CredorId == specParams.CredorId || specParams.CredorId == null || specParams.CredorId == 0);
+        AddCriteria(x => x.Mes == specParams.Mes || specParams.Mes == null || specParams.Mes == 0);
+        AddCriteria(x => x.Ano == specParams.Ano || specParams.Ano == null || specParams.Ano == 0);
+        AddCriteria(x => x.Status == statusDaConta || statusDaConta == StatusDaConta.Todos);
     }
 }

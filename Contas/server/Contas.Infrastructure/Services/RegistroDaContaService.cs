@@ -6,7 +6,15 @@ using Contas.Infrastructure.Services.Interfaces;
 
 namespace Contas.Infrastructure.Services;
 
-public class RegistroDaContaService(IUnitOfWork unitOfWork) : Service<RegistroDaContaDto, RegistroDaConta>(unitOfWork), IRegistroDaContaService
+public class RegistroDaContaService : Service<RegistroDaContaDto, RegistroDaConta>, IRegistroDaContaService
 {
-          
+    private readonly IUnitOfWork _unitOfWork;
+
+    public RegistroDaContaService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    // Implement any additional methods specific to RegistroDaConta if needed
+    // For example, you might want to add methods for specific queries or operations    
 }

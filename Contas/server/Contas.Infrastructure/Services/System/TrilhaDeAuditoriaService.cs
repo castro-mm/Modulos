@@ -6,8 +6,15 @@ using Contas.Infrastructure.Services.Interfaces.System;
 
 namespace Contas.Infrastructure.Services.System;
 
-public class TrilhaDeAuditoriaService(IUnitOfWork unitOfWork) : Service<TrilhaDeAuditoriaDto, TrilhaDeAuditoria>(unitOfWork), ITrilhaDeAuditoriaService
+public class TrilhaDeAuditoriaService : Service<TrilhaDeAuditoriaDto, TrilhaDeAuditoria>, ITrilhaDeAuditoriaService
 {
+    private readonly IUnitOfWork _unitOfWork;
+
+    public TrilhaDeAuditoriaService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
     // Implement any additional methods specific to TrilhaDeAuditoria if needed
     // For example, you might want to add methods for specific queries or operations
 }

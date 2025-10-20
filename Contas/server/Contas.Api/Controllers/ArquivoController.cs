@@ -5,6 +5,9 @@ using Contas.Infrastructure.Services.Interfaces;
 
 namespace Contas.Api.Controllers;
 
-public class ArquivoController(IArquivoService service) : BaseApiController<ArquivoDto, Arquivo>(service)
-{
+public class ArquivoController : BaseApiController<ArquivoDto, Arquivo>
+{    
+    public ArquivoController(IArquivoService service) : base(service)
+    {
+    }
 }

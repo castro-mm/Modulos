@@ -9,6 +9,7 @@ public class SegmentoDoCredorSpecification : Specification<SegmentoDoCredor>
     public SegmentoDoCredorSpecification(SegmentoDoCredorParams specParams) : base(specParams)
     {
         AddInclude(x => x.Credores);
+
         AddCriteria(x => x.Nome.Contains(specParams.Nome ?? string.Empty) || string.IsNullOrEmpty(specParams.Nome));
     }
 }

@@ -19,5 +19,13 @@ export default [
         // providers: [
         //     { provide: DATA_SERVICE_TOKEN, useClass: CredorService }
         // ]
+    },
+    {
+        path: 'pagador',
+        loadComponent: () => import('./pagador/pagador.component').then(m => m.PagadorComponent),
+        // resolve: { entity: entityResolver },
+        // providers: [
+        //     { provide: DATA_SERVICE_TOKEN, useClass: PagadorService }
+        // ]
     }
 ] as Routes;

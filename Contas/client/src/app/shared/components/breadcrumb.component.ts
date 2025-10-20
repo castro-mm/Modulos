@@ -7,7 +7,7 @@ import { sharedConfig } from '../config/shared.config';
     imports: [...sharedConfig.imports],
     template: `
         <p-toolbar class="mb-4">
-            <ng-template #start>
+            <ng-template #start >
                 <nav aria-label="breadcrumb" class="breadcrumb-container">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">

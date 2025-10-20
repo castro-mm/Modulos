@@ -1,11 +1,16 @@
 <div class="container-fluid">
     <form #f [formGroup]="form" (submit)="salvar()">
-        <div class="row mt-1">
+        <p-divider class="mt-1" />
+        <div class="row mt-2">
             <div class="col-12">
-                <p-floatlabel class="mb-1" variant="on">
-                    <label for="nome" class="block font-bold mb-3">Nome</label>
-                    <input id="nome" formControlName="nome" pInputText required autofocus fluid />
-                </p-floatlabel>
+                <label for="nome" class="mb-1">Nome</label>
+                <input 
+                    id="nome" 
+                    formControlName="nome" 
+                    pInputText 
+                    required 
+                    autofocus 
+                    fluid />
                 @if (form.get('nome')?.invalid && (form.get('nome')?.touched || form.get('nome')?.dirty)) {
                     @if (form.get('nome')?.errors?.['required']) {
                         <p-message severity="error" size="small" variant="simple">O Nome é obrigatório.</p-message>
@@ -16,6 +21,7 @@
                 }
             </div>
         </div>
+        <p-divider class="mt-3" />
         <div class="row mt-2">
             <div class="col-12 text-end">
                 <p-button icon="pi pi-times" label="Fechar" class="me-2" text (click)="closeDialog()"/>

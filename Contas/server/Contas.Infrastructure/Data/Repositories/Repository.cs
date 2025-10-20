@@ -8,58 +8,66 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Contas.Infrastructure.Data.Repositories;
 
-public class Repository<T>(ContasContext context) : IRepository<T> where T : Entity
-{    
+public class Repository<T> : IRepository<T> where T : Entity
+{
+
+    private readonly ContasContext _context;
+
+    public Repository(ContasContext context)
+    {
+        _context = context;
+    }
+    
     public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await context.Set<T>().ToListAsync(cancellationToken);
+        return await _context.Set<T>().ToListAsync(cancellationToken);
     }
 
     public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Set<T>().FindAsync(id, cancellationToken);
+        return await _context.Set<T>().FindAsync(id, cancellationToken);
     }
 
     public async Task AddAsync(T entity, CancellationToken cancellationToken)
     {
-        await context.Set<T>().AddAsync(entity, cancellationToken);
+        await _context.Set<T>().AddAsync(entity, cancellationToken);
     }
 
     public void Delete(T entity)
     {
-        context.Remove(entity);
+        _context.Remove(entity);
     }
 
     public void Update(T entity)
     {
-        context.Entry(entity).State = EntityState.Modified;
+        _context.Entry(entity).State = EntityState.Modified;
     }
 
     public void DeleteRange(IEnumerable<T> entities)
     {
-        context.Set<T>().RemoveRange(entities);
+        _context.Set<T>().RemoveRange(entities);
     }
 
     public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
     {
-        return await context.Set<T>().AnyAsync(x => x.Id == id, cancellationToken);
+        return await _context.Set<T>().AnyAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
-        return await context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
+        return await _context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<T>> GetAsyncWithSpec(ISpecification<T> spec, CancellationToken cancellationToken)
     {
-        var result = SpecificationEvaluator.GetQuery(context.Set<T>().AsQueryable(), spec);
+        var result = SpecificationEvaluator.GetQuery(_context.Set<T>().AsQueryable(), spec);
 
         return await result.ToListAsync(cancellationToken);
     }
 
     public async Task<int> CountAsync(ISpecification<T> spec, CancellationToken cancellationToken)
     {
-        var query = context.Set<T>().AsQueryable();
+        var query = _context.Set<T>().AsQueryable();
 
         query = spec.ApplyCriteria(query);
 

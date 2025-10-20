@@ -6,14 +6,21 @@ using Contas.Infrastructure.Services.Interfaces.System;
 namespace Contas.Api.Middleware;
 
 // TODO: Criar uma tabela de Log de Erros no banco de dados para registrar as exceções.
-public class RequestApiMiddleware(
-    IHostEnvironment env,
-    RequestDelegate next,
-    ILogger<RequestApiMiddleware> logger,
-    IServiceProvider serviceProvider
-)
+public class RequestApiMiddleware
 {
     private readonly Guid traceId = Guid.NewGuid();
+    private readonly IHostEnvironment _env;
+    private readonly RequestDelegate _next;
+    private readonly ILogger<RequestApiMiddleware> _logger;
+    private readonly IServiceProvider _serviceProvider;
+
+    public RequestApiMiddleware(IHostEnvironment env, RequestDelegate next, ILogger<RequestApiMiddleware> logger, IServiceProvider serviceProvider)
+    {
+        this._env = env;
+        this._next = next;
+        this._logger = logger;
+        this._serviceProvider = serviceProvider;
+    }
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
@@ -25,7 +32,7 @@ public class RequestApiMiddleware(
         try
         {
             // Executa a próxima etapa do pipeline
-            await next(httpContext);
+            await _next(httpContext);
 
             memoryStream.Seek(0, SeekOrigin.Begin);
             var originalResponse = await new StreamReader(memoryStream).ReadToEndAsync();
@@ -63,14 +70,13 @@ public class RequestApiMiddleware(
             httpContext,
             originalBodyStream,
             exception.Message,
-            details: env.IsDevelopment()
+            details: _env.IsDevelopment()
                 ? (exception.InnerException == null ? (exception.StackTrace ?? "Detalhamento não disponível") : exception.InnerException.Message)
                 : "Internal Server Error"
         );
 
-        logger.LogError(exception, "Exception on path: {Path}.", httpContext.Request.Path);
+        _logger.LogError(exception, "Exception on path: {Path}.", httpContext.Request.Path);
 
-        // Log the error to the database
         var logDeErro = new LogDeErroDto
         {
             Mensagem = exception.Message,
@@ -87,16 +93,16 @@ public class RequestApiMiddleware(
 
         try
         {
-            using var scope = serviceProvider.CreateScope();
+            using var scope = _serviceProvider.CreateScope();
             var logDeErroService = scope.ServiceProvider.GetRequiredService<ILogDeErroService>();
 
             var result = await logDeErroService.CreateAsync(logDeErro, default);
 
-            logger.LogInformation("Error logged successfully.");
+            _logger.LogInformation("Error logged successfully.");
         }
         catch (Exception logEx)
         {
-            logger.LogError(logEx, "Failed to log error to the database.");
+            _logger.LogError(logEx, "Failed to log error to the database.");
         }
     }
 
@@ -111,7 +117,7 @@ public class RequestApiMiddleware(
             details: "Client Closed Request"
         );
 
-        logger.LogInformation("Request cancelled by the user on path: {Path}.", httpContext.Request.Path);
+        _logger.LogInformation("Request cancelled by the user on path: {Path}.", httpContext.Request.Path);
     }
 
     private async Task HandleResponseBodyAsync(HttpContext httpContext, Stream originalBodyStream, string message, object? data = null, string? details = null)
@@ -135,6 +141,6 @@ public class RequestApiMiddleware(
             WriteIndented = true
         });
 
-        logger.LogInformation("Response sent with status code {StatusCode} for path: {Path}.", httpContext.Response.StatusCode, httpContext.Request.Path);
+        _logger.LogInformation("Response sent with status code {StatusCode} for path: {Path}.", httpContext.Response.StatusCode, httpContext.Request.Path);
     }
 }

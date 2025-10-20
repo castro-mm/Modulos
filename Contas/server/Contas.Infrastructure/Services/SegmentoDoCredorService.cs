@@ -6,7 +6,15 @@ using Contas.Infrastructure.Services.Interfaces;
 
 namespace Contas.Infrastructure.Services;
 
-public class SegmentoDoCredorService(IUnitOfWork unitOfWork) : Service<SegmentoDoCredorDto, SegmentoDoCredor>(unitOfWork), ISegmentoDoCredorService
+public class SegmentoDoCredorService : Service<SegmentoDoCredorDto, SegmentoDoCredor>, ISegmentoDoCredorService
 {
-    // Métodos específicos para SegmentoDoCredor, se necessário
+    private readonly IUnitOfWork _unitOfWork;
+
+    public SegmentoDoCredorService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    // Implement any additional methods specific to SegmentoDoCredor if needed
+    // For example, you might want to add methods for specific queries or operations    
 }

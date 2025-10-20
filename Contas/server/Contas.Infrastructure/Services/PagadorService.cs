@@ -6,6 +6,15 @@ using Contas.Infrastructure.Services.Interfaces;
 
 namespace Contas.Infrastructure.Services;
 
-public class PagadorService(IUnitOfWork unitOfWork) : Service<PagadorDto, Pagador>(unitOfWork), IPagadorService
+public class PagadorService : Service<PagadorDto, Pagador>, IPagadorService
 {
+    private readonly IUnitOfWork _unitOfWork;
+
+    public PagadorService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    // Implement any additional methods specific to Pagador if needed
+    // For example, you might want to add methods for specific queries or operations    
 }

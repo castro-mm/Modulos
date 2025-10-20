@@ -9,8 +9,17 @@ using Contas.Core.Helpers;
 
 namespace Contas.Infrastructure.Interceptors;
 
-public class AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> logger, IHttpContextAccessor httpContextAccessor) : SaveChangesInterceptor
+public class AuditSaveChangesInterceptor : SaveChangesInterceptor
 {
+    private readonly ILogger<AuditSaveChangesInterceptor> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> logger, IHttpContextAccessor httpContextAccessor)
+    {
+        this._logger = logger;
+        this._httpContextAccessor = httpContextAccessor;
+    }
+
     override public async ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,
@@ -20,11 +29,11 @@ public class AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> lo
         var context = eventData.Context;
         if (context == null)
         {
-            logger.LogWarning("DbContext is null in AuditSaveChangesInterceptor.");
+            _logger.LogWarning("DbContext is null in AuditSaveChangesInterceptor.");
             return result;
         }
 
-        logger.LogInformation("Saving changes to the database.");
+        _logger.LogInformation("Saving changes to the database.");
 
         CriarTrilhaDeAuditoria(context);
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -32,14 +41,14 @@ public class AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> lo
 
     private void CriarTrilhaDeAuditoria(DbContext context)
     {
-        var httpContext = httpContextAccessor.HttpContext;
+        var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext == null)
         {
-            logger.LogWarning("HttpContext is null in CriarTrilhaDeAuditoria.");
+            _logger.LogWarning("HttpContext is null in CriarTrilhaDeAuditoria.");
             return;
         }
 
-        logger.LogInformation("Criando a trilha de auditoria para as mudanças no Contexto.");
+        _logger.LogInformation("Criando a trilha de auditoria para as mudanças no Contexto.");
 
         // Obtém as entradas que foram adicionadas, modificadas ou excluídas.
         var entries = context.ChangeTracker
@@ -51,7 +60,7 @@ public class AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> lo
         {
             var trilhaDeAuditoria = new TrilhaDeAuditoria
             {
-                Entidade = entry.Entity.GetType().Name,
+                Entidade = entry.Entity.GetType().Name.Replace("Proxy", string.Empty),
                 Metodo = httpContext.Request.Method,
                 Caminho = httpContext.Request.Path,
                 Operacao = entry.State.ToString().ToUpper(),
@@ -73,7 +82,7 @@ public class AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> lo
 
             trilhaDeAuditoriaList.Add(trilhaDeAuditoria);
 
-            logger.LogInformation(
+            _logger.LogInformation(
                 "Trilha de auditoria criada: {Acao} em {Entidade} - Detalhes: {@ValoresNovos}",
                 trilhaDeAuditoria.Operacao,
                 trilhaDeAuditoria.Entidade,
@@ -84,6 +93,6 @@ public class AuditSaveChangesInterceptor(ILogger<AuditSaveChangesInterceptor> lo
         if (trilhaDeAuditoriaList.Count > 0)
             context.Set<TrilhaDeAuditoria>().AddRange(trilhaDeAuditoriaList);
 
-        logger.LogInformation("Trilhas de auditoria adicionadas ao contexto: {Count}.", trilhaDeAuditoriaList.Count);
+        _logger.LogInformation("Trilhas de auditoria adicionadas ao contexto: {Count}.", trilhaDeAuditoriaList.Count);
     }
 }

@@ -4,7 +4,7 @@ import { Credor } from '@/shared/models/credor.model';
 import { CredorParams } from '@/shared/params/credor.params';
 import { Component, inject, OnInit } from '@angular/core';
 import { CredorDetailComponent } from './detail/credor-detail.component';
-import { CnpjPipe } from "../../shared/pipes/cnpj-pipe";
+import { CnpjPipe } from "../../shared/pipes/cnpj.pipe";
 import { BreadcrumbComponent } from "@/shared/components/breadcrumb.component";
 import { CredorService } from '@/shared/services/credor.service';
 import { EntityService } from '@/core/services/entity.service';

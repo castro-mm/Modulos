@@ -9,8 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Contas.Api.Controllers;
 
-public class CredorController(ICredorService service) : BaseApiController<CredorDto, Credor>(service)
-{
+public class CredorController : BaseApiController<CredorDto, Credor>
+{    
+    private readonly ICredorService _service;
+
+    public CredorController(ICredorService service) : base(service)
+    {
+        _service = service;
+    }
+
     [HttpGet("get-by-params")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -21,7 +28,7 @@ public class CredorController(ICredorService service) : BaseApiController<Credor
             return BadRequest("Os parâmetros de consulta não foram informados.");
 
         var spec = new CredorSpecification(specParams);
-        var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
+        var pagedResult = await _service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult == null || !pagedResult.Items.Any())
             return NotFound("Nenhum registro encontrado com os parâmetros informados.");

@@ -9,8 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Contas.Api.Controllers;
 
-public class SegmentoDoCredorController(ISegmentoDoCredorService service) : BaseApiController<SegmentoDoCredorDto, SegmentoDoCredor>(service)
-{
+public class SegmentoDoCredorController : BaseApiController<SegmentoDoCredorDto, SegmentoDoCredor>
+{    
+    private readonly ISegmentoDoCredorService _service;
+
+    public SegmentoDoCredorController(ISegmentoDoCredorService service) : base(service)
+    {
+        _service = service;
+    }
+
     [HttpGet("get-by-params")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -21,7 +28,7 @@ public class SegmentoDoCredorController(ISegmentoDoCredorService service) : Base
             return BadRequest("Os parâmetros de consulta não foram informados.");
 
         var spec = new SegmentoDoCredorSpecification(specParams);
-        var pagedResult = await service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
+        var pagedResult = await _service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult.Items == null || pagedResult.Count == 0)
             return NotFound("Nenhum registro encontrado com os parâmetros informados.");
