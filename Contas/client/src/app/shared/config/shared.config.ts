@@ -22,6 +22,9 @@ import { LoadingService } from '@/core/services/loading.service';
 import { RouterModule } from '@angular/router';
 import { BreadcrumbComponent } from '../components/breadcrumb.component';
 import { ToolbarModule } from 'primeng/toolbar';
+import { SelectModule } from 'primeng/select';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { InputMaskModule } from 'primeng/inputmask';
 
 export const importedModules = [
     CommonModule,
@@ -31,10 +34,12 @@ export const importedModules = [
     ConfirmDialogModule,
     PanelModule,
     FloatLabelModule,
+    IftaLabelModule,    
     DividerModule,
     TooltipModule,
     TableModule,
     InputTextModule,
+    InputMaskModule,
     IconFieldModule,
     InputIconModule,
     RippleModule,
@@ -44,12 +49,31 @@ export const importedModules = [
     ProgressSpinnerModule,
     ProgressBarModule,
     ToolbarModule,
+    SelectModule,
 ];
 
 export const importedComponents = [
     //BreadcrumbComponent,
 ]
 
+/**
+ * @author Marcelo M. de Castro
+ * @summary Configuração compartilhada do módulo.
+ * Fornece uma coleção de módulos, componentes e serviços frequentemente utilizados em toda a aplicação.
+ * Facilita a importação e reutilização de funcionalidades comuns.
+ * @example
+ * ```typescript
+ * import { Component } from '@angular/core';
+ * import { sharedConfig } from '@/shared/config/shared.config';
+ * 
+ * @Component({
+ *     imports: [...sharedConfig.imports],
+ *     templateUrl: './my-component.component.html',
+ *     providers: [...sharedConfig.providers]
+ * })
+ * export class MyComponent { }
+ * ```
+ */
 export const sharedConfig = {
     imports: [...importedModules, ...importedComponents],
     exports: [...importedComponents],

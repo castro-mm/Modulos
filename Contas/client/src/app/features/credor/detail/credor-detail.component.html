@@ -1,0 +1,111 @@
+<div class="container-fluid">
+    <form #f [formGroup]="form" (submit)="salvar()">
+        <div class="row mt-2">
+            <div class="col-6">
+                <p-floatlabel class="mb-1" variant="on">
+                    <p-select 
+                        formControlName="segmentoDoCredorId" 
+                        inputId="segmentoDoCredor" 
+                        [options]="segmentoDoCredorOptions"
+                        [invalid]="isInvalid('segmentoDoCredorId')" 
+                        optionLabel="label" 
+                        optionValue="value" 
+                        appendTo="body"
+                        placeholder="Selecione..."
+                        fluid 
+                        />
+                    <label for="segmentoDoCredorId">Segmento do Credor</label>
+                    @if (isInvalid('segmentoDoCredorId')) {
+                        <p-message severity="error" size="small" variant="simple">O Segmento do Credor é obrigatório.</p-message>
+                    }
+                </p-floatlabel>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-10">
+                <p-floatlabel class="mb-1" variant="on">
+                    <label for="razaoSocial" class="block font-bold mb-3">Razão Social</label>
+                    <input 
+                        id="razaoSocial" 
+                        formControlName="razaoSocial" 
+                        pInputText 
+                        required 
+                        autofocus 
+                        fluid />
+                </p-floatlabel>
+                @if (form.get('razaoSocial')?.invalid && (form.get('razaoSocial')?.touched || form.get('razaoSocial')?.dirty)) {
+                    @if (form.get('razaoSocial')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">A Razão Social é obrigatória.</p-message>
+                    }
+                    @if (form.get('razaoSocial')?.errors?.['minlength']) {
+                        <p-message severity="error" size="small" variant="simple">A Razão Social deve ter pelo menos 10 caracteres.</p-message>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-8">
+                <p-floatlabel class="mb-1" variant="on">
+                    <label for="nomeFantasia" class="block font-bold mb-3">Nome Fantasia</label>
+                    <input 
+                        id="nomeFantasia" 
+                        formControlName="nomeFantasia" 
+                        pInputText 
+                        required 
+                        autofocus 
+                        fluid />
+                </p-floatlabel>
+                @if (form.get('nomeFantasia')?.invalid && (form.get('nomeFantasia')?.touched || form.get('nomeFantasia')?.dirty)) {
+                    @if (form.get('nomeFantasia')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">O Nome Fantasia é obrigatório.</p-message>
+                    }
+                    @if (form.get('nomeFantasia')?.errors?.['minlength']) {
+                        <p-message severity="error" size="small" variant="simple">O Nome Fantasia deve ter pelo menos 10 caracteres.</p-message>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-4">
+                <p-floatlabel class="mb-1" variant="on">
+                    <label for="cnpj" class="block font-bold mb-3">CNPJ</label>
+                    <input 
+                        id="cnpj" 
+                        formControlName="cnpj" 
+                        pInputText 
+                        required 
+                        autofocus 
+                        mask="00.000.000/0000-00" 
+                        [showMaskTyped]="true" 
+                        [dropSpecialCharacters]="true"
+                        [validation]="true"
+                        fluid />
+                </p-floatlabel>
+                @if (form.get('cnpj')?.invalid && (form.get('cnpj')?.touched || form.get('cnpj')?.dirty)) {
+                    @if (form.get('cnpj')?.errors?.['required']) {
+                        <p-message severity="error" size="small" variant="simple">O CNPJ é obrigatório.</p-message>
+                    }
+                    @if (form.get('cnpj')?.errors?.['invalidCnpj']) {
+                        <p-message severity="error" size="small" variant="simple">O CNPJ deve seguir o formato válido.</p-message>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12 text-end">
+                <p-button 
+                    icon="pi pi-times" 
+                    label="Fechar" 
+                    class="me-2" 
+                    text 
+                    (click)="closeDialog()"/>
+                <p-button 
+                    icon="pi pi-check" 
+                    [label]="isLoading ? 'Executando...' : 'Salvar'" 
+                    [loading]="isLoading" 
+                    type="submit" 
+                    [disabled]="form.invalid || isLoading"/>
+            </div>    
+        </div>
+    </form>
+</div>

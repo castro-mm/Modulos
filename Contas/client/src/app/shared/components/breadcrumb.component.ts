@@ -46,6 +46,13 @@ import { sharedConfig } from '../config/shared.config';
         }    
     `
 })
+/**
+ * @author Marcelo M. de Castro
+ * @summary Componente de breadcrumb para navegação.
+ * Fornece uma barra de navegação que exibe o caminho atual dentro da aplicação.
+ * Os itens do breadcrumb são armazenados no localStorage para persistência entre recarregamentos de página.
+ * @example 
+ */
 export class BreadcrumbComponent implements OnInit {
     home: MenuItem = { icon: 'pi pi-home', routerLink: '/' };
     items: MenuItem[] = [];

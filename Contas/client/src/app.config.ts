@@ -1,9 +1,10 @@
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling } from '@angular/router';
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { appRoutes } from './app.routes';
 
 import { LOCALE_ID } from '@angular/core';
@@ -38,7 +39,9 @@ export const appConfig: ApplicationConfig = {
                 },            
             }
         ),
+        provideEnvironmentNgxMask(),
         ...sharedConfig.providers,
-        { provide: LOCALE_ID, useValue: 'pt-BR' },  // Define o locale padrão para pt-BR        
+        { provide: LOCALE_ID, useValue: 'pt-BR' },  // Define o locale padrão para pt-BR   
+
     ]
 };

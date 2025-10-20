@@ -1,4 +1,5 @@
 using Contas.Api.Controllers.Base;
+using Contas.Api.Objects;
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
 using Contas.Core.Specifications;
@@ -11,6 +12,9 @@ namespace Contas.Api.Controllers;
 public class SegmentoDoCredorController(ISegmentoDoCredorService service) : BaseApiController<SegmentoDoCredorDto, SegmentoDoCredor>(service)
 {
     [HttpGet("get-by-params")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetByParamsAsync([FromQuery]SegmentoDoCredorParams specParams, CancellationToken cancellationToken)
     {
         if (specParams == null)

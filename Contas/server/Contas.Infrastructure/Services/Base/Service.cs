@@ -1,5 +1,4 @@
 using Contas.Core.Entities.Base;
-using Contas.Core.Helpers;
 using Contas.Core.Interfaces;
 using Contas.Core.Interfaces.Repositories;
 using Contas.Core.Objects;
@@ -56,6 +55,7 @@ public abstract class Service<TDto, TEntity>(IUnitOfWork unitOfWork) : IService<
         if (existingEntity == null)
             return default!;
 
+        dto.DataDeAtualizacao = DateTime.Now;
         existingEntity.ConvertFromDto(dto);
 
         unitOfWork.Repository<TEntity>().Update(existingEntity);

@@ -145,7 +145,7 @@ interface ExportColumn {
                 </tr>
             </ng-template>
         </p-table>
-        <!-- TODO: O dialog sera implementado no typescript como servico (avaliar) -->
+        
         <p-dialog [(visible)]="productDialog" [style]="{ width: '900px' }" header="Product Details" [modal]="true">
             <ng-template #content>
                 <div class="flex flex-col gap-6">
@@ -162,7 +162,14 @@ interface ExportColumn {
 
                     <div>
                         <label for="inventoryStatus" class="block font-bold mb-3">Inventory Status</label>
-                        <p-select [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" optionLabel="label" optionValue="label" placeholder="Select a Status" fluid />
+                        <p-select 
+                            [(ngModel)]="product.inventoryStatus" 
+                            inputId="inventoryStatus" 
+                            [options]="statuses" 
+                            optionLabel="label" 
+                            optionValue="label" 
+                            placeholder="Select a Status" 
+                            fluid />
                     </div>
 
                     <div>

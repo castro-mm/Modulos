@@ -19,7 +19,7 @@
         <div class="row mt-2">
             <div class="col-12 text-end">
                 <p-button icon="pi pi-times" label="Fechar" class="me-2" text (click)="closeDialog()"/>
-                <p-button icon="pi pi-check" [label]="isLoading ? 'Executando...' : 'Salvar'" type="submit" [disabled]="form.invalid || isLoading"/>
+                <p-button icon="pi pi-check" [label]="isLoading ? 'Executando...' : 'Salvar'" [loading]="isLoading" type="submit" [disabled]="form.invalid || isLoading"/>
             </div>    
         </div>
     </form>    

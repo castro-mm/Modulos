@@ -1,3 +1,4 @@
+using Contas.Api.Objects;
 using Contas.Core.Entities.Base;
 using Contas.Core.Helpers;
 using Contas.Core.Interfaces;
@@ -13,6 +14,8 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
     where TDto : IDto
     where TEntity : Entity
 {
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public virtual async Task<ActionResult> GetAllAsync([FromQuery] SpecificationParams specParams, CancellationToken cancellationToken)
     {
         var specs = FactoryHelper.CreateInstance<Specification<TEntity>>(specParams);
@@ -26,6 +29,9 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
     }
 
     [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         if (id <= 0)
@@ -36,12 +42,14 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
 
         var dto = await service.GetByIdAsync(id, cancellationToken);
         if (dto == null)
-            return BadRequest("Erro ao buscar o item. Entre em contato com o administrador do sistema.");   
+            return BadRequest("Erro ao buscar o item. Entre em contato com o administrador do sistema.");
 
         return Ok(dto);
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> CreateAsync([FromBody] TDto dto, CancellationToken cancellationToken)
     {
         if (dto == null)
@@ -55,6 +63,9 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
     }
 
     [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> UpdateAsync(int id, [FromBody] TDto dto, CancellationToken cancellationToken)
     {
         if (dto == null)
@@ -74,13 +85,16 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
     }
 
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         if (id <= 0)
             return BadRequest("O ID informado deve ser maior que zero.");
 
         if (!await service.ExistsAsync(id, cancellationToken))
-            return NotFound("O registro com o ID informado não existe.");
+            return NotFound("O registro com o ID informado não existe."); 
 
         var result = await service.DeleteAsync(id, cancellationToken);
         if (result)
@@ -90,6 +104,9 @@ public abstract class BaseApiController<TDto, TEntity>(IService<TDto, TEntity> s
     }
 
     [HttpDelete("delete-range")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public virtual async Task<ActionResult> DeleteRangeAsync([FromBody] IEnumerable<int> ids, CancellationToken cancellationToken)
     {
         if (ids == null || !ids.Any() || ids.Any(id => id <= 0))

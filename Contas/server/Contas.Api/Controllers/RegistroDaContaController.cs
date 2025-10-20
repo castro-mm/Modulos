@@ -1,4 +1,5 @@
 using Contas.Api.Controllers.Base;
+using Contas.Api.Objects;
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
 using Contas.Core.Specifications;
@@ -10,8 +11,11 @@ namespace Contas.Api.Controllers;
 
 public class RegistroDaContaController(IRegistroDaContaService service) : BaseApiController<RegistroDaContaDto, RegistroDaConta>(service)
 {
-    [HttpGet("get-by")]
-    public virtual async Task<ActionResult> GetAsync([FromQuery] RegistroDaContaSpecParams specParams, CancellationToken cancellationToken)
+    [HttpGet("get-by-params")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public virtual async Task<ActionResult> GetAsync([FromQuery]RegistroDaContaSpecParams specParams, CancellationToken cancellationToken)
     {
         if (specParams == null)
             return BadRequest("Os parâmetros de consulta não foram informados.");

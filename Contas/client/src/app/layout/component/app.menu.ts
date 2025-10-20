@@ -25,13 +25,21 @@ export class AppMenu {
     model: MenuItem[] = [];   
 
     ngOnInit() {
+        // TODO: Load menu items from a service or configuration
         this.model = [
             {
                 label: 'Contas',
                 items: [
                     { 
+                        label: 'Credor', 
+                        icon: 'pi pi-fw pi-bars', 
+                        routerLink: ['/contas/credor'], 
+                        routerLinkActiveOptions: { exact: true }, 
+                        command: (event) => this.onMenuClick(event)
+                    },
+                    { 
                         label: 'Segmentos do Credor', 
-                        icon: 'pi pi-fw pi-home', 
+                        icon: 'pi pi-fw pi-bars', 
                         routerLink: ['/contas/segmento-do-credor'], 
                         routerLinkActiveOptions: { exact: true }, 
                         command: (event) => this.onMenuClick(event)

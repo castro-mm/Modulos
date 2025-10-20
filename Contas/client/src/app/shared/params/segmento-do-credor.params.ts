@@ -1,5 +1,5 @@
-export class SegmentoDoCredorParams {
+import { Params } from "@/core/models/params.model";
+
+export class SegmentoDoCredorParams extends Params {
     nome: string = '';
-    pageIndex: number = 1;
-    pageSize: number = 50;
 }
