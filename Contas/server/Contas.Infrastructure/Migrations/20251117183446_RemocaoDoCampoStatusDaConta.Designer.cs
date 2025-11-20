@@ -4,6 +4,7 @@ using Contas.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Contas.Infrastructure.Migrations
 {
     [DbContext(typeof(ContasContext))]
-    partial class ContasContextModelSnapshot : ModelSnapshot
+    [Migration("20251117183446_RemocaoDoCampoStatusDaConta")]
+    partial class RemocaoDoCampoStatusDaConta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,10 +173,16 @@ namespace Contas.Infrastructure.Migrations
                     b.Property<DateTime>("DataDeVencimento")
                         .HasColumnType("DATETIME");
 
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("VARCHAR(200)");
+
                     b.Property<int>("Mes")
                         .HasColumnType("int");
 
                     b.Property<string>("Observacoes")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("VARCHAR(500)");
 
@@ -183,13 +192,13 @@ namespace Contas.Infrastructure.Migrations
                     b.Property<decimal>("Valor")
                         .HasColumnType("DECIMAL(18,2)");
 
-                    b.Property<decimal?>("ValorDoDesconto")
+                    b.Property<decimal>("ValorDoDesconto")
                         .HasColumnType("DECIMAL(18,2)");
 
-                    b.Property<decimal?>("ValorDosJuros")
+                    b.Property<decimal>("ValorDosJuros")
                         .HasColumnType("DECIMAL(18,2)");
 
-                    b.Property<decimal>("ValorTotal")
+                    b.Property<decimal>("ValorPago")
                         .HasColumnType("DECIMAL(18,2)");
 
                     b.HasKey("Id");

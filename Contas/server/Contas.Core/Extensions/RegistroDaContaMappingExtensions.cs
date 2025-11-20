@@ -1,5 +1,6 @@
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
+using static Contas.Core.Objects.Enumerations;
 
 namespace Contas.Core.Extensions;
 
@@ -16,21 +17,24 @@ public static class RegistroDaContaMappingExtensions
             PagadorId = registroDaConta.PagadorId,
             Mes = registroDaConta.Mes,
             Ano = registroDaConta.Ano,
-            Descricao = registroDaConta.Descricao,
             DataDeVencimento = registroDaConta.DataDeVencimento,
             CodigoDeBarras = registroDaConta.CodigoDeBarras,
             DataDePagamento = registroDaConta.DataDePagamento,
             Valor = registroDaConta.Valor,
             ValorDosJuros = registroDaConta.ValorDosJuros,
-            ValorPago = registroDaConta.ValorPago,
+            ValorTotal = registroDaConta.ValorTotal,
             ValorDoDesconto = registroDaConta.ValorDoDesconto,
             Observacoes = registroDaConta.Observacoes,
-            Status = registroDaConta.Status,
             DataDeCriacao = registroDaConta.DataDeCriacao,
             DataDeAtualizacao = registroDaConta.DataDeAtualizacao,
             Credor = registroDaConta.Credor?.ToDto(),
             Pagador = registroDaConta.Pagador?.ToDto(),
             Arquivos = registroDaConta.Arquivos?.Select(a => a.ToDto()).ToList() ?? [],
+            Status = registroDaConta.DataDePagamento.HasValue 
+                ? StatusDaConta.Paga 
+                : registroDaConta.DataDeVencimento < DateTime.Now 
+                    ? StatusDaConta.Vencida 
+                    : StatusDaConta.Pendente,
         };
     }
 
@@ -45,16 +49,14 @@ public static class RegistroDaContaMappingExtensions
             PagadorId = dto.PagadorId,
             Mes = dto.Mes,
             Ano = dto.Ano,
-            Descricao = dto.Descricao,
             DataDeVencimento = dto.DataDeVencimento,
             CodigoDeBarras = dto.CodigoDeBarras,
             DataDePagamento = dto.DataDePagamento,
             Valor = dto.Valor,
             ValorDosJuros = dto.ValorDosJuros,
-            ValorPago = dto.ValorPago,
+            ValorTotal = dto.ValorTotal,
             ValorDoDesconto = dto.ValorDoDesconto,
             Observacoes = dto.Observacoes,
-            Status = dto.Status,
             DataDeCriacao = dto.DataDeCriacao,
             DataDeAtualizacao = dto.DataDeAtualizacao,
             Credor = null!,
@@ -72,16 +74,14 @@ public static class RegistroDaContaMappingExtensions
         registroDaConta.PagadorId = dto.PagadorId;
         registroDaConta.Mes = dto.Mes;
         registroDaConta.Ano = dto.Ano;
-        registroDaConta.Descricao = dto.Descricao;
         registroDaConta.DataDeVencimento = dto.DataDeVencimento;
         registroDaConta.CodigoDeBarras = dto.CodigoDeBarras;
         registroDaConta.DataDePagamento = dto.DataDePagamento;
         registroDaConta.Valor = dto.Valor;
         registroDaConta.ValorDosJuros = dto.ValorDosJuros;
-        registroDaConta.ValorPago = dto.ValorPago;
+        registroDaConta.ValorTotal = dto.ValorTotal;
         registroDaConta.ValorDoDesconto = dto.ValorDoDesconto;
         registroDaConta.Observacoes = dto.Observacoes;
-        registroDaConta.Status = dto.Status;
         registroDaConta.DataDeAtualizacao = dto.DataDeAtualizacao;
     }
 }

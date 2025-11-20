@@ -14,7 +14,7 @@ public class Enumerations
         Pendente = 0,
         Paga = 1,
         Vencida = 2,
-        Cancelada = 4,
+        Cancelada = 3,
         Todos = 99
     }
 }

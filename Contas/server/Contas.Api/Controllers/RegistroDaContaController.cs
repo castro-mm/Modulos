@@ -31,7 +31,7 @@ public class RegistroDaContaController : BaseApiController<RegistroDaContaDto, R
         var pagedResult = await _service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult.Items == null || pagedResult.Count == 0)
-            return NotFound("Nenhum registro encontrado com os parâmetros informados.");
+            return NotFound("Nenhum registro encontrado com os parâmetros informados."); // TODO: Avaliar a mudança para retornar NoContent()
 
         return Ok(pagedResult);
     }

@@ -25,6 +25,9 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { SelectModule } from 'primeng/select';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputMaskModule } from 'primeng/inputmask';
+import { TextareaModule } from 'primeng/textarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { DatePickerModule } from 'primeng/datepicker';
 
 export const importedModules = [
     CommonModule,
@@ -50,6 +53,9 @@ export const importedModules = [
     ProgressBarModule,
     ToolbarModule,
     SelectModule,
+    TextareaModule,
+    InputNumberModule,
+    DatePickerModule
 ];
 
 export const importedComponents = [

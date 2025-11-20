@@ -1,4 +1,4 @@
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling } from '@angular/router';
@@ -16,7 +16,7 @@ import { sharedConfig } from '@/shared/config/shared.config';
 registerLocaleData(localePt, 'pt-BR', localePtExtra);
 
 export const appConfig: ApplicationConfig = {
-    providers: [        
+    providers: [                
         provideRouter(
             appRoutes, 
             withInMemoryScrolling(
@@ -27,7 +27,7 @@ export const appConfig: ApplicationConfig = {
             ), 
             withEnabledBlockingInitialNavigation()
         ),
-        provideHttpClient(withFetch()),
+        provideHttpClient(withFetch()/*, withInterceptors([dateFormatInterceptor])*/),
         provideAnimationsAsync(),
         providePrimeNG(
             {
@@ -36,7 +36,19 @@ export const appConfig: ApplicationConfig = {
                     options: { 
                         darkModeSelector: '.app-dark' 
                     } 
-                },            
+                },
+                translation: {
+                    dayNames: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    today: 'Hoje',
+                    clear: 'Limpar',
+                    dateFormat: 'dd/mm/yy',
+                    weekHeader: 'Sem',
+                    firstDayOfWeek: 0
+                }            
             }
         ),
         provideEnvironmentNgxMask(),

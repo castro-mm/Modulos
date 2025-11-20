@@ -73,7 +73,7 @@ export abstract class EntityListComponent<T extends Entity, TParams extends Para
      * Gerencia o estado de carregamento e exibe mensagens de erro, se necessário.
      * @returns Promise<void>
      */
-    async listar(): Promise<void>{
+    async listar(): Promise<void> {
         this.entityList.set([]); 
         this.itensSelecionados = [];
         this.isLoading = true;
@@ -93,6 +93,7 @@ export abstract class EntityListComponent<T extends Entity, TParams extends Para
             const response: ApiResponse = await (this as any).service.getByParams(params); // maybe just get()
 
             if (response.statusCode === StatusCode.OK) {
+                console.log('Lista de itens carregada:', response.data.items);
                 this.entityList.set(response.data.items as T[]);
             } else {
                 this.messageService.showMessageFromReponse(response);

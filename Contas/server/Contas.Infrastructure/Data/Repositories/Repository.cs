@@ -10,7 +10,6 @@ namespace Contas.Infrastructure.Data.Repositories;
 
 public class Repository<T> : IRepository<T> where T : Entity
 {
-
     private readonly ContasContext _context;
 
     public Repository(ContasContext context)

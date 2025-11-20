@@ -1,6 +1,5 @@
 import { entityResolver } from "@/core/resolvers/entity.resolver";
 import { DATA_SERVICE_TOKEN } from "@/core/services/data-service.token";
-import { SegmentoDoCredorService } from "@/shared/services/segmento-do-credor.service";
 import { Routes } from "@angular/router";
 
 export default [
@@ -26,6 +25,14 @@ export default [
         // resolve: { entity: entityResolver },
         // providers: [
         //     { provide: DATA_SERVICE_TOKEN, useClass: PagadorService }
+        // ]
+    },
+    {
+        path: 'registro-da-conta',
+        loadComponent: () => import('./registro-da-conta/registro-da-conta.component').then(m => m.RegistroDaContaComponent),
+        // resolve: { entity: entityResolver },
+        // providers: [
+        //     { provide: DATA_SERVICE_TOKEN, useClass: RegistroDaContaService }
         // ]
     }
 ] as Routes;

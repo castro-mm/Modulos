@@ -9,3 +9,16 @@ export enum StatusCode {
     InternalServerError = 500,
     ServiceUnavailable = 503
 }   
+
+export enum StatusDaConta {
+    Pendente = 0,
+    Paga = 1,
+    Vencida = 2,
+    Cancelada = 3
+}
+
+export enum TipoDeArquivo {
+    BoletoBancario = 1,
+    ComprovanteDePagamento = 2,
+    Outro = 3
+}

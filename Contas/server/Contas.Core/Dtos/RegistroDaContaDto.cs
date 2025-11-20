@@ -12,18 +12,17 @@ public class RegistroDaContaDto : IDto, IConvertibleToEntity<RegistroDaConta>
     public int PagadorId { get; set; }
     public int Mes { get; set; }
     public required int Ano { get; set; }
-    public required string Descricao { get; set; }
     public required DateTime DataDeVencimento { get; set; }
     public required string CodigoDeBarras { get; set; }
     public DateTime? DataDePagamento { get; set; }
     public decimal Valor { get; set; }
     public decimal? ValorDosJuros { get; set; }
-    public decimal? ValorPago { get; set; }
+    public decimal ValorTotal { get; set; }
     public decimal? ValorDoDesconto { get; set; }
-    public required string Observacoes { get; set; }
-    public required StatusDaConta Status { get; set; }
+    public string? Observacoes { get; set; }
     public DateTime DataDeCriacao { get; set; } = DateTime.Now;
     public DateTime DataDeAtualizacao { get; set; } = DateTime.Now;
+    public StatusDaConta? Status { get; set; }
     public CredorDto? Credor { get; set; }
     public PagadorDto? Pagador { get; set; }
     public virtual List<ArquivoDto>? Arquivos { get; set; }

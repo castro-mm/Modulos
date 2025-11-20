@@ -1,0 +1,296 @@
+<div class="container-fluid">
+    <form #f [formGroup]="form" (submit)="salvar()">
+        <p-divider class="mt-1" />
+        <div class="row mt-2">
+            <div class="col-2">
+                <label for="mes" class="mb-1">Mês:</label>
+                <p-select 
+                    formControlName="mes" 
+                    inputId="mes" 
+                    [options]="mesOptions"
+                    optionLabel="value" 
+                    optionValue="key" 
+                    appendTo="body"
+                    placeholder="Selecione..."
+                    fluid 
+                    required
+                    autofocus="true"
+                />
+                @if (form.get('mes')?.invalid && (form.get('mes')?.touched || form.get('mes')?.dirty)) {
+                    @if (form.get('mes')?.errors?.['required']) {
+                        <div class="mt-1">
+                            <p-message severity="error" variant="simple">O Mês é obrigatório.</p-message>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="col-2">
+                <label for="ano" class="mb-1">Ano:</label>
+                <p-select 
+                    formControlName="ano" 
+                    inputId="ano" 
+                    [options]="anoOptions"
+                    optionLabel="value" 
+                    optionValue="key" 
+                    appendTo="body"
+                    placeholder="Selecione..."
+                    fluid 
+                    required
+                />
+                @if (form.get('ano')?.invalid && (form.get('ano')?.touched || form.get('ano')?.dirty)) {
+                    @if (form.get('ano')?.errors?.['required']) {
+                        <div class="mt-1">
+                            <p-message severity="error" variant="simple">O Ano é obrigatório.</p-message>
+                        </div>
+                    }
+                }
+            </div>            
+        </div>
+        <div class="row mt-2">
+            <div class="col-6">
+                <label for="credorId" class="mb-1">Credor:</label>
+                <p-select 
+                    formControlName="credorId" 
+                    inputId="credor" 
+                    [options]="credorOptions"
+                    optionLabel="value" 
+                    optionValue="key" 
+                    appendTo="body"
+                    placeholder="Selecione..."
+                    [filter]="true" 
+                    filterBy="value"
+                    fluid
+                >
+                    <ng-template #footer>
+                        <div class="p-2">
+                            <p-button label="Novo" fluid severity="success" outlined icon="pi pi-plus" (click)="abrirModalDoCredor()" />
+                        </div>
+                    </ng-template>                
+                </p-select>
+                @if (form.get('credorId')?.invalid && (form.get('credorId')?.touched || form.get('credorId')?.dirty)) {
+                    @if (form.get('credorId')?.errors?.['required']) {
+                        <div class="mt-1">
+                            <p-message severity="error" variant="simple">O Credor é obrigatório.</p-message>
+                        </div>
+                    }
+                }
+            </div>
+        </div>            
+        <div class="row mt-2">
+            <div class="col-4">
+                <label for="pagadorId" class="mb-1">Pagador:</label>
+                <p-select 
+                    formControlName="pagadorId" 
+                    inputId="pagador" 
+                    [options]="pagadorOptions"
+                    optionLabel="value" 
+                    optionValue="key" 
+                    appendTo="body"
+                    placeholder="Selecione..."
+                    [filter]="true" 
+                    filterBy="value"
+                    fluid
+                >
+                    <ng-template #footer>
+                        <div class="p-2">
+                            <p-button label="Novo" fluid severity="success" outlined icon="pi pi-plus" (click)="abrirModalDoPagador()" />
+                        </div>
+                    </ng-template>                
+                </p-select>
+                @if (form.get('pagadorId')?.invalid && (form.get('pagadorId')?.touched || form.get('pagadorId')?.dirty)) {
+                    @if (form.get('pagadorId')?.errors?.['required']) {
+                        <div class="mt-1">
+                            <p-message severity="error" variant="simple">O Pagador é obrigatório.</p-message>
+                        </div>
+                    }
+                }
+            </div>
+        </div>               
+        <div class="row mt-2">
+            <div class="col-6">
+                <label for="codigoDeBarras" class="mb-1">Código de Barras:</label>
+                <input 
+                    id="codigoDeBarras" 
+                    formControlName="codigoDeBarras" 
+                    pInputText 
+                    required 
+                    fluid
+                    (input)="onCodigoDeBarrasChange($event)"
+                    (blur)="formatarCodigoDeBarras()" 
+                />
+                @if (codigoDeBarrasInfo() && codigoDeBarras()) {
+                    @if (!codigoDeBarrasInfo()!.valido) {
+                        <div class="mt-1">
+                            <p-message severity="error" variant="simple">✗ {{codigoDeBarrasInfo()!.mensagem}}</p-message>
+                        </div>
+                    }
+                }                
+                @if (form.get('codigoDeBarras')?.invalid && (form.get('codigoDeBarras')?.touched || form.get('codigoDeBarras')?.dirty)) {
+                    @if (form.get('codigoDeBarras')?.errors?.['required']) {
+                        <div class="mt-1">
+                            <p-message severity="error" variant="simple">✗ O Código de Barras é obrigatório.</p-message>
+                        </div>
+                    }
+                    @if (form.get('codigoDeBarras')?.errors?.['minlength']) {
+                        <div class="mt-1">
+                            <p-message severity="error" variant="simple">✗ O Código de Barras deve ter pelo menos 10 caracteres.</p-message>
+                        </div>
+                    }
+                }   
+            </div>
+            <div class="col-3">
+                <label for="dataDeVencimento" class="mb-1">Data de Vencimento:</label>
+                <p-datepicker 
+                    formControlName="dataDeVencimento" 
+                    inputId="dataDeVencimento" 
+                    dateFormat="dd/mm/yy"
+                    showIcon
+                    iconDisplay="input"
+                    [showButtonBar]="true"
+                    [todayButtonStyleClass]="'p-button-text'"
+                    [clearButtonStyleClass]="'p-button-text'"
+                    fluid
+                    required
+                />
+                @if (form.get('dataDeVencimento')?.invalid && (form.get('dataDeVencimento')?.touched || form.get('dataDeVencimento')?.dirty)) {
+                    @if (form.get('dataDeVencimento')?.errors?.['required']) {
+                        <p-message severity="error" variant="simple">A Data de Vencimento é obrigatória.</p-message>
+                    }
+                }
+            </div>
+            <div class="col-3">
+                <label for="dataDePagamento" class="mb-1">Data de Pagamento:</label>
+                <p-datepicker 
+                    formControlName="dataDePagamento" 
+                    inputId="dataDePagamento" 
+                    dateFormat="dd/mm/yy"
+                    showIcon
+                    iconDisplay="input"
+                    [showButtonBar]="true"
+                    [todayButtonStyleClass]="'p-button-text'"
+                    [clearButtonStyleClass]="'p-button-text'"
+                    fluid
+                />
+            </div>
+        </div> 
+        <div class="row mt-2">
+            <div class="col-3">
+                <label for="valor" class="mb-1">Valor:</label>
+                <p-inputNumber 
+                    formControlName="valor" 
+                    inputId="valor" 
+                    mode="currency" 
+                    currency="BRL" 
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="2"
+                    placeholder="R$ 0,00"
+                    fluid
+                    required
+                    (onInput)="onValorChange($event)"
+                />
+                @if (form.get('valor')?.invalid && (form.get('valor')?.touched || form.get('valor')?.dirty)) {
+                    @if (form.get('valor')?.errors?.['required']) {
+                        <p-message severity="error" variant="simple">O Valor é obrigatório.</p-message>
+                    }
+                    @if (form.get('valor')?.errors?.['min']) {
+                        <p-message severity="error" variant="simple">O Valor deve ser maior que R$ 0,00.</p-message>
+                    }
+                }
+            </div>
+            <div class="col-3">
+                <label for="valorDosJuros" class="mb-1">Valor dos Juros:</label>
+                <p-inputNumber 
+                    formControlName="valorDosJuros" 
+                    inputId="valorDosJuros" 
+                    mode="currency"     
+                    currency="BRL" 
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="2"
+                    placeholder="R$ 0,00"
+                    fluid
+                    required                    
+                    (onInput)="onValorDosJurosChange($event)"
+                />
+                @if (form.get('valorDosJuros')?.invalid && (form.get('valorDosJuros')?.touched || form.get('valorDosJuros')?.dirty)) {
+                    @if (form.get('valorDosJuros')?.errors?.['required']) {
+                        <p-message severity="error" variant="simple">O Valor Juros é obrigatório.</p-message>
+                    }
+                }
+            </div>
+            <div class="col-3">
+                <label for="valorDoDesconto" class="mb-1">Valor do Desconto:</label>
+                <p-inputNumber 
+                    formControlName="valorDoDesconto" 
+                    inputId="valorDoDesconto" 
+                    mode="currency"     
+                    currency="BRL" 
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="2"
+                    placeholder="R$ 0,00"
+                    fluid
+                    (onInput)="onValorDoDescontoChange($event)"
+                />
+            </div>
+            <div class="col-3">
+                <label for="valorTotal" class="mb-1">Valor Total:</label>
+                <p-inputNumber 
+                    formControlName="valorTotal" 
+                    inputId="valorTotal" 
+                    mode="currency"     
+                    currency="BRL" 
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="2"
+                    placeholder="R$ 0,00"
+                    fluid
+                    required
+                />
+                @if (form.get('valorTotal')?.invalid && (form.get('valorTotal')?.touched || form.get('valorTotal')?.dirty)) {
+                    @if (form.get('valorTotal')?.errors?.['required']) {
+                        <p-message severity="error" variant="simple">O Valor Total é obrigatório.</p-message>
+                    }
+                    @if (form.get('valorTotal')?.errors?.['min']) {
+                        <p-message severity="error" variant="simple">O Valor Total deve ser maior que R$ 0,00.</p-message>
+                    }
+                }
+            </div>
+        </div>        
+        <div class="row mt-2">
+            <div class="col-12">
+                <label for="observacoes" class="mb-1">Observações:</label>
+                <textarea 
+                    id="observacoes" 
+                    formControlName="observacoes" 
+                    pInputTextarea 
+                    rows="4" 
+                    cols="20"
+                    fluid
+                >
+                </textarea>
+            </div>
+        </div>
+        @if (entity() !== null) {
+            <p-divider class="mt-3" />
+            <div class="row mt-2">
+                <div class="col-2">
+                    <div>
+                        <label class="mb-1">Data de Criação: </label>
+                        <p>{{ entity()?.dataDeCriacao | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+                    </div>            
+                </div>
+                <div class="col-2">
+                    <div>
+                        <label class="mb-1">Última Atualização: </label>
+                        <p>{{ entity()?.dataDeAtualizacao | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+                    </div>            
+                </div>
+            </div>    
+        }
+        <p-divider class="mt-3" />
+        <div class="row mt-2">
+            <div class="col-12 text-end">
+                <p-button icon="pi pi-times" label="Fechar" class="me-2" text (click)="closeDialog()"/>
+                <p-button icon="pi pi-check" [label]="isLoading ? 'Executando...' : 'Salvar'" [loading]="isLoading" type="submit" [disabled]="form.invalid || isLoading"/>
+            </div>    
+        </div>
+    </form>    
+</div>

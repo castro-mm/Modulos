@@ -18,13 +18,13 @@ import { sharedConfig } from '../config/shared.config';
                                 @if ($index !== items.length - 1 && item.routerLink) {
                                     <a [routerLink]="item.routerLink">
                                         @if (item.icon) {
-                                            <i [class]="item.icon" style="margin-right: 0.5rem;"></i>
+                                            <i [class]="item.icon" style="margin-right: 0.1rem;"></i>
                                         }
                                         {{ item.label }}
                                     </a>
                                 } @else {
                                     @if (item.icon) {
-                                        <i [class]="item.icon" style="margin-right: 0.5rem;"></i>
+                                        <i [class]="item.icon" style="margin-right: 0.1rem;"></i>
                                     }
                                     {{ item.label }}
                                 }

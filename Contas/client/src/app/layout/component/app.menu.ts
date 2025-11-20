@@ -50,7 +50,14 @@ export class AppMenu {
                         routerLink: ['/contas/pagador'], 
                         routerLinkActiveOptions: { exact: true }, 
                         command: (event) => this.onMenuClick(event)
-                    }
+                    },
+                    { 
+                        label: 'Registro da Conta', 
+                        icon: 'pi pi-fw pi-dollar', 
+                        routerLink: ['/contas/registro-da-conta'], 
+                        routerLinkActiveOptions: { exact: true }, 
+                        command: (event) => this.onMenuClick(event)
+                    },
                 ]
             },
             {

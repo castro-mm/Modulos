@@ -14,12 +14,20 @@ public class RegistroDaContaSpecification : Specification<RegistroDaConta>
         AddInclude(x => x.Pagador);
         AddInclude(x => x.Arquivos);
 
-        var statusDaConta = specParams.StatusDaConta.ToEnum<StatusDaConta>();
-
-        AddCriteria(x => x.PagadorId == specParams.PagadorId || specParams.PagadorId == null || specParams.PagadorId == 0);
-        AddCriteria(x => x.CredorId == specParams.CredorId || specParams.CredorId == null || specParams.CredorId == 0);
-        AddCriteria(x => x.Mes == specParams.Mes || specParams.Mes == null || specParams.Mes == 0);
-        AddCriteria(x => x.Ano == specParams.Ano || specParams.Ano == null || specParams.Ano == 0);
-        AddCriteria(x => x.Status == statusDaConta || statusDaConta == StatusDaConta.Todos);
+        // Combinar todos os critérios em uma única expressão
+        AddCriteria(x => 
+            (x.Mes == specParams.Mes || specParams.Mes == 0) &&
+            (x.Ano == specParams.Ano || specParams.Ano == 0) &&
+            (x.PagadorId == specParams.PagadorId || specParams.PagadorId == null) &&
+            (x.CredorId == specParams.CredorId || specParams.CredorId == null) &&
+            (
+                x.DataDePagamento.HasValue && (specParams.StatusDaConta == StatusDaConta.Paga) ||
+                !x.DataDePagamento.HasValue && (
+                    x.DataDeVencimento < DateTime.Now && (specParams.StatusDaConta == StatusDaConta.Vencida) ||    
+                    x.DataDeVencimento >= DateTime.Now && (specParams.StatusDaConta == StatusDaConta.Pendente) 
+                ) ||               
+                (specParams.StatusDaConta == StatusDaConta.Todos || specParams.StatusDaConta == null)
+            )
+        );
     }
 }
