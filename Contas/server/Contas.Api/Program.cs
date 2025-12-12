@@ -1,8 +1,18 @@
 using Contas.Api.Extensions;
 using Contas.Api.Middleware;
 using Serilog;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+
+////Configurar Kestrel para usar HTTP/1.1
+// builder.WebHost.ConfigureKestrel(serverOptions =>
+// {
+//     serverOptions.ConfigureEndpointDefaults(listenOptions =>
+//     {
+//         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+//     });
+// });
 
 // Add services to the container.
 builder.Services.AddInterceptorsServices();

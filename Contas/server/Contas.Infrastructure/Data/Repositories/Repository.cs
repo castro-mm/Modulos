@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Contas.Core.Entities;
 using Contas.Core.Entities.Base;
 using Contas.Core.Interfaces;
 using Contas.Core.Interfaces.Repositories;

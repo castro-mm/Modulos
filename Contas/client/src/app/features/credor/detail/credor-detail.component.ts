@@ -1,8 +1,10 @@
-import { ApiResponse } from '@/core/models/api-response.model';
+import { ApiResponse } from '@/core/types/api-response.type';
+import { SelectOption } from '@/core/types/select-option.type';
 import { StatusCode } from '@/core/objects/enums';
 import { EntityService } from '@/core/services/entity.service';
 import { MessagesService } from '@/core/services/messages.service';
-import { EntityDetailComponent } from '@/shared/components/entity-detail.component';
+import { EntityDetailComponent } from '@/core/components/entity-detail.component';
+import { FieldValidationMessageComponent } from '@/core/components/field-validation-message.component';
 import { sharedConfig } from '@/shared/config/shared.config';
 import { cnpjValidator } from '@/shared/functions/cnpj.validator';
 import { Credor } from '@/shared/models/credor.model';
@@ -15,7 +17,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
     selector: 'app-credor-detail.component',
-    imports: [...sharedConfig.imports, NgxMaskDirective],
+    imports: [...sharedConfig.imports, NgxMaskDirective, FieldValidationMessageComponent],
     templateUrl: './credor-detail.component.html',
     providers: [{ provide: EntityService, useClass: CredorService }, provideNgxMask()],
 })
@@ -23,7 +25,14 @@ export class CredorDetailComponent extends EntityDetailComponent<Credor> impleme
     segmentoDoCredorService = inject(SegmentoDoCredorService);
     messageService = inject(MessagesService);
 
-    segmentoDoCredorOptions: { label: string; value: number }[] = [];
+    segmentoDoCredorOptions: SelectOption[] = [];
+
+    fieldsLabels: { [key: string]: string } = {
+        razaoSocial: 'Razão Social',
+        nomeFantasia: 'Nome Fantasia',
+        cnpj: 'CNPJ',
+        segmentoDoCredorId: 'Segmento do Credor'
+    };
 
     constructor() {        
         super(
@@ -33,7 +42,8 @@ export class CredorDetailComponent extends EntityDetailComponent<Credor> impleme
                 cnpj: ['', [Validators.required, cnpjValidator()]],
                 segmentoDoCredorId: [null, [Validators.required, Validators.min(1)]]
             }
-        );        
+        );   
+        this.form.patchValue({ cnpj: this.form.value.cnpj?.toString().padStart(14, '0') || '' }, { emitEvent: false });
     }
 
     async ngOnInit(): Promise<void> {
@@ -41,14 +51,9 @@ export class CredorDetailComponent extends EntityDetailComponent<Credor> impleme
 
         if (response.statusCode === StatusCode.OK) {
             const items = response.data.items as SegmentoDoCredor[];
-            this.segmentoDoCredorOptions = items.map(x => ({ label: x.nome, value: x.id }));
+            this.segmentoDoCredorOptions = items.map(x => ({ label: x.nome, value: x.id, icon: '' }));
         } else {
             this.messageService.showMessageFromReponse((response as any).error);
         }
-    }
-
-    isInvalid(controlName: string): boolean {
-        const control = this.form.get(controlName);
-        return !!(control && control.invalid && (control.dirty || control.touched));
-    }
+    }    
 }

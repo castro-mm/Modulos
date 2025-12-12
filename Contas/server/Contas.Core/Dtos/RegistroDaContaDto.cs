@@ -1,6 +1,6 @@
 using Contas.Core.Entities;
-using Contas.Core.Extensions;
 using Contas.Core.Interfaces;
+using Contas.Core.Mappings;
 using static Contas.Core.Objects.Enumerations;
 
 namespace Contas.Core.Dtos;
@@ -23,9 +23,12 @@ public class RegistroDaContaDto : IDto, IConvertibleToEntity<RegistroDaConta>
     public DateTime DataDeCriacao { get; set; } = DateTime.Now;
     public DateTime DataDeAtualizacao { get; set; } = DateTime.Now;
     public StatusDaConta? Status { get; set; }
+    public int? DiasParaVencer { get; set; }
+    public int? DiasEmAtraso { get; set; }
     public CredorDto? Credor { get; set; }
     public PagadorDto? Pagador { get; set; }
-    public virtual List<ArquivoDto>? Arquivos { get; set; }
+    public string? Periodo { get; set; }
+    public virtual List<ArquivoDoRegistroDaContaDto>? Arquivos { get; set; } = [];
 
-    public RegistroDaConta ConvertToEntity() => this.ToEntity();
+    public RegistroDaConta ConvertToEntity() => this.ToEntity();       
 }

@@ -16,5 +16,5 @@ public class RegistroDaContaService : Service<RegistroDaContaDto, RegistroDaCont
     }
 
     // Implement any additional methods specific to RegistroDaConta if needed
-    // For example, you might want to add methods for specific queries or operations    
+    // For example, you might want to add methods for specific queries or operations        
 }

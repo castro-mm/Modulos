@@ -15,10 +15,9 @@ public class LogDeErroService : Service<LogDeErroDto, LogDeErro>, ILogDeErroServ
         _unitOfWork = unitOfWork;
     }
 
-    // Avaliar o uso do Specification Pattern para consultas complexas
     public async Task<LogDeErroDto> GetLogByTraceIdAsync(string traceId, CancellationToken cancellationToken)
     {
-        var logDeErroList = await _unitOfWork.Repository<LogDeErro>().GetAllAsync(cancellationToken);
+        var logDeErroList = await base.GetAllAsync(cancellationToken);
 
         if (logDeErroList == null || !logDeErroList.Any())
             return null!;
@@ -27,10 +26,7 @@ public class LogDeErroService : Service<LogDeErroDto, LogDeErro>, ILogDeErroServ
             .Where(x => x.TraceId.ToString() == traceId)
             .FirstOrDefault();
 
-        if (logDeErro == null)
-            return null!;
-
-        return logDeErro.ConvertToDto();
+        return logDeErro ?? null!;
     }
 }
 

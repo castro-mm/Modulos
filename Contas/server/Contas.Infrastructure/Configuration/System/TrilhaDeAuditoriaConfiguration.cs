@@ -16,13 +16,13 @@ public class TrilhaDeAuditoriaConfiguration : IEntityTypeConfiguration<TrilhaDeA
         builder.Property(t => t.Operacao).IsRequired().HasMaxLength(20).HasColumnType("VARCHAR(20)");
         builder.Property(t => t.ValoresAntigos).HasColumnType("VARCHAR(MAX)");
         builder.Property(t => t.ValoresNovos).HasColumnType("VARCHAR(MAX)");
-        builder.Property(t => t.DataDeCriacao).IsRequired().HasColumnType("datetime2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
-        builder.Property(t => t.DataDeAtualizacao).IsRequired().HasColumnType("datetime2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
         builder.Property(t => t.Ip).IsRequired().HasColumnType("VARCHAR(45)");
         builder.Property(t => t.Navegador).IsRequired().HasColumnType("VARCHAR(200)");
         builder.Property(t => t.Usuario).IsRequired().HasMaxLength(100).HasColumnType("VARCHAR(100)");
         builder.Property(t => t.TraceId).IsRequired().HasMaxLength(36).HasColumnType("VARCHAR(36)");
         builder.Property(t => t.Hash).IsRequired().HasMaxLength(32).HasColumnType("VARCHAR(32)");
+        builder.Property(t => t.DataDeCriacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+        builder.Property(t => t.DataDeAtualizacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
     }
 
     private void ConfigureTable(EntityTypeBuilder<TrilhaDeAuditoria> builder)

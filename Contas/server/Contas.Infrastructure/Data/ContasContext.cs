@@ -18,6 +18,7 @@ public class ContasContext : DbContext
 
     public DbSet<TrilhaDeAuditoria> TrilhasDeAuditoria { get; set; } 
     public DbSet<LogDeErro> LogsDeErro { get; set; }
+    public DbSet<Arquivo> Arquivos { get; set; }
 
     #endregion
 
@@ -27,7 +28,7 @@ public class ContasContext : DbContext
     public DbSet<Credor> Credores { get; set; }
     public DbSet<SegmentoDoCredor> SegmentosDoCredor { get; set; }
     public DbSet<RegistroDaConta> RegistrosDaConta { get; set; }
-    public DbSet<Arquivo> Arquivos { get; set; }
+    public DbSet<ArquivoDoRegistroDaConta> ArquivosDoRegistroDaConta { get; set; }
 
     #endregion
 

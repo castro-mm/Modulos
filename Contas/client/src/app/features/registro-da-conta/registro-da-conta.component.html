@@ -10,8 +10,8 @@
                         formControlName="mes" 
                         inputId="mes" 
                         [options]="mesOptions"
-                        optionLabel="value" 
-                        optionValue="key" 
+                        optionLabel="label" 
+                        optionValue="value" 
                         appendTo="body"
                         placeholder="Selecione..."
                         fluid 
@@ -24,8 +24,8 @@
                         formControlName="ano" 
                         inputId="ano" 
                         [options]="anoOptions"
-                        optionLabel="value" 
-                        optionValue="key" 
+                        optionLabel="label" 
+                        optionValue="value" 
                         appendTo="body"
                         placeholder="Selecione..."
                         fluid 
@@ -99,83 +99,78 @@
             </div>
         </form>        
     </p-panel>    
-    <p-table        
-        #dt
-        [value]="entityList()"
-        [rows]="10"
-        [paginator]="true"
-        [globalFilterFields]="['nome']"
-        [(selection)]="itensSelecionados"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="{first} até {last} de {totalRecords} registros"
-        [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 20, 30]"
-        size="small"
-        [loading]="isLoading"
-        [loadingIcon]="'pi pi-spinner pi-spin'"
-    >
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <div class="m-0">
-                    <p-button pTooltip="Novo registro" icon="pi pi-plus" (click)="openDialog()" class="mr-2"></p-button>
-                    <p-button pTooltip="Excluir itens selcionados" severity="danger" icon="pi pi-trash" (click)="excluirVarios()" [disabled]="!itensSelecionados || !itensSelecionados.length" />        
-                </div>
-                <p-iconfield>
-                    <p-inputicon class="pi pi-search" />
-                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Pesquisar..." />
-                </p-iconfield>
-            </div>
-        </ng-template>
-        <ng-template #header >
-            <tr>
-                <th style="width: 3rem; background-color: #f8f9fa">
-                    <p-tableHeaderCheckbox />
-                </th>
-                <th style="min-width: 2rem; background-color: #f8f9fa">Código</th>
-                <th style="min-width:5rem; background-color: #f8f9fa">
-                    Período
-                </th>
-                <th pSortableColumn="credor" style="min-width:10rem; background-color: #f8f9fa">
-                    Credor
-                    <p-sortIcon field="credor" />
-                </th>
-                <th pSortableColumn="dataDeVencimento" style="min-width: 8rem; background-color: #f8f9fa">
-                    Data de Vencimento
-                    <p-sortIcon field="dataDeVencimento" />
-                </th>
-                <th pSortableColumn="valor" style="min-width: 5rem; background-color: #f8f9fa">
-                    Valor
-                    <p-sortIcon field="valor" />
-                </th>
-                <th pSortableColumn="status" style="min-width: 5rem; background-color: #f8f9fa">
-                    Status
-                    <p-sortIcon field="status" />
-                </th>
-                <th pSortableColumn="dataDeAtualizacao" style="min-width: 8rem; background-color: #f8f9fa">
-                    Data de Atualização
-                    <p-sortIcon field="dataDeAtualizacao" />
-                </th>
-                <th style="min-width: 3rem; background-color: #f8f9fa"></th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-item>
-            <tr>
-                <td style="width: 3rem">
-                    <p-tableCheckbox [value]="item" />
-                </td>
-                <td style="min-width: 2rem">{{ item.id }}</td>
-                <td style="min-width: 5rem">{{ item.mes | mes }} de {{ item.ano }}</td>
-                <td style="min-width: 10rem">{{ item.credor.nomeFantasia }}</td>
-                <td style="min-width: 8rem">{{ item.dataDeVencimento | date: 'dd/MM/yyyy' }}</td>
-                <td style="min-width: 5rem">{{ item.valor | currency: 'BRL' }}</td>
-                <td style="min-width: 8rem"><p-tag [severity]="getStatusSeverity(item.status)">{{ item.status | statusDaConta }}</p-tag></td>
-                <td style="min-width: 8rem">{{ item.dataDeAtualizacao | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
-                <td>
-                    <p-button icon="pi pi-pencil" class="mr-2" variant="text" (click)="openDialog(item)" pTooltip="Editar" />
-                    <p-button icon="pi pi-trash" severity="danger" variant="text" (click)="excluir(item)" pTooltip="Excluir" />
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <app-table-list
+    [cols]="cols"
+    [rows]="10"
+    [entityList]="entityList()"
+    [modalSize]="modalSize"
+    [globalFilterFields]="['nomeFantasia', 'razaoSocial', 'cnpj']"
+    [isLoading]="isLoading"
+    [detailComponent]="detailComponent"
+    (onListar)="listar()"
+    (onExcluirVarios)="excluirVarios($event)"
+    (onExcluir)="excluir($event)"
+    [templates]="columnTemplates"
+    />
+    <!--Definição dos templates customizados nas colunas-->
+    <ng-template #statusTemplate let-item>
+        <span class="position-relative">
+            <p-tag 
+                [value]="item.status | statusDaConta" 
+                [severity]="getStatusSeverity(item.status)" 
+                [icon]="getStatusIcon(item.status)" 
+                [pTooltip]="item.status === 1 ? 'Pago em ' + formatDate(item.dataDePagamento) : ''"
+            />
+            @if(item.status !== 1) {
+                <p-badge 
+                    severity="danger" 
+                    class="position-absolute top-0 start-100 translate-middle" 
+                    [value]="obterPrazoPorStatus(item, 1)" 
+                    [pTooltip]="obterPrazoPorStatus(item, 2)" 
+                />                                
+            }
+        </span>
+    </ng-template>
+    <ng-template #arquivoTemplate let-item>
+        @if (item.arquivos.length > 0) {
+            @if(item.arquivos.length < 2) {
+                <p-button icon="pi pi-upload" severity="warn" class="mr-2" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" />
+            } 
+            @if(obterArquivo(item, 1)) {
+                <p-button icon="pi pi-dollar" severity="info" class="mr-2" outlined (click)="visualizarArquivo(obterArquivo(item, 1)!)" pTooltip="Visualizar Boleto" />
+            } 
+            @if(obterArquivo(item, 2)) { 
+                <p-button icon="pi pi-receipt" severity="help" class="mr-2" outlined (click)="visualizarArquivo(obterArquivo(item, 2)!)" pTooltip="Visualizar Comprovante" />
+            } 
+        } @else {
+            <p-button icon="pi pi-upload" severity="warn" class="mr-2" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" />
+            <p-button icon="pi pi-ban" severity="secondary" class="mr-2" outlined disabled pTooltip="Nenhum arquivo disponível" />
+        }    
+    </ng-template>
 </div>
+<p-dialog 
+    header="Visualizar Arquivo" 
+    [visible]="exibirDialog" 
+    [modal]="true" 
+    [style]="{width: '90vw', height: '90vh'}" 
+    [contentStyle]="{height: 'calc(100% - 60px)', overflow: 'hidden'}"
+    [closable]="false"
+    [maximizable]="true"
+>
+    @if (visualizacaoConfig?.isImagem) {
+        <div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; overflow: auto;">
+            <img [src]="visualizacaoConfig?.urlArquivo" alt="Imagem do Arquivo" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>    
+    } @else {
+        <div style="width: 100%; height: 100%;">
+            <iframe [src]="visualizacaoConfig?.urlArquivo! | safeUrl: 'resourceUrl'" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    }
+    <ng-template pTemplate="footer">
+        <div class="col-12" style="text-align: right;">
+            <p-button label="Baixar" icon="pi pi-download" severity="success" (click)="baixarArquivo(visualizacaoConfig?.arquivoSelecionado)" class="mr-2" ></p-button>
+            <p-button label="Excluir" icon="pi pi-trash" severity="danger" (click)="excluirArquivo(visualizacaoConfig?.arquivoSelecionado)" class="mr-2" ></p-button>    
+            <p-button label="Fechar" icon="pi pi-times" severity="secondary" (click)="exibirDialog = false"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

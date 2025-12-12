@@ -25,7 +25,7 @@ namespace Contas.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Contas.Core.Entities.Arquivo", b =>
+            modelBuilder.Entity("Contas.Core.Entities.ArquivoDoRegistroDaConta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,41 +33,33 @@ namespace Contas.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("Conteudo")
-                        .IsRequired()
-                        .HasColumnType("VARBINARY(MAX)");
+                    b.Property<int>("ArquivoId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("Extensao")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("VARCHAR(10)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("VARCHAR(200)");
+                    b.Property<int>("ModalidadeDoArquivo")
+                        .HasColumnType("int");
 
                     b.Property<int>("RegistroDaContaId")
                         .HasColumnType("int");
 
-                    b.Property<long>("Tamanho")
-                        .HasColumnType("BIGINT");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ArquivoId")
+                        .IsUnique();
 
                     b.HasIndex("RegistroDaContaId");
 
-                    b.ToTable("Arquivo", (string)null);
+                    b.ToTable("ArquivoDoRegistroDaConta", (string)null);
                 });
 
             modelBuilder.Entity("Contas.Core.Entities.Credor", b =>
@@ -82,10 +74,14 @@ namespace Contas.Infrastructure.Migrations
                         .HasColumnType("BIGINT");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("NomeFantasia")
                         .IsRequired()
@@ -119,10 +115,14 @@ namespace Contas.Infrastructure.Migrations
                         .HasColumnType("BIGINT");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -159,10 +159,14 @@ namespace Contas.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime?>("DataDePagamento")
                         .HasColumnType("DATETIME2");
@@ -210,10 +214,14 @@ namespace Contas.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -223,6 +231,54 @@ namespace Contas.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SegmentoDoCredor", (string)null);
+                });
+
+            modelBuilder.Entity("Contas.Core.Entities.System.Arquivo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Dados")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("DataDaUltimaModificacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataDeAtualizacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("DataDeCriacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Extensao")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<long>("Tamanho")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Arquivo", (string)null);
                 });
 
             modelBuilder.Entity("Contas.Core.Entities.System.LogDeErro", b =>
@@ -239,12 +295,12 @@ namespace Contas.Infrastructure.Migrations
 
                     b.Property<DateTime>("DataDeAtualizacao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("DATETIME2")
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DataDeCriacao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("DATETIME2")
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Detalhes")
@@ -305,12 +361,12 @@ namespace Contas.Infrastructure.Migrations
 
                     b.Property<DateTime>("DataDeAtualizacao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("DATETIME2")
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DataDeCriacao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("DATETIME2")
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Entidade")
@@ -362,13 +418,21 @@ namespace Contas.Infrastructure.Migrations
                     b.ToTable("TrilhaDeAuditoria", (string)null);
                 });
 
-            modelBuilder.Entity("Contas.Core.Entities.Arquivo", b =>
+            modelBuilder.Entity("Contas.Core.Entities.ArquivoDoRegistroDaConta", b =>
                 {
+                    b.HasOne("Contas.Core.Entities.System.Arquivo", "Arquivo")
+                        .WithOne("ArquivoDoRegistroDaConta")
+                        .HasForeignKey("Contas.Core.Entities.ArquivoDoRegistroDaConta", "ArquivoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Contas.Core.Entities.RegistroDaConta", "RegistroDaConta")
-                        .WithMany("Arquivos")
+                        .WithMany("ArquivosDoRegistroDaConta")
                         .HasForeignKey("RegistroDaContaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Arquivo");
 
                     b.Navigation("RegistroDaConta");
                 });
@@ -378,7 +442,7 @@ namespace Contas.Infrastructure.Migrations
                     b.HasOne("Contas.Core.Entities.SegmentoDoCredor", "SegmentoDoCredor")
                         .WithMany("Credores")
                         .HasForeignKey("SegmentoDoCredorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("SegmentoDoCredor");
@@ -389,13 +453,13 @@ namespace Contas.Infrastructure.Migrations
                     b.HasOne("Contas.Core.Entities.Credor", "Credor")
                         .WithMany("RegistrosDaConta")
                         .HasForeignKey("CredorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Contas.Core.Entities.Pagador", "Pagador")
                         .WithMany("RegistrosDaConta")
                         .HasForeignKey("PagadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Credor");
@@ -415,12 +479,17 @@ namespace Contas.Infrastructure.Migrations
 
             modelBuilder.Entity("Contas.Core.Entities.RegistroDaConta", b =>
                 {
-                    b.Navigation("Arquivos");
+                    b.Navigation("ArquivosDoRegistroDaConta");
                 });
 
             modelBuilder.Entity("Contas.Core.Entities.SegmentoDoCredor", b =>
                 {
                     b.Navigation("Credores");
+                });
+
+            modelBuilder.Entity("Contas.Core.Entities.System.Arquivo", b =>
+                {
+                    b.Navigation("ArquivoDoRegistroDaConta");
                 });
 #pragma warning restore 612, 618
         }

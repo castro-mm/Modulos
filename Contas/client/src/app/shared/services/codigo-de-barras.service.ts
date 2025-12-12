@@ -1,17 +1,26 @@
 import { inject, Injectable } from '@angular/core';
 import { CodigoDeBarras } from '../types/codigo-de-barras.type';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
 import { BancoService } from './banco.service';
 
 @Injectable({
     providedIn: 'root'
 })
+/**
+ * @author Marcelo M. de Castro
+ * @summary Serviço para análise e manipulação de códigos de barras.
+ * @description Este serviço permite a análise de códigos de barras e a obtenção de informações relacionadas.
+ * @version 1.0.0
+ */
 export class CodigoDeBarrasService {
     bancoService = inject(BancoService);
 
     constructor() { }
 
+    /**
+     * @summary Analisa um código de barras e retorna informações sobre ele.
+     * @param codigo O código de barras a ser analisado.
+     * @returns Promise<CodigoDeBarras> contendo as informações do código de barras analisado.
+     */
     public async analisarCodigoBarras(codigo: string): Promise<CodigoDeBarras> {
         // Remove espaços, pontos, hífens
         const codigoLimpo = codigo.replace(/[\s.\-]/g, '');
@@ -43,7 +52,9 @@ export class CodigoDeBarrasService {
     }
 
     /**
-     * Analisa linha digitável de boleto bancário (47 dígitos)
+     * @summary Analisa a linha digitável e retorna informações sobre o boleto (47 dígitos).
+     * @param linha A linha digitável do boleto a ser analisada.
+     * @returns Promise<CodigoDeBarras> contendo as informações do boleto analisado.
      */
     private async analisarBoletoBancario(linha: string): Promise<CodigoDeBarras> {
         try {
@@ -126,7 +137,9 @@ export class CodigoDeBarrasService {
     }
 
     /**
-     * Analisa código de barras direto do boleto (44 dígitos)
+     * @summary Analisa código de barras bancário direto (44 dígitos).
+     * @param codigo O código de barras bancário a ser analisado.
+     * @returns Promise<CodigoDeBarras> contendo as informações do código de barras analisado.
      */
     private async analisarCodigoBarrasBancario(codigo: string): Promise<CodigoDeBarras> {
         try {
@@ -173,7 +186,9 @@ export class CodigoDeBarrasService {
     }
 
     /**
-     * Analisa código de barras de concessionária (48 dígitos)
+     * @summary Analisa código de barras de concessionária (48 dígitos)
+     * @param codigo O código de barras de concessionária a ser analisado.
+     * @returns CodigoDeBarras contendo as informações do código de barras analisado.
      */
     private analisarConcessionaria(codigo: string): CodigoDeBarras {
         try {
@@ -283,8 +298,12 @@ export class CodigoDeBarrasService {
         }
     }
 
+    
     /**
-     * Valida dígito verificador de um campo (módulo 10)
+     * @summary Valida dígito verificador de um campo (módulo 10)
+     * @param campo O campo a ser validado.
+     * @param dv O dígito verificador a ser comparado.
+     * @returns boolean indicando se o dígito verificador é válido.
      */
     private validarDVCampo(campo: string, dv: string): boolean {
         let soma = 0;
@@ -306,9 +325,10 @@ export class CodigoDeBarrasService {
         return dvCalculado === dv;
     }
     
+
     /**
-     * Calcula data de vencimento a partir do fator
-     * Suporta dois ciclos:
+     * @summary Calcula data de vencimento a partir do fator
+     * @description Suporta dois ciclos:
      * - Ciclo 1: 07/10/1997 (fator 1000) até 21/02/2025 (fator 9999)
      * - Ciclo 2: 22/02/2025 (fator 1000) em diante
      */
@@ -333,30 +353,10 @@ export class CodigoDeBarrasService {
     }
 
     /**
-     * Retorna nome do banco pelo código
-     */
-    private obterNomeBanco(codigo: string): string {
-        const bancos: { [key: string]: string } = {
-            '001': 'Banco do Brasil',
-            '033': 'Santander',
-            '104': 'Caixa Econômica Federal',
-            '237': 'Bradesco',
-            '341': 'Itaú',
-            '356': 'Banco Real',
-            '389': 'Banco Mercantil',
-            '399': 'HSBC',
-            '422': 'Banco Safra',
-            '453': 'Banco Rural',
-            '633': 'Banco Rendimento',
-            '652': 'Itaú Unibanco',
-            '745': 'Citibank'
-        };
-
-        return bancos[codigo] || `Banco ${codigo}`;
-    }
-
-    /**
-     * Formata código de barras para exibição
+     * @summary Formata código de barras para exibição
+     * @param codigo O código de barras a ser formatado.
+     * @param tipo O tipo de código de barras (bancario ou concessionaria).
+     * @returns string contendo o código de barras formatado.
      */
     public formatarCodigoBarras(codigo: string, tipo: 'bancario' | 'concessionaria'): string {
         const codigoLimpo = codigo.replace(/[\s.\-]/g, '');

@@ -17,12 +17,14 @@ export class LoadingInterceptor implements HttpInterceptor {
 }
 
 export const loadingInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
+    if(req.headers.has('X-Skip_Interceptor')) {
+        return next(req);
+    }
+
     const loadingService = inject(LoadingService);
     loadingService.show();
-
     return next(req)
         .pipe(
-            finalize(() => loadingService.hide()
-        )
-    );
+            finalize(() => loadingService.hide())
+        );
 };

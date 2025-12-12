@@ -1,7 +1,7 @@
 using Contas.Core.Dtos;
 using Contas.Core.Entities.Base;
-using Contas.Core.Extensions;
 using Contas.Core.Interfaces;
+using Contas.Core.Mappings;
 
 namespace Contas.Core.Entities;
 
@@ -20,9 +20,9 @@ public class RegistroDaConta : Entity, IConvertibleToDto<RegistroDaContaDto>
     public decimal ValorTotal { get; set; }
     public string? Observacoes { get; set; }
 
-    public required virtual Credor Credor { get; set; }
-    public required virtual Pagador Pagador { get; set; }
-    public virtual ICollection<Arquivo> Arquivos { get; set; } = [];
+    public virtual Credor Credor { get; set; } = null!;
+    public virtual Pagador Pagador { get; set; } = null!;
+    public virtual ICollection<ArquivoDoRegistroDaConta> ArquivosDoRegistroDaConta { get; set; } = [];
 
     public RegistroDaContaDto ConvertToDto() => this.ToDto();
     public void ConvertFromDto(RegistroDaContaDto dto) => this.FromDto(dto);

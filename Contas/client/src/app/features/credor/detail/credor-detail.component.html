@@ -3,7 +3,7 @@
         <p-divider class="mt-1" />
         <div class="row mt-2">
             <div class="col-10">
-                <label for="razaoSocial" class="mb-1">Razão Social:</label>                
+                <label for="razaoSocial" class="mb-1">{{fieldsLabels['razaoSocial']}}:</label>                
                 <input 
                     id="razaoSocial" 
                     formControlName="razaoSocial" 
@@ -12,19 +12,12 @@
                     autofocus 
                     fluid 
                     minlength="10"/>
-                @if (form.get('razaoSocial')?.invalid && (form.get('razaoSocial')?.touched || form.get('razaoSocial')?.dirty)) {
-                    @if (form.get('razaoSocial')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">A Razão Social é obrigatória.</p-message>
-                    }
-                    @if (form.get('razaoSocial')?.errors?.['minlength']) {
-                        <p-message severity="error" size="small" variant="simple">A Razão Social deve ter pelo menos 10 caracteres.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('razaoSocial')" [label]="fieldsLabels['razaoSocial']" />
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-4">
-                <label for="cnpj" class="mb-1">CNPJ:</label>
+                <label for="cnpj" class="mb-1">{{fieldsLabels['cnpj']}}:</label>
                 <input 
                     id="cnpj" 
                     formControlName="cnpj" 
@@ -35,19 +28,12 @@
                     [dropSpecialCharacters]="true"
                     [validation]="true"
                     fluid />
-                @if (form.get('cnpj')?.invalid && (form.get('cnpj')?.touched || form.get('cnpj')?.dirty)) {
-                    @if (form.get('cnpj')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">O CNPJ é obrigatório.</p-message>
-                    }
-                    @if (form.get('cnpj')?.errors?.['invalidCnpj']) {
-                        <p-message severity="error" size="small" variant="simple">O CNPJ deve seguir o formato válido.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('cnpj')" [label]="fieldsLabels['cnpj']" />
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-8">
-                <label for="nomeFantasia" class="mb-1">Nome Fantasia:</label>
+                <label for="nomeFantasia" class="mb-1">{{fieldsLabels['nomeFantasia']}}:</label>
                 <input 
                     id="nomeFantasia" 
                     formControlName="nomeFantasia" 
@@ -55,19 +41,12 @@
                     required 
                     fluid 
                     minlength="10" />
-                @if (form.get('nomeFantasia')?.invalid && (form.get('nomeFantasia')?.touched || form.get('nomeFantasia')?.dirty)) {
-                    @if (form.get('nomeFantasia')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">O Nome Fantasia é obrigatório.</p-message>
-                    }
-                    @if (form.get('nomeFantasia')?.errors?.['minlength']) {
-                        <p-message severity="error" size="small" variant="simple">O Nome Fantasia deve ter pelo menos 10 caracteres.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('nomeFantasia')" [label]="fieldsLabels['nomeFantasia']" />
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-5">
-                <label for="segmentoDoCredorId" class="mb-1">Segmento do Credor:</label>
+                <label for="segmentoDoCredorId" class="mb-1">{{fieldsLabels['segmentoDoCredorId']}}:</label>
                 <p-select 
                     formControlName="segmentoDoCredorId" 
                     inputId="segmentoDoCredor" 
@@ -77,11 +56,8 @@
                     appendTo="body"
                     placeholder="Selecione..."
                     required
-                    fluid 
-                    />            
-                @if (isInvalid('segmentoDoCredorId')) {
-                    <p-message severity="error" size="small" variant="simple">O Segmento do Credor é obrigatório.</p-message>
-                }
+                    fluid />            
+                <app-field-validation-message [control]="form.get('segmentoDoCredorId')" [label]="fieldsLabels['segmentoDoCredorId']" />
             </div>
         </div>
         <p-divider class="mt-3" />

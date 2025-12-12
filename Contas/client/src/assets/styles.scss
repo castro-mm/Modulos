@@ -1,6 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+// Bootstrap primeiro
 @use '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+// PrimeNG/PrimeIcons depois (sobrescreve Bootstrap)
+@use 'primeicons/primeicons.css';
+
+// Seus estilos por último
 @use './tailwind.css';
 @use './layout/layout.scss';
-@use 'primeicons/primeicons.css';
 @use './demo/demo.scss';

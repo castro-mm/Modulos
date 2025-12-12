@@ -1,5 +1,9 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+/**
+ * @author Marcelo M. de Castro
+ * @summary Valida a estrutura do CNPJ
+ */
 export function cnpjValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) {

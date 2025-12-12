@@ -1,3 +1,7 @@
+/**
+ * @author Marcelo M. de Castro
+ * @summary Tipo que define a estrutura do código de barras
+ */
 export type CodigoDeBarras = {
     tipo: 'bancario' | 'concessionaria' | 'invalido';
     valido: boolean;
@@ -9,6 +13,10 @@ export type CodigoDeBarras = {
     detalhes?: DetalhesDoCodigoDeBarras;
 }
 
+/**
+ * @author Marcelo M. de Castro
+ * @summary Tipo que define os detalhes adicionais do código de barras.
+ */
 export type DetalhesDoCodigoDeBarras = {
     produto?: string;
     segmento?: string;

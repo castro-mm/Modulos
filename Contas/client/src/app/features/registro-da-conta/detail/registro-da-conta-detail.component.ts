@@ -1,12 +1,11 @@
-import { Component, computed, effect, inject, signal, Type } from '@angular/core';
+import { Component, computed, effect, inject, output, signal } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { sharedConfig } from '@/shared/config/shared.config';
-import { EntityDetailComponent } from '@/shared/components/entity-detail.component';
+import { EntityDetailComponent } from '@/core/components/entity-detail.component';
 import { EntityService } from '@/core/services/entity.service';
 import { RegistroDaConta } from '@/shared/models/registro-da-conta.model';
 import { RegistroDaContaService } from '@/shared/services/registro-da-conta.service';
-import { KeyValuePair } from '@/core/models/key-value-pair.model';
-import { CommonService } from '@/core/services/common.service';
+import { SelectOption } from '@/core/types/select-option.type';
 import { CredorService } from '@/shared/services/credor.service';
 import { PagadorService } from '@/shared/services/pagador.service';
 import { StatusCode } from '@/core/objects/enums';
@@ -15,28 +14,31 @@ import { Pagador } from '@/shared/models/pagador.model';
 import { CodigoDeBarras } from '@/shared/types/codigo-de-barras.type';
 import { CodigoDeBarrasService } from '@/shared/services/codigo-de-barras.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ModalService } from '@/core/services/modal.service';
-import { ApiResponse } from '@/core/models/api-response.model';
+import { ApiResponse } from '@/core/types/api-response.type';
 import { CredorDetailComponent } from '@/features/credor/detail/credor-detail.component';
 import { PagadorDetailComponent } from '@/features/pagador/detail/pagador-detail.component';
+import { MessagesService } from '@/core/services/messages.service';
+import { ArquivoService } from '@/shared/services/arquivo.service';
+import { RegistroDaContaArquivoComponent } from '../registro-da-conta-arquivo/registro-da-conta-arquivo';
+import { FieldValidationMessageComponent } from '@/core/components/field-validation-message.component';
 
 @Component({
     selector: 'app-registro-da-conta-detail.component',
-    imports: [...sharedConfig.imports],
+    imports: [...sharedConfig.imports, FieldValidationMessageComponent, RegistroDaContaArquivoComponent],
     templateUrl: './registro-da-conta-detail.component.html',
     providers: [{ provide: EntityService, useClass: RegistroDaContaService }]
 })
 export class RegistroDaContaDetailComponent extends EntityDetailComponent<RegistroDaConta> {
-    commonService = inject(CommonService);
+    arquivoService = inject(ArquivoService);
     credorService = inject(CredorService);
     pagadorService = inject(PagadorService);
     codigoDeBarrasService = inject(CodigoDeBarrasService);
+    messageService = inject(MessagesService);
 
-    mesOptions: KeyValuePair[] = [];
-    anoOptions: KeyValuePair[] = [];
-    credorOptions: KeyValuePair[] = [];
-    pagadorOptions: KeyValuePair[] = [];
-    messageService: any;
+    mesOptions: SelectOption[] = [];
+    anoOptions: SelectOption[] = [];
+    credorOptions: SelectOption[] = [];
+    pagadorOptions: SelectOption[] = [];
 
     valor = signal<number>(0);
     valorDosJuros = signal<number>(0);
@@ -46,24 +48,49 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
     codigoDeBarras = signal<string>('');
     codigoDeBarrasInfo = signal<CodigoDeBarras | null>(null);
 
+    modalidadeDoArquivoSelecionado: number = 0;    
     ref: DynamicDialogRef | null = null;
+
+    fieldsLabels: {[key: string]: string} = {
+        mes: 'Mês',
+        ano: 'Ano',
+        credorId: 'Credor',
+        pagadorId: 'Pagador',
+        descricao: 'Descrição', // Avaliar se este campo é mesmo necessário.
+        codigoDeBarras: 'Código de Barras',
+        valor: 'Valor',
+        valorDosJuros: 'Valor dos Juros',
+        valorDoDesconto: 'Valor do Desconto',
+        valorTotal: 'Valor Total',
+        dataDeVencimento: 'Data de Vencimento',
+        dataDePagamento: 'Data de Pagamento',
+        observacoes: 'Instruções/Observações'
+    };
 
     constructor(private dialogService: DialogService) {
         super({
             mes: [new Date().getMonth(), [Validators.required]],
             ano: [new Date().getFullYear(), [Validators.required]],
-            credorId: [null, [Validators.required]],
-            pagadorId: [null, [Validators.required]],
+            credorId: [, [Validators.required]],
+            pagadorId: [, [Validators.required]],
             descricao: ['', [Validators.required, Validators.minLength(3)]],
             codigoDeBarras: ['', [Validators.required, Validators.minLength(10)]],
             valor: [, [Validators.required, Validators.min(0.01)]],
-            valorDosJuros: [0],
-            valorDoDesconto: [0],
-            valorTotal: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0.01)]],
-            dataDeVencimento: [null, [Validators.required]],
-            dataDePagamento: [null],
+            valorDosJuros: [, [Validators.min(0)]],
+            valorDoDesconto: [, [Validators.min(0)]],
+            valorTotal: [, [Validators.required, Validators.min(0.01)]],
+            dataDeVencimento: [, [Validators.required]],
+            dataDePagamento: [],
             observacoes: ['']
         });
+
+        if (this.entity()) {
+            const entity = this.entity() as RegistroDaConta;
+            this.valor.set(entity.valor);
+            this.valorDosJuros.set(entity.valorDosJuros || 0);
+            this.valorDoDesconto.set(entity.valorDoDesconto || 0);
+            this.codigoDeBarras.set(entity.codigoDeBarras || '');
+        }
 
         effect(() => {
             const codigo = this.codigoDeBarras();
@@ -92,7 +119,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
         this.credorService.getAll().then(response => {
             if (response.statusCode === StatusCode.OK) {
                 const items = response.data.items as Credor[];
-                this.credorOptions = items.map((x: Credor) => ({ key: x.id, value: x.nomeFantasia }));
+                this.credorOptions = items.map((x: Credor) => ({ value: x.id, label: x.nomeFantasia, icon: '' }));
             } else {
                 this.messageService.showMessageFromReponse((response as any).error);
             }
@@ -103,7 +130,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
         this.pagadorService.getAll().then(response => {
             if (response.statusCode === StatusCode.OK) {
                 const items = response.data.items as Pagador[];
-                this.pagadorOptions = items.map((x: Pagador) => ({ key: x.id, value: x.nome }));
+                this.pagadorOptions = items.map((x: Pagador) => ({ value: x.id, label: x.nome, icon: '' }));
             } else {
                 this.messageService.showMessageFromReponse((response as any).error);
             }
@@ -184,7 +211,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
     }
 
     abrirModalDoCredor() {
-        this.abrirModal(CredorDetailComponent);
+        this.abrirModal(CredorDetailComponent, 'Credor - Novo Registro');
 
         this.ref?.onClose.subscribe((response: ApiResponse) => {
             if (response && response.statusCode === StatusCode.OK) {
@@ -195,7 +222,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
     }
 
     abrirModalDoPagador() {
-        this.abrirModal(PagadorDetailComponent);  
+        this.abrirModal(PagadorDetailComponent, 'Pagador - Novo Registro');  
 
         this.ref?.onClose.subscribe((response: ApiResponse) => {
             if (response && response.statusCode === StatusCode.OK) {
@@ -205,12 +232,21 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
         });
     }
 
-    abrirModal(component: any) {
+    abrirModal(component: any, titulo: string = 'Novo Registro') {
         this.ref = this.dialogService.open(component, {
-            header: 'Novo Registro',
+            header: titulo,
             width: '30%',
+            closable: true,
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000
         });
+    }
+
+    onUploadResult(result: ApiResponse) {
+        if (result && result.statusCode === StatusCode.OK) {
+            this.messageService.showSuccess('Arquivo vinculado com sucesso.');
+        } else {
+            this.messageService.showMessageFromReponse(result, 'Erro ao vincular o arquivo.');
+        }
     }
 }

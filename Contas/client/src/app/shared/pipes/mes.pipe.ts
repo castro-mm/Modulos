@@ -11,8 +11,8 @@ export class MesPipe implements PipeTransform {
     transform(value: number | null | undefined): string {
         if (!value) return '';
 
-        const mes = this.commonService.getMonthsList().find(m => m.key === value);        
+        const mes = this.commonService.getMonthsList().find(m => m.value === value);        
 
-        return mes ? mes.value : '';
+        return mes ? mes.label : '';
     }
 }

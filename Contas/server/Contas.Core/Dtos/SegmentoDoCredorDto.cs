@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Contas.Core.Entities;
-using Contas.Core.Extensions;
 using Contas.Core.Interfaces;
+using Contas.Core.Mappings;
 
 namespace Contas.Core.Dtos;
 

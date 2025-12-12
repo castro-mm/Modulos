@@ -16,11 +16,11 @@ public class LogDeErroConfiguration : IEntityTypeConfiguration<LogDeErro>
         builder.Property(l => l.Caminho).IsRequired().HasColumnType("VARCHAR(MAX)");
         builder.Property(l => l.Ip).IsRequired().HasColumnType("VARCHAR(45)");
         builder.Property(l => l.Navegador).IsRequired().HasColumnType("VARCHAR(200)");
-        builder.Property(l => l.DataDeCriacao).IsRequired().HasColumnType("datetime2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
-        builder.Property(l => l.DataDeAtualizacao).IsRequired().HasColumnType("datetime2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
         builder.Property(l => l.Usuario).IsRequired().HasMaxLength(100).HasColumnType("VARCHAR(100)");
         builder.Property(l => l.TraceId).IsRequired().HasMaxLength(36).HasColumnType("VARCHAR(36)");
         builder.Property(l => l.Hash).IsRequired().HasMaxLength(32).HasColumnType("VARCHAR(32)");
+        builder.Property(l => l.DataDeCriacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+        builder.Property(l => l.DataDeAtualizacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
     }
 
     private void ConfigureTable(EntityTypeBuilder<LogDeErro> builder)

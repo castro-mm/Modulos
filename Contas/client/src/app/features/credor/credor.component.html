@@ -79,84 +79,17 @@
             </div>
         </form>        
     </p-panel>    
-    <p-table        
-        #dt
-        [value]="entityList()"
+    <app-table-list
+        [cols]="columns"
         [rows]="10"
-        [paginator]="true"
+        [entityList]="entityList()"
+        [modalSize]="modalSize"
         [globalFilterFields]="['nomeFantasia', 'razaoSocial', 'cnpj']"
-        [(selection)]="itensSelecionados"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="{first} até {last} de {totalRecords} registros"
-        [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 20, 30]"
-        size="small"
-        [loading]="isLoading"
-        [loadingIcon]="'pi pi-spinner pi-spin'"
-    >
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <div class="m-0">
-                    <p-button pTooltip="Novo registro" icon="pi pi-plus" (click)="openDialog()" class="mr-2"></p-button>
-                    <p-button pTooltip="Excluir itens selcionados" severity="danger" icon="pi pi-trash" (click)="excluirVarios()" [disabled]="!itensSelecionados || !itensSelecionados.length" />        
-                </div>
-                <p-iconfield>
-                    <p-inputicon class="pi pi-search" />
-                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Pesquisar..." />
-                </p-iconfield>  
-            </div>
-        </ng-template>
-        <ng-template #header >
-            <tr>
-                <th style="width: 3rem; background-color: #f8f9fa">
-                    <p-tableHeaderCheckbox />
-                </th>
-                <th style="min-width: 2rem; background-color: #f8f9fa">Código</th>
-                <th pSortableColumn="nomeFantasia" style="min-width:16rem; background-color: #f8f9fa">
-                    Nome Fantasia
-                    <p-sortIcon field="nomeFantasia" />
-                </th>
-                <th pSortableColumn="razaoSocial" style="min-width:16rem; background-color: #f8f9fa">
-                    Razão Social
-                    <p-sortIcon field="razaoSocial" />
-                </th>
-                <th pSortableColumn="cnpj" style="min-width:14rem; background-color: #f8f9fa">
-                    CNPJ
-                    <p-sortIcon field="cnpj" />
-                </th>
-                <th pSortableColumn="segmentoDoCredor" style="min-width:14rem; background-color: #f8f9fa">
-                    Segmento do Credor
-                    <p-sortIcon field="segmentoDoCredor" />
-                </th>
-                <th pSortableColumn="dataDeCriacao" style="min-width: 8rem; background-color: #f8f9fa">
-                    Data de Criação
-                    <p-sortIcon field="dataDeCriacao" />
-                </th>
-                <th pSortableColumn="dataDeAtualizacao" style="min-width:10rem; background-color: #f8f9fa">
-                    Data de Atualização
-                    <p-sortIcon field="dataDeAtualizacao" />
-                </th>
-                <th style="min-width: 3rem; background-color: #f8f9fa"></th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-item>
-            <tr>
-                <td style="width: 3rem">
-                    <p-tableCheckbox [value]="item" />
-                </td>
-                <td style="min-width: 2rem">{{ item.id }}</td>
-                <td style="min-width: 16rem">{{ item.nomeFantasia }}</td>
-                <td style="min-width: 16rem">{{ item.razaoSocial }}</td>
-                <td style="min-width: 14rem">{{ item.cnpj | cnpj }}</td>
-                <td style="min-width: 14rem">{{ item.segmentoDoCredor.nome }}</td>
-                <td style="min-width: 8rem">{{ item.dataDeCriacao | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
-                <td style="min-width: 10rem">{{ item.dataDeAtualizacao | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-                <td>    
-                    <p-button icon="pi pi-pencil" class="mr-2" variant="text" (click)="openDialog(item)" pTooltip="Editar" />
-                    <p-button icon="pi pi-trash" severity="danger" variant="text" (click)="excluir(item)" pTooltip="Excluir" />
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+        [isLoading]="isLoading"
+        [detailComponent]="detailComponent"
+        (onListar)="listar()"
+        (onExcluirVarios)="excluirVarios($event)"
+        (onExcluir)="excluir($event)"
+    />
 </div>
+

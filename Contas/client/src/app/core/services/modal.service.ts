@@ -2,15 +2,16 @@ import { Component, Injectable, Type } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable } from 'rxjs';
 
+@Injectable({
+    providedIn: 'root'
+})
 /**
  * @author Marcelo M. de Castro
  * @summary Serviço para abrir diálogos modais.
  * Utiliza o DialogService do PrimeNG para gerenciar a abertura e fechamento dos diálogos.
  * Permite a passagem de componentes dinâmicos, dados e configurações personalizadas.
+ * @version 1.0.0
  */
-@Injectable({
-    providedIn: 'root'
-})
 export class ModalService {
     dialogRef: DynamicDialogRef | null = null;
 
@@ -48,6 +49,7 @@ export class ModalService {
             width: width,
             modal: true,
             data: data,
+            closable: true,
         });
 
         return this.dialogRef.onClose;

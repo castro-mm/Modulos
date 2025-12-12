@@ -1,3 +1,10 @@
+/**
+ * @author Marcelo M. de Castro
+ * @summary Enumeração dos códigos de status HTTP.
+ * @description Esta enumeração define os principais códigos de status HTTP utilizados nas respostas da API, facilitando a interpretação dos resultados das requisições.
+ * @enum {StatusCode}
+ * @returns {StatusCode} O código de status HTTP correspondente.
+ */
 export enum StatusCode {
     OK = 200,
     Created = 201,
@@ -8,17 +15,4 @@ export enum StatusCode {
     NotFound = 404,
     InternalServerError = 500,
     ServiceUnavailable = 503
-}   
-
-export enum StatusDaConta {
-    Pendente = 0,
-    Paga = 1,
-    Vencida = 2,
-    Cancelada = 3
-}
-
-export enum TipoDeArquivo {
-    BoletoBancario = 1,
-    ComprovanteDePagamento = 2,
-    Outro = 3
 }

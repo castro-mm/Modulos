@@ -2,10 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { ApiResponse } from '@/core/models/api-response.model';
+import { ApiResponse } from '@/core/types/api-response.type';
 import { Params } from '@angular/router';
 import { Entity } from '../models/entity.model';
 
+@Injectable({
+    providedIn: 'root'
+})
 /**
  * @author Marcelo M. de Castro
  * @summary Serviço genérico para operações CRUD em uma entidade.
@@ -13,16 +16,24 @@ import { Entity } from '../models/entity.model';
  * Ele pode ser estendido ou utilizado diretamente para qualquer entidade que siga a estrutura esperada.
  * @example
  * ```typescript
- * export class UserService extends EntityService<User, UserParams> {
+ * import { Injectable } from '@angular/core';
+ * import { EntityService } from './entity.service';
+ * import { User } from '../models/user.model';
+ * 
+ * @Injectable({
+ *   providedIn: 'root'
+ * })
+ * export class UserService extends EntityService<User> {
  *   constructor() {
- *     super('users');
+ *     super('users'); // 'users' é o caminho da entidade na API
  *   }
  * }
  * ```
+ * @version 1.0.0
+ * @template T Tipo da entidade que estende a classe Entity.
+ * @protected
+ * @abstract
  */
-@Injectable({
-    providedIn: 'root'
-})
 export abstract class EntityService<T extends Entity> {
     apiUrl: string = environment.url;
     http = inject(HttpClient);

@@ -11,12 +11,20 @@ public class SegmentoDoCredorConfiguration : IEntityTypeConfiguration<SegmentoDo
         ConfigureTable(builder);
 
         builder.Property(s => s.Nome).IsRequired().HasMaxLength(100).HasColumnType("VARCHAR(100)");
+        builder.Property(s => s.DataDeCriacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+        builder.Property(s => s.DataDeAtualizacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()");
+
+        ConfigureRelationships(builder);
     }
 
     private void ConfigureTable(EntityTypeBuilder<SegmentoDoCredor> builder)
     {
         builder.ToTable(nameof(SegmentoDoCredor));
-
         builder.HasKey(s => s.Id);
+    }
+
+    private void ConfigureRelationships(EntityTypeBuilder<SegmentoDoCredor> builder)
+    {
+        builder.HasMany(s => s.Credores).WithOne(c => c.SegmentoDoCredor).HasForeignKey(c => c.SegmentoDoCredorId).OnDelete(DeleteBehavior.Restrict);
     }
 }

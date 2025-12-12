@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelModule } from 'primeng/panel';
@@ -20,7 +20,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoadingService } from '@/core/services/loading.service';
 import { RouterModule } from '@angular/router';
-import { BreadcrumbComponent } from '../components/breadcrumb.component';
+import { BreadcrumbComponent } from '../../core/components/breadcrumb.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SelectModule } from 'primeng/select';
 import { IftaLabelModule } from 'primeng/iftalabel';
@@ -28,6 +28,13 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DatePickerModule } from 'primeng/datepicker';
+import { FileUploadModule } from 'primeng/fileupload';
+import { SafePipe } from '../pipes/safe.pipe';
+import { CardModule } from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { FieldsetModule } from 'primeng/fieldset';
+import { UploadComponent } from '../../core/components/upload.component';
 
 export const importedModules = [
     CommonModule,
@@ -55,11 +62,20 @@ export const importedModules = [
     SelectModule,
     TextareaModule,
     InputNumberModule,
-    DatePickerModule
+    DatePickerModule,
+    FileUploadModule,
+    ProgressBarModule,
+    FormsModule, 
+    DialogModule, 
+    CardModule,
+    OverlayBadgeModule,
+    PanelModule,
+    FieldsetModule,
 ];
 
 export const importedComponents = [
-    //BreadcrumbComponent,
+    // UploadComponent,
+    // BreadcrumbComponent,
 ]
 
 /**
@@ -81,12 +97,16 @@ export const importedComponents = [
  * ```
  */
 export const sharedConfig = {
-    imports: [...importedModules, ...importedComponents],
-    exports: [...importedComponents],
+    imports: [...importedModules],    
     providers: [
         MessageService,
         DialogService,
         ConfirmationService,
         LoadingService,
     ]
+};
+
+export const sharedComponentsConfig = {
+    declarations: [...importedComponents, SafePipe],
+    exports: [...importedComponents, SafePipe],
 };

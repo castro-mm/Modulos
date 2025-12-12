@@ -1,5 +1,4 @@
 using Contas.Core.Entities;
-using Contas.Core.Extensions;
 using Contas.Core.Specifications.Base;
 using Contas.Core.Specifications.Params;
 using static Contas.Core.Objects.Enumerations;
@@ -12,7 +11,7 @@ public class RegistroDaContaSpecification : Specification<RegistroDaConta>
     {
         AddInclude(x => x.Credor);
         AddInclude(x => x.Pagador);
-        AddInclude(x => x.Arquivos);
+        AddInclude(x => x.ArquivosDoRegistroDaConta);
 
         // Combinar todos os critérios em uma única expressão
         AddCriteria(x => 

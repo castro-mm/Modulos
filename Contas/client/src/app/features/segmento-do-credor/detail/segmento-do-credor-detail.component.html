@@ -11,14 +11,7 @@
                     required 
                     autofocus 
                     fluid />
-                @if (form.get('nome')?.invalid && (form.get('nome')?.touched || form.get('nome')?.dirty)) {
-                    @if (form.get('nome')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">O Nome é obrigatório.</p-message>
-                    }
-                    @if (form.get('nome')?.errors?.['minlength']) {
-                        <p-message severity="error" size="small" variant="simple">O Nome deve ter pelo menos 03 caracteres.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('nome')" [label]="fieldsLabels['nome']" />
             </div>
         </div>
         <p-divider class="mt-3" />

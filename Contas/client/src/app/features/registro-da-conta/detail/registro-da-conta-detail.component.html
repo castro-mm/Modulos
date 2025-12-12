@@ -3,62 +3,50 @@
         <p-divider class="mt-1" />
         <div class="row mt-2">
             <div class="col-2">
-                <label for="mes" class="mb-1">Mês:</label>
+                <label for="mes" class="mb-1">{{fieldsLabels['mes']}}:</label>
                 <p-select 
                     formControlName="mes" 
                     inputId="mes" 
                     [options]="mesOptions"
-                    optionLabel="value" 
-                    optionValue="key" 
+                    optionLabel="label" 
+                    optionValue="value" 
                     appendTo="body"
                     placeholder="Selecione..."
                     fluid 
                     required
                     autofocus="true"
                 />
-                @if (form.get('mes')?.invalid && (form.get('mes')?.touched || form.get('mes')?.dirty)) {
-                    @if (form.get('mes')?.errors?.['required']) {
-                        <div class="mt-1">
-                            <p-message severity="error" variant="simple">O Mês é obrigatório.</p-message>
-                        </div>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('mes')" [label]="fieldsLabels['mes']" />
             </div>
             <div class="col-2">
-                <label for="ano" class="mb-1">Ano:</label>
+                <label for="ano" class="mb-1">{{fieldsLabels['ano']}}:</label>
                 <p-select 
                     formControlName="ano" 
                     inputId="ano" 
                     [options]="anoOptions"
-                    optionLabel="value" 
-                    optionValue="key" 
+                    optionValue="value" 
+                    optionLabel="label" 
                     appendTo="body"
                     placeholder="Selecione..."
                     fluid 
                     required
                 />
-                @if (form.get('ano')?.invalid && (form.get('ano')?.touched || form.get('ano')?.dirty)) {
-                    @if (form.get('ano')?.errors?.['required']) {
-                        <div class="mt-1">
-                            <p-message severity="error" variant="simple">O Ano é obrigatório.</p-message>
-                        </div>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('ano')" [label]="fieldsLabels['ano']" />
             </div>            
         </div>
         <div class="row mt-2">
             <div class="col-6">
-                <label for="credorId" class="mb-1">Credor:</label>
+                <label for="credorId" class="mb-1">{{fieldsLabels['credorId']}}:</label>
                 <p-select 
                     formControlName="credorId" 
                     inputId="credor" 
                     [options]="credorOptions"
-                    optionLabel="value" 
-                    optionValue="key" 
+                    optionLabel="label" 
+                    optionValue="value" 
                     appendTo="body"
                     placeholder="Selecione..."
                     [filter]="true" 
-                    filterBy="value"
+                    filterBy="label"
                     fluid
                 >
                     <ng-template #footer>
@@ -67,28 +55,22 @@
                         </div>
                     </ng-template>                
                 </p-select>
-                @if (form.get('credorId')?.invalid && (form.get('credorId')?.touched || form.get('credorId')?.dirty)) {
-                    @if (form.get('credorId')?.errors?.['required']) {
-                        <div class="mt-1">
-                            <p-message severity="error" variant="simple">O Credor é obrigatório.</p-message>
-                        </div>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('credorId')" [label]="fieldsLabels['credorId']" />
             </div>
         </div>            
         <div class="row mt-2">
             <div class="col-4">
-                <label for="pagadorId" class="mb-1">Pagador:</label>
+                <label for="pagadorId" class="mb-1">{{fieldsLabels['pagadorId']}}:</label>
                 <p-select 
                     formControlName="pagadorId" 
                     inputId="pagador" 
                     [options]="pagadorOptions"
-                    optionLabel="value" 
-                    optionValue="key" 
+                    optionLabel="label" 
+                    optionValue="value" 
                     appendTo="body"
                     placeholder="Selecione..."
                     [filter]="true" 
-                    filterBy="value"
+                    filterBy="label"
                     fluid
                 >
                     <ng-template #footer>
@@ -97,18 +79,12 @@
                         </div>
                     </ng-template>                
                 </p-select>
-                @if (form.get('pagadorId')?.invalid && (form.get('pagadorId')?.touched || form.get('pagadorId')?.dirty)) {
-                    @if (form.get('pagadorId')?.errors?.['required']) {
-                        <div class="mt-1">
-                            <p-message severity="error" variant="simple">O Pagador é obrigatório.</p-message>
-                        </div>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('pagadorId')" [label]="fieldsLabels['pagadorId']" />
             </div>
         </div>               
         <div class="row mt-2">
             <div class="col-6">
-                <label for="codigoDeBarras" class="mb-1">Código de Barras:</label>
+                <label for="codigoDeBarras" class="mb-1">{{fieldsLabels['codigoDeBarras']}}:</label>
                 <input 
                     id="codigoDeBarras" 
                     formControlName="codigoDeBarras" 
@@ -118,6 +94,7 @@
                     (input)="onCodigoDeBarrasChange($event)"
                     (blur)="formatarCodigoDeBarras()" 
                 />
+                <app-field-validation-message [control]="form.get('codigoDeBarras')" [label]="fieldsLabels['codigoDeBarras']" />
                 @if (codigoDeBarrasInfo() && codigoDeBarras()) {
                     @if (!codigoDeBarrasInfo()!.valido) {
                         <div class="mt-1">
@@ -125,21 +102,9 @@
                         </div>
                     }
                 }                
-                @if (form.get('codigoDeBarras')?.invalid && (form.get('codigoDeBarras')?.touched || form.get('codigoDeBarras')?.dirty)) {
-                    @if (form.get('codigoDeBarras')?.errors?.['required']) {
-                        <div class="mt-1">
-                            <p-message severity="error" variant="simple">✗ O Código de Barras é obrigatório.</p-message>
-                        </div>
-                    }
-                    @if (form.get('codigoDeBarras')?.errors?.['minlength']) {
-                        <div class="mt-1">
-                            <p-message severity="error" variant="simple">✗ O Código de Barras deve ter pelo menos 10 caracteres.</p-message>
-                        </div>
-                    }
-                }   
             </div>
             <div class="col-3">
-                <label for="dataDeVencimento" class="mb-1">Data de Vencimento:</label>
+                <label for="dataDeVencimento" class="mb-1">{{fieldsLabels['dataDeVencimento']}}:</label>
                 <p-datepicker 
                     formControlName="dataDeVencimento" 
                     inputId="dataDeVencimento" 
@@ -152,14 +117,10 @@
                     fluid
                     required
                 />
-                @if (form.get('dataDeVencimento')?.invalid && (form.get('dataDeVencimento')?.touched || form.get('dataDeVencimento')?.dirty)) {
-                    @if (form.get('dataDeVencimento')?.errors?.['required']) {
-                        <p-message severity="error" variant="simple">A Data de Vencimento é obrigatória.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('dataDeVencimento')" [label]="fieldsLabels['dataDeVencimento']" />
             </div>
             <div class="col-3">
-                <label for="dataDePagamento" class="mb-1">Data de Pagamento:</label>
+                <label for="dataDePagamento" class="mb-1">{{fieldsLabels['dataDePagamento']}}:</label>
                 <p-datepicker 
                     formControlName="dataDePagamento" 
                     inputId="dataDePagamento" 
@@ -175,53 +136,40 @@
         </div> 
         <div class="row mt-2">
             <div class="col-3">
-                <label for="valor" class="mb-1">Valor:</label>
+                <label for="valor" class="mb-1">{{fieldsLabels['valor']}}:</label>
                 <p-inputNumber 
                     formControlName="valor" 
-                    inputId="valor" 
                     mode="currency" 
                     currency="BRL" 
+                    locale="pt-BR"
                     [minFractionDigits]="2"
                     [maxFractionDigits]="2"
                     placeholder="R$ 0,00"
                     fluid
                     required
                     (onInput)="onValorChange($event)"
-                />
-                @if (form.get('valor')?.invalid && (form.get('valor')?.touched || form.get('valor')?.dirty)) {
-                    @if (form.get('valor')?.errors?.['required']) {
-                        <p-message severity="error" variant="simple">O Valor é obrigatório.</p-message>
-                    }
-                    @if (form.get('valor')?.errors?.['min']) {
-                        <p-message severity="error" variant="simple">O Valor deve ser maior que R$ 0,00.</p-message>
-                    }
-                }
+                />                                
+                <app-field-validation-message [control]="form.get('valor')" [label]="fieldsLabels['valor']" />
             </div>
             <div class="col-3">
-                <label for="valorDosJuros" class="mb-1">Valor dos Juros:</label>
+                <label for="valorDosJuros" class="mb-1">{{fieldsLabels['valorDosJuros']}}:</label>
                 <p-inputNumber 
                     formControlName="valorDosJuros" 
-                    inputId="valorDosJuros" 
-                    mode="currency"     
+                    mode="currency" 
                     currency="BRL" 
+                    locale="pt-BR"
                     [minFractionDigits]="2"
                     [maxFractionDigits]="2"
                     placeholder="R$ 0,00"
                     fluid
-                    required                    
                     (onInput)="onValorDosJurosChange($event)"
-                />
-                @if (form.get('valorDosJuros')?.invalid && (form.get('valorDosJuros')?.touched || form.get('valorDosJuros')?.dirty)) {
-                    @if (form.get('valorDosJuros')?.errors?.['required']) {
-                        <p-message severity="error" variant="simple">O Valor Juros é obrigatório.</p-message>
-                    }
-                }
+                />            
+                <app-field-validation-message [control]="form.get('valorDosJuros')" [label]="fieldsLabels['valorDosJuros']" />
             </div>
             <div class="col-3">
-                <label for="valorDoDesconto" class="mb-1">Valor do Desconto:</label>
+                <label for="valorDoDesconto" class="mb-1">{{fieldsLabels['valorDoDesconto']}}:</label>
                 <p-inputNumber 
                     formControlName="valorDoDesconto" 
-                    inputId="valorDoDesconto" 
                     mode="currency"     
                     currency="BRL" 
                     [minFractionDigits]="2"
@@ -230,45 +178,42 @@
                     fluid
                     (onInput)="onValorDoDescontoChange($event)"
                 />
+                <app-field-validation-message [control]="form.get('valorDoDesconto')" [label]="fieldsLabels['valorDoDesconto']" />
             </div>
             <div class="col-3">
-                <label for="valorTotal" class="mb-1">Valor Total:</label>
+                <label for="valorTotal" class="mb-1">{{fieldsLabels['valorTotal']}}:</label>
                 <p-inputNumber 
                     formControlName="valorTotal" 
                     inputId="valorTotal" 
                     mode="currency"     
                     currency="BRL" 
+                    locale="pt-BR"
                     [minFractionDigits]="2"
                     [maxFractionDigits]="2"
-                    placeholder="R$ 0,00"
+                    placeholder="0,00"
                     fluid
                     required
                 />
-                @if (form.get('valorTotal')?.invalid && (form.get('valorTotal')?.touched || form.get('valorTotal')?.dirty)) {
-                    @if (form.get('valorTotal')?.errors?.['required']) {
-                        <p-message severity="error" variant="simple">O Valor Total é obrigatório.</p-message>
-                    }
-                    @if (form.get('valorTotal')?.errors?.['min']) {
-                        <p-message severity="error" variant="simple">O Valor Total deve ser maior que R$ 0,00.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('valorTotal')" [label]="fieldsLabels['valorTotal']" />
             </div>
         </div>        
         <div class="row mt-2">
             <div class="col-12">
-                <label for="observacoes" class="mb-1">Observações:</label>
+                <label for="observacoes" class="mb-1">{{fieldsLabels['observacoes']}}:</label>
                 <textarea 
                     id="observacoes" 
                     formControlName="observacoes" 
                     pInputTextarea 
                     rows="4" 
                     cols="20"
-                    fluid
-                >
+                    fluid>
                 </textarea>
             </div>
         </div>
         @if (entity() !== null) {
+            <div class="mt-2">
+                <app-registro-da-conta-arquivo [registroDaContaId]="entity()!.id" (uploadResult)="onUploadResult($event)" />
+            </div>
             <p-divider class="mt-3" />
             <div class="row mt-2">
                 <div class="col-2">

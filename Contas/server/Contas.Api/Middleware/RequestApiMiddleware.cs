@@ -16,14 +16,21 @@ public class RequestApiMiddleware
 
     public RequestApiMiddleware(IHostEnvironment env, RequestDelegate next, ILogger<RequestApiMiddleware> logger, IServiceProvider serviceProvider)
     {
-        this._env = env;
-        this._next = next;
-        this._logger = logger;
-        this._serviceProvider = serviceProvider;
+        _env = env;
+        _next = next;
+        _logger = logger;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
+        // Não processar requisições de download de arquivo
+        if (httpContext.Request.Path.StartsWithSegments("/api/arquivo/download")) // TODO: AVALIAR UMA MELHOR SOLUCAO (MAIS ELEGANTE)
+        {
+            await _next(httpContext);
+            return;
+        }
+
         // Cria um MemoryStream para capturar a resposta
         var originalBodyStream = httpContext.Response.Body;
         using var memoryStream = new MemoryStream();

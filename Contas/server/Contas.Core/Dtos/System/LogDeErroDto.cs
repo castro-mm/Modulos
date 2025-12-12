@@ -1,7 +1,7 @@
 using Contas.Core.Entities.System;
-using Contas.Core.Extensions;
 using Contas.Core.Helpers;
 using Contas.Core.Interfaces;
+using Contas.Core.Mappings;
 
 namespace Contas.Core.Dtos.System;
 

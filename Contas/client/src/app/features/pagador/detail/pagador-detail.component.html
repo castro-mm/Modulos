@@ -3,7 +3,7 @@
         <p-divider class="mt-1" />
         <div class="row mt-2">
             <div class="col-8">
-                <label for="nome" class="mb-1">Nome:</label>
+                <label for="nome" class="mb-1">{{fieldsLabels['nome']}}</label>
                 <input 
                     id="nome" 
                     formControlName="nome" 
@@ -11,19 +11,12 @@
                     required 
                     autofocus 
                     fluid />
-                @if (form.get('nome')?.invalid && (form.get('nome')?.touched || form.get('nome')?.dirty)) {
-                    @if (form.get('nome')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">O Nome é obrigatória.</p-message>
-                    }
-                    @if (form.get('nome')?.errors?.['minlength']) {
-                        <p-message severity="error" size="small" variant="simple">O Nome deve ter pelo menos 10 caracteres.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('nome')" [label]="fieldsLabels['nome']" />
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-8">
-                <label for="email" class="mb-1">Email</label>
+                <label for="email" class="mb-1">{{fieldsLabels['email']}}</label>
                 <input 
                     id="email" 
                     type="email"
@@ -32,20 +25,12 @@
                     required 
                     autofocus 
                     fluid />
-
-                @if (form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) {
-                    @if (form.get('email')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">O Email é obrigatório.</p-message>
-                    }
-                    @if (form.get('email')?.errors?.['email']) {
-                        <p-message severity="error" size="small" variant="simple">O Email deve ser um endereço de email válido.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('email')" [label]="fieldsLabels['email']" />
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-4">
-                <label for="cpf" class="mb-1">CPF:</label>
+                <label for="cpf" class="mb-1">{{fieldsLabels['cpf']}}</label>
                 <input 
                     id="cpf" 
                     formControlName="cpf" 
@@ -57,15 +42,7 @@
                     [dropSpecialCharacters]="true"
                     [validation]="true"
                     fluid />
-
-                @if (form.get('cpf')?.invalid && (form.get('cpf')?.touched || form.get('cpf')?.dirty)) {
-                    @if (form.get('cpf')?.errors?.['required']) {
-                        <p-message severity="error" size="small" variant="simple">O CPF é obrigatório.</p-message>
-                    }
-                    @if (form.get('cpf')?.errors?.['invalidCpf']) {
-                        <p-message severity="error" size="small" variant="simple">O CPF deve seguir o formato válido.</p-message>
-                    }
-                }
+                <app-field-validation-message [control]="form.get('cpf')" [label]="fieldsLabels['cpf']" />
             </div>
         </div>
         <p-divider class="mt-3" />

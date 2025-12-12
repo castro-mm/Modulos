@@ -11,12 +11,15 @@ public static class MapperServicesExtensions
 {
     public static void AddMappingServices(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IArquivoDoRegistroDaContaRepository, ArquivoDoRegistroDaContaRepository>();
+
         services.AddScoped<ISegmentoDoCredorService, SegmentoDoCredorService>();
         services.AddScoped<ILogDeErroService, LogDeErroService>();
         services.AddScoped<ITrilhaDeAuditoriaService, TrilhaDeAuditoriaService>();
         services.AddScoped<IArquivoService, ArquivoService>();
+        services.AddScoped<IArquivoDoRegistroDaContaService, ArquivoDoRegistroDaContaService>();
         services.AddScoped<IRegistroDaContaService, RegistroDaContaService>();
         services.AddScoped<ICredorService, CredorService>();
         services.AddScoped<IPagadorService, PagadorService>();

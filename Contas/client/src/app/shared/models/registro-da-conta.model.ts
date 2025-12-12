@@ -1,7 +1,8 @@
 import { Entity } from "@/core/models/entity.model";
 import { Credor } from "./credor.model";
 import { Pagador } from "./pagador.model";
-import { StatusDaConta } from "@/core/objects/enums";
+import { ArquivoDoRegistroDaConta } from "./arquivo-do-registro-da-conta.model";
+import { StatusDaConta } from "../objects/enums";
 
 export class RegistroDaConta extends Entity {
     mes: number = 0;
@@ -20,5 +21,9 @@ export class RegistroDaConta extends Entity {
 
     credor: Credor = null!;
     pagador: Pagador = null!;    
+    diasParaVencer?: number;
+    diasEmAtraso?: number;    
+    periodo?: string;
     // Aqui vira a referencia dos arquivos anexados ao registro da conta (implementar apos validar o crud de registro da conta)
-} 
+    arquivos?: ArquivoDoRegistroDaConta[] = [];
+}
