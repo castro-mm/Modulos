@@ -17,8 +17,20 @@ export type ApiResponse = {
     statusCode: StatusCode;
     message?: string;
     details?: string;
-    data?: any;
+    result?: Result;
     timeStamp?: Date;
     apiPath?: string;
     traceId?: string;
+}
+
+export type Result = {
+    isSuccessful: boolean;
+    data?: any;
+    errors?: ErrorResult[];
+    message?: string;
+}
+
+export type ErrorResult = {
+    code: string;
+    message: string;
 }

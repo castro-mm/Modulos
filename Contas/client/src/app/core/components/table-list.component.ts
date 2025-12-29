@@ -143,14 +143,16 @@ export class TableListComponent<T extends Entity> {
 
         onClose.subscribe(
             async (response: ApiResponse) => {
-                if (response && response.statusCode === StatusCode.OK) {
+                if (response.statusCode === StatusCode.OK) {
                     this.messageService.showMessageFromReponse(
                         response, 
                         entity === null ? 'Registro criado com sucesso.' : 'Registro atualizado com sucesso.'
                     );
+                } else {
+                    this.messageService.showMessageFromReponse(response);
                 }
                 this.onListar.emit();
-            }
+            }       
         );
     }
 

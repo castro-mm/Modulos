@@ -1,3 +1,4 @@
+using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
 using Contas.Core.Interfaces.Repositories;
@@ -10,7 +11,7 @@ public class SegmentoDoCredorService : Service<SegmentoDoCredorDto, SegmentoDoCr
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public SegmentoDoCredorService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public SegmentoDoCredorService(IUnitOfWork unitOfWork, ISegmentoDoCredorValidator validator) : base(unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

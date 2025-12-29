@@ -103,7 +103,7 @@ export class RegistroDaContaComponent extends EntityListComponent<RegistroDaCont
     carregarListaDeCredores() {
         this.credorService.getAll().then(response => {
             if (response.statusCode === StatusCode.OK) {
-                const items = response.data.items as Credor[];
+                const items = response.result?.data.items as Credor[];
                 this.credorOptions = items.map((x: Credor) => ({ value: x.id, label: x.nomeFantasia, icon: '' }));
             } else {
                 this.messageService.showMessageFromReponse((response as any).error);
@@ -114,7 +114,7 @@ export class RegistroDaContaComponent extends EntityListComponent<RegistroDaCont
     carregarListaDePagadores() {
         this.pagadorService.getAll().then(response => {
             if (response.statusCode === StatusCode.OK) {
-                const items = response.data.items as Pagador[];
+                const items = response.result?.data.items as Pagador[];
                 this.pagadorOptions = items.map((x: Pagador) => ({ value: x.id, label: x.nome, icon: '' }));  
             } else {
                 this.messageService.showMessageFromReponse((response as any).error);

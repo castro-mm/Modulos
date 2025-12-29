@@ -8,6 +8,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { FieldValidationService } from "../services/field-validation.service";
 import { CommonService } from "@/core/services/common.service";
 import { EntityDetailMode } from "../types/entity-detail-mode.type";
+import { MessagesService } from "../services/messages.service";
+import { StatusCode } from "../objects/enums";
 
 /**
  * @author Marcelo M. de Castro
@@ -46,6 +48,7 @@ export abstract class EntityDetailComponent<T extends Entity> {
     protected dialogConfig = inject(DynamicDialogConfig);
     protected validationService = inject(FieldValidationService);
     protected commonService = inject(CommonService);
+    protected messageService = inject(MessagesService);
 
     form: FormGroup;
     entity = signal<T | null>(null);
@@ -79,19 +82,33 @@ export abstract class EntityDetailComponent<T extends Entity> {
         this.isLoading = true;
         const formValue = this.formatValuesInObject(this.form.value, 'save');
 
-        if (this.entity() !== null) {
-            this.entity.update(e => ({ ...e, ...formValue } as T));
-        } else {
-            this.entity.set({ ...formValue } as T); 
-        }
+        this.entity() !== null
+            ? this.entity.update(e => ({ ...e, ...formValue } as T))
+            : this.entity.set({ ...formValue } as T); 
 
         const id = (this.entity() as any).id;
-        const response = !id
-            ? await this.service.create(this.entity()!)
-            : await this.service.update(id, this.entity()!);
-
-        this.closeDialog(response);
+        return this.getResponse(() => 
+            id ? this.service.update(id, this.entity() as T) : this.service.create(this.entity() as T)
+            ).then(response => {
+                if (response.statusCode === StatusCode.OK) {
+                    this.closeDialog(response);            
+                } else {
+                    this.messageService.showMessageFromReponse(response);
+                }
+                this.isLoading = false;
+                return response; 
+            }
+        );         
     }
+
+    async getResponse(response: () => Promise<ApiResponse>): Promise<ApiResponse> {
+        try {
+            const res = await response();
+            return res;
+        } catch (ex: any) {
+            return ex.error;
+        }
+    }    
 
     /**
      * @summary Fecha o diálogo atual.

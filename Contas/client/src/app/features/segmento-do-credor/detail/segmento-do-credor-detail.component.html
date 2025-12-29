@@ -3,14 +3,14 @@
         <p-divider class="mt-1" />
         <div class="row mt-2">
             <div class="col-12">
-                <label for="nome" class="mb-1">Nome</label>
+                <label for="nome" class="mb-1">{{fieldsLabels['nome']}}</label>
                 <input 
                     id="nome" 
                     formControlName="nome" 
                     pInputText 
-                    required 
                     autofocus 
-                    fluid />
+                    fluid 
+                />
                 <app-field-validation-message [control]="form.get('nome')" [label]="fieldsLabels['nome']" />
             </div>
         </div>

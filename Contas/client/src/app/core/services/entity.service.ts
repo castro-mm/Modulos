@@ -103,7 +103,7 @@ export abstract class EntityService<T extends Entity> {
     }
 
     /**
-     * 
+     * @summary Atualiza uma entidade existente.
      * @param id ID da entidade a ser atualizada.
      * @param changedEntity Entidade com os dados atualizados. 
      * @returns Uma Promise que resolve para a resposta da API após a atualização da entidade.
@@ -115,7 +115,7 @@ export abstract class EntityService<T extends Entity> {
      */
     async update(id: number, changedEntity: T): Promise<ApiResponse> {
         const response$ = this.http.put<ApiResponse>(`${this.apiUrl}/${id}`, changedEntity);
-        return await firstValueFrom(response$)
+        return await firstValueFrom(response$);
     }
 
     /**

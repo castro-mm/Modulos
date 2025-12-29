@@ -8,10 +8,8 @@
                     id="razaoSocial" 
                     formControlName="razaoSocial" 
                     pInputText 
-                    required 
                     autofocus 
-                    fluid 
-                    minlength="10"/>
+                    fluid />
                 <app-field-validation-message [control]="form.get('razaoSocial')" [label]="fieldsLabels['razaoSocial']" />
             </div>
         </div>
@@ -22,7 +20,6 @@
                     id="cnpj" 
                     formControlName="cnpj" 
                     pInputText 
-                    required 
                     mask="00.000.000/0000-00" 
                     [showMaskTyped]="true" 
                     [dropSpecialCharacters]="true"
@@ -38,9 +35,8 @@
                     id="nomeFantasia" 
                     formControlName="nomeFantasia" 
                     pInputText 
-                    required 
                     fluid 
-                    minlength="10" />
+                    />
                 <app-field-validation-message [control]="form.get('nomeFantasia')" [label]="fieldsLabels['nomeFantasia']" />
             </div>
         </div>
@@ -55,7 +51,6 @@
                     optionValue="value" 
                     appendTo="body"
                     placeholder="Selecione..."
-                    required
                     fluid />            
                 <app-field-validation-message [control]="form.get('segmentoDoCredorId')" [label]="fieldsLabels['segmentoDoCredorId']" />
             </div>

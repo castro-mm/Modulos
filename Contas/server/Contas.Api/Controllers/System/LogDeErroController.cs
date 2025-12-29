@@ -1,4 +1,5 @@
 using Contas.Core.Dtos.System;
+using Contas.Core.Objects;
 using Contas.Infrastructure.Services.Interfaces.System;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,9 @@ public class LogDeErroController(ILogDeErroService logDeErroService) : Controlle
         var logsDeErro = await logDeErroService.GetAllAsync(cancellationToken);
 
         if (logsDeErro == null || !logsDeErro.Any())
-            return NotFound("Nenhum log de erro encontrado.");
+            return NotFound(Result.Successful("Nenhum log de erro encontrado."));
 
-        return Ok(logsDeErro);
+        return Ok(Result.Successful(logsDeErro));
     }
 
     [HttpGet("{traceId}")]
@@ -31,9 +32,9 @@ public class LogDeErroController(ILogDeErroService logDeErroService) : Controlle
         var log = await logDeErroService.GetLogByTraceIdAsync(traceId, cancellationToken);
 
         if (log == null)
-            return NotFound($"Log de erro com o TraceId {traceId} não encontrado.");
+            return NotFound(Result.Failure(null!, $"Log de erro com o TraceId {traceId} não encontrado."));
 
-        return Ok(log);
+        return Ok(Result.Successful(log));
     }
 
     // Additional methods for creating, updating, and deleting logs can be added here

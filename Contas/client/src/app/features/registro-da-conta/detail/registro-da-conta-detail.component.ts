@@ -33,7 +33,6 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
     credorService = inject(CredorService);
     pagadorService = inject(PagadorService);
     codigoDeBarrasService = inject(CodigoDeBarrasService);
-    messageService = inject(MessagesService);
 
     mesOptions: SelectOption[] = [];
     anoOptions: SelectOption[] = [];
@@ -118,7 +117,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
     carregarListaDeCredores() {
         this.credorService.getAll().then(response => {
             if (response.statusCode === StatusCode.OK) {
-                const items = response.data.items as Credor[];
+                const items = response.result?.data.items as Credor[];
                 this.credorOptions = items.map((x: Credor) => ({ value: x.id, label: x.nomeFantasia, icon: '' }));
             } else {
                 this.messageService.showMessageFromReponse((response as any).error);
@@ -129,7 +128,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
     carregarListaDePagadores() {
         this.pagadorService.getAll().then(response => {
             if (response.statusCode === StatusCode.OK) {
-                const items = response.data.items as Pagador[];
+                const items = response.result?.data.items as Pagador[];
                 this.pagadorOptions = items.map((x: Pagador) => ({ value: x.id, label: x.nome, icon: '' }));
             } else {
                 this.messageService.showMessageFromReponse((response as any).error);
@@ -170,15 +169,6 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
             // Preenche data de vencimento se disponível
             if (info.dataDeVencimento) {
                 this.form.patchValue({ dataDeVencimento: info.dataDeVencimento }, { emitEvent: false });
-            }
-
-            // Adiciona informações na descrição se estiver vazia
-            if (!this.form.get('descricao')?.value) {
-                const descricaoAuto = info.tipo === 'bancario'
-                    ? `Boleto ${info.banco}`
-                    : `Conta de ${info.detalhes?.produto}`;
-
-                this.form.patchValue({ descricao: descricaoAuto }, { emitEvent: false });
             }
         }
     }

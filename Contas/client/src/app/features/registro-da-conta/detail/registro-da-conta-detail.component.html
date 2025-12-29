@@ -13,8 +13,7 @@
                     appendTo="body"
                     placeholder="Selecione..."
                     fluid 
-                    required
-                    autofocus="true"
+                    autofocus
                 />
                 <app-field-validation-message [control]="form.get('mes')" [label]="fieldsLabels['mes']" />
             </div>
@@ -29,7 +28,6 @@
                     appendTo="body"
                     placeholder="Selecione..."
                     fluid 
-                    required
                 />
                 <app-field-validation-message [control]="form.get('ano')" [label]="fieldsLabels['ano']" />
             </div>            
@@ -89,7 +87,6 @@
                     id="codigoDeBarras" 
                     formControlName="codigoDeBarras" 
                     pInputText 
-                    required 
                     fluid
                     (input)="onCodigoDeBarrasChange($event)"
                     (blur)="formatarCodigoDeBarras()" 
@@ -115,7 +112,6 @@
                     [todayButtonStyleClass]="'p-button-text'"
                     [clearButtonStyleClass]="'p-button-text'"
                     fluid
-                    required
                 />
                 <app-field-validation-message [control]="form.get('dataDeVencimento')" [label]="fieldsLabels['dataDeVencimento']" />
             </div>
@@ -146,7 +142,6 @@
                     [maxFractionDigits]="2"
                     placeholder="R$ 0,00"
                     fluid
-                    required
                     (onInput)="onValorChange($event)"
                 />                                
                 <app-field-validation-message [control]="form.get('valor')" [label]="fieldsLabels['valor']" />
@@ -161,7 +156,6 @@
                     [minFractionDigits]="2"
                     [maxFractionDigits]="2"
                     placeholder="R$ 0,00"
-                    fluid
                     (onInput)="onValorDosJurosChange($event)"
                 />            
                 <app-field-validation-message [control]="form.get('valorDosJuros')" [label]="fieldsLabels['valorDosJuros']" />
@@ -192,7 +186,6 @@
                     [maxFractionDigits]="2"
                     placeholder="0,00"
                     fluid
-                    required
                 />
                 <app-field-validation-message [control]="form.get('valorTotal')" [label]="fieldsLabels['valorTotal']" />
             </div>

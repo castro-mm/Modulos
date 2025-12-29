@@ -59,7 +59,7 @@ export class CredorComponent extends EntityListComponent<Credor, CredorParams, C
         const response: ApiResponse = await this.segmentoDoCredorService.getAll();
 
         if (response.statusCode === StatusCode.OK) {
-            const items = response.data.items as SegmentoDoCredor[];
+            const items = response.result?.data.items as SegmentoDoCredor[];
             this.segmentoDoCredorOptions = items.map(x => ({ label: x.nome, value: x.id }));
         } else {
             this.messageService.showMessageFromReponse((response as any).error);

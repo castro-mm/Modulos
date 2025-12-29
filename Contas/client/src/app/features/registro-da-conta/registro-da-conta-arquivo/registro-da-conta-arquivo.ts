@@ -41,7 +41,7 @@ export class RegistroDaContaArquivoComponent implements OnInit {
 
     isDialog = computed(() => !!this.dialogConfig.data.registroDaContaId);
 
-    exibirDialog: boolean = false;
+    exibirVisualizacaoDialog: boolean = false;
     visualizacaoConfig: VisualizacaoDeArquivo | null = null; 
 
     constructor() {        
@@ -54,11 +54,12 @@ export class RegistroDaContaArquivoComponent implements OnInit {
             return;
         }
         this.inicializaEstadoDoComponente();
+        console.log(this.exibirVisualizacaoDialog);
     }
 
     inicializaEstadoDoComponente() {
-        this.exibirDialog = false;
-        this.visualizacaoConfig = {arquivoSelecionado: null, urlArquivo: '', isImagem: false};
+        this.exibirVisualizacaoDialog = false;
+        this.visualizacaoConfig = null; 
         this.carregarListaDeArquivos();
         this.modalidadeDoArquivoOptions = [];
         this.obterModalidadeDoArquivoOptions();
@@ -68,7 +69,7 @@ export class RegistroDaContaArquivoComponent implements OnInit {
     async obterModalidadeDoArquivoOptions(): Promise<void> {
         const response = await this.service.getArquivosByRegistroDaContaId(this.registroDaContaId());
         if (response.statusCode === StatusCode.OK) {
-            const arquivosExistentes = response.data as ArquivoDoRegistroDaConta[];                    
+            const arquivosExistentes = response.result?.data as ArquivoDoRegistroDaConta[];                    
             const modalidadesExistentes = arquivosExistentes.map(a => a.modalidadeDoArquivo);
             this.modalidadeDoArquivoOptions = this.service.getModalidadesDeArquivo().filter(m => !modalidadesExistentes.includes(m.value));
             
@@ -79,7 +80,7 @@ export class RegistroDaContaArquivoComponent implements OnInit {
 
     // Nova proposta de solução para 
     async onUploadResult(response: ApiResponse): Promise<void> {
-        const arquivo = response.data as Arquivo;
+        const arquivo = response.result?.data as Arquivo;
         if (!arquivo) {
             return;
         }
@@ -97,7 +98,24 @@ export class RegistroDaContaArquivoComponent implements OnInit {
             this.dialogRef.close(result);
         }
     }
-    
+
+    async carregarListaDeArquivos(): Promise<void> {
+        const response = await this.service.getArquivosByRegistroDaContaId(this.registroDaContaId());
+        if (response.statusCode === StatusCode.OK) {            
+            this.listaDeArquivosDoRegistroDaConta.set(
+                (response.result?.data).map(
+                    (arc: ArquivoDoRegistroDaConta) => {
+                        return {
+                            ...arc,
+                            modalidadeDoArquivo: this.service.getModalidadesDeArquivo().find(t => t.value === arc.modalidadeDoArquivo)?.label || 'Desconhecido',
+                            tamanho: (arc.arquivo.tamanho / 1024).toFixed(2)
+                        }
+                    }
+                )
+            );            
+        }
+    }
+
     async baixarArquivo(arquivo: Arquivo): Promise<void> {
         const response = await this.arquivoService.download(arquivo.id);
         if (response) {
@@ -114,7 +132,7 @@ export class RegistroDaContaArquivoComponent implements OnInit {
     }    
 
     visualizarArquivo(arquivo: Arquivo): void {
-        this.exibirDialog = true;
+        this.exibirVisualizacaoDialog = true;
         this.visualizacaoConfig = {
             arquivoSelecionado: arquivo,
             urlArquivo: `data:${arquivo.tipo};base64,${arquivo.dados}`,
@@ -136,22 +154,5 @@ export class RegistroDaContaArquivoComponent implements OnInit {
                 }            
             }
         });    
-    }
-
-    async carregarListaDeArquivos(): Promise<void> {
-        const response = await this.service.getArquivosByRegistroDaContaId(this.registroDaContaId());
-        if (response.statusCode === StatusCode.OK) {            
-            this.listaDeArquivosDoRegistroDaConta.set(
-                (response.data).map(
-                    (arc: ArquivoDoRegistroDaConta) => {
-                        return {
-                            ...arc,
-                            modalidadeDoArquivo: this.service.getModalidadesDeArquivo().find(t => t.value === arc.modalidadeDoArquivo)?.label || 'Desconhecido',
-                            tamanho: (arc.arquivo.tamanho / 1024).toFixed(2)
-                        }
-                    }
-                )
-            );            
-        }
     }
 }

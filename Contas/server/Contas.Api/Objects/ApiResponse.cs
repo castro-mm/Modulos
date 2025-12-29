@@ -7,7 +7,7 @@ public class ApiResponse
     public int StatusCode { get; set; }
     public string? Message { get; set; }
     public string? Details { get; set; }
-    public object? Data { get; set; }
+    public object? Result { get; set; }
     public DateTime TimeStamp { get; set; }
     public string ApiPath { get; set; }
     public Guid TraceId { get; set; }
@@ -19,7 +19,7 @@ public class ApiResponse
         TimeStamp = timeStamp;
         ApiPath = apiPath;
         TraceId = traceId;
-        Data = data;
+        Result = data;
         Details = details;
     }
 }

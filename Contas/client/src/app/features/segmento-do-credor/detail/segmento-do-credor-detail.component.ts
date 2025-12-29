@@ -17,6 +17,8 @@ export class SegmentoDoCredorDetailComponent extends EntityDetailComponent<Segme
     fieldsLabels: {[key: string]: string} = { nome: 'Nome' };
 
     constructor() {
-        super({ nome: ['', [Validators.required, Validators.minLength(6)]] });
+        super(
+            { nome: ['', [Validators.required, Validators.minLength(6)]] },
+        );
     }    
 }

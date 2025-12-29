@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StatusCode } from '../objects/enums';
-import { ApiResponse } from '../types/api-response.type';
+import { ApiResponse, ErrorResult } from '../types/api-response.type';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +13,7 @@ import { ApiResponse } from '../types/api-response.type';
  * @version 1.0.0
  */
 export class MessagesService {
-    messageLifeTime: number = 3000;
+    messageLifeTime: number = 5000;
 
     /**
      * @summary Construtor do serviço MessagesService.
@@ -134,13 +134,14 @@ export class MessagesService {
         switch (response.statusCode) {
             case StatusCode.OK:
             case StatusCode.NoContent:
-                this.showSuccess(response.message || message, 'Requisição bem-sucedida.');
+                this.showSuccess(response.result?.message || message, 'Requisição bem-sucedida.');
                 break;
             case StatusCode.Created:
-                this.showSuccess(response.message || message, 'Recurso criado com sucesso.');
+                this.showSuccess(response.result?.message || message, 'Recurso criado com sucesso.');
                 break;
-            case StatusCode.BadRequest:
-                this.showWarn(response.message || 'Verifique os dados enviados e tente novamente.', 'Requisição inválida.'); 
+            case StatusCode.BadRequest:                
+                const errorList = response.result?.errors?.map((e: ErrorResult) => `• ${e.message}`).join('\n');
+                this.showWarn(errorList, 'Erros encontrados.');
                 break;
             case StatusCode.Unauthorized:
                 this.showWarn(response.message || 'Você não está autorizado a acessar este recurso.', 'Acesso não autorizado.');
@@ -160,5 +161,5 @@ export class MessagesService {
             default:
                 break;
         }
-    }
+    }    
 }

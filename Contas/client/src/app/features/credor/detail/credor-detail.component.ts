@@ -23,7 +23,6 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 })
 export class CredorDetailComponent extends EntityDetailComponent<Credor> implements OnInit {
     segmentoDoCredorService = inject(SegmentoDoCredorService);
-    messageService = inject(MessagesService);
 
     segmentoDoCredorOptions: SelectOption[] = [];
 
@@ -50,7 +49,7 @@ export class CredorDetailComponent extends EntityDetailComponent<Credor> impleme
         const response: ApiResponse = await this.segmentoDoCredorService.getAll();
 
         if (response.statusCode === StatusCode.OK) {
-            const items = response.data.items as SegmentoDoCredor[];
+            const items = response.result?.data.items as SegmentoDoCredor[];
             this.segmentoDoCredorOptions = items.map(x => ({ label: x.nome, value: x.id, icon: '' }));
         } else {
             this.messageService.showMessageFromReponse((response as any).error);

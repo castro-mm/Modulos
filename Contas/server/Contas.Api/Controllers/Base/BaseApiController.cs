@@ -1,7 +1,9 @@
 using Contas.Api.Objects;
+using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Entities.Base;
 using Contas.Core.Helpers;
 using Contas.Core.Interfaces;
+using Contas.Core.Objects;
 using Contas.Core.Specifications.Base;
 using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -13,24 +15,30 @@ namespace Contas.Api.Controllers.Base;
 public abstract class BaseApiController<TDto, TEntity> : ControllerBase where TDto : IDto where TEntity : Entity
 {
     private readonly IService<TDto, TEntity> _service;
+    private readonly IValidator<TDto> _validator;
 
-    public BaseApiController(IService<TDto, TEntity> service)
+    public BaseApiController(IService<TDto, TEntity> service, IValidator<TDto> validator)
     {
-        this._service = service;
+        _service = service;
+        _validator = validator;
     }
 
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public virtual async Task<ActionResult> GetAllAsync([FromQuery] SpecificationParams specParams, CancellationToken cancellationToken)
     {
+        var validationResult = new ValidationResult();
+
         var specs = FactoryHelper.CreateInstance<Specification<TEntity>>(specParams);
 
         var pagedResult = await _service.GetPagedResultWithSpecAsync(specs, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult == null || !pagedResult.Items.Any())
-            return NotFound("Nenhum registro encontrado.");
+            validationResult.AddError("REGISTROS_NAO_ENCONTRADOS", "Nenhum registro encontrado.");
 
-        return Ok(pagedResult);
+        return validationResult.IsValid
+            ? Ok(Result.Successful(pagedResult))
+            : NotFound(Result.Failure(validationResult.Errors));
     }
 
     [HttpGet("{id:int}")]
@@ -39,32 +47,42 @@ public abstract class BaseApiController<TDto, TEntity> : ControllerBase where TD
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
+        var validationResult = new ValidationResult();
+
         if (id <= 0)
-            return BadRequest("O ID deve ser maior que zero.");
-
-        if (!await _service.ExistsAsync(id, cancellationToken))
-            return NotFound("O item informado não existe.");
-
+            validationResult.AddError("ID_INVALIDO", "O ID deve ser maior que zero.");
+        else if (!await _service.ExistsAsync(id, cancellationToken))
+            validationResult.AddError("REGISTRO_NAO_ENCONTRADO", "O item informado não existe.");
+        
+        if (!validationResult.IsValid)
+            return BadRequest(Result.Failure(validationResult.Errors));
+        
         var dto = await _service.GetByIdAsync(id, cancellationToken);
         if (dto == null)
-            return BadRequest("Erro ao buscar o item. Entre em contato com o administrador do sistema.");
+            validationResult.AddError("ERRO_INTERNO", "Erro ao buscar o item. Entre em contato com o administrador do sistema.");
 
-        return Ok(dto);
+        return validationResult.IsValid
+            ? Ok(Result.Successful(dto))
+            : BadRequest(Result.Failure(validationResult.Errors));
     }
-
+    
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> CreateAsync([FromBody] TDto dto, CancellationToken cancellationToken)
     {
-        if (dto == null)
-            return BadRequest("Os dados não foram informados.");
+        var validationResult = _validator.Validate(dto);
+        
+        if (!validationResult.IsValid)
+            return BadRequest(Result.Failure(validationResult.Errors));
 
         var result = await _service.CreateAsync(dto, cancellationToken);
         if (result == null)
-            return BadRequest("Erro ao adicionar as informações enviadas. Entre em contato com o administrador do sistema.");
+            validationResult.AddError("ERRO_INTERNO", "Erro ao adicionar as informações enviadas. Entre em contato com o administrador do sistema.");
 
-        return Ok(result);
+        return validationResult.IsValid
+            ? Ok(Result.Successful(result, "Registro criado com sucesso."))
+            : BadRequest(Result.Failure(validationResult.Errors));    
     }
 
     [HttpPut("{id:int}")]
@@ -73,20 +91,25 @@ public abstract class BaseApiController<TDto, TEntity> : ControllerBase where TD
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> UpdateAsync(int id, [FromBody] TDto dto, CancellationToken cancellationToken)
     {
-        if (dto == null)
-            return BadRequest("Os dados não foram informados.");
+        var validationResult = _validator.Validate(dto);
 
         if (dto.Id != id)
-            return BadRequest("O ID do registro não corresponde ao ID da URL.");
+            validationResult.AddError("ID_INCONSISTENTE", "O ID do registro não corresponde ao ID da URL.");
+        else if (id == 0)
+            validationResult.AddError("ID_INVALIDO", "O ID informado deve ser maior que zero.");
+        else if (!await _service.ExistsAsync(id, cancellationToken))
+            validationResult.AddError("REGISTRO_NAO_ENCONTRADO", "O registro com o ID informado não existe.");
 
-        if (!await _service.ExistsAsync(id, cancellationToken))
-            return NotFound("O registro com o ID informado não existe.");
+        if (!validationResult.IsValid)
+            return BadRequest(Result.Failure(validationResult.Errors));
 
         var result = await _service.UpdateAsync(dto, cancellationToken);
         if (result == null)
-            return BadRequest("Erro ao atualizar as informações. Entre em contato com o administrador do sistema.");
+            validationResult.AddError("ERRO_INTERNO", "Erro ao atualizar as informações enviadas. Entre em contato com o administrador do sistema.");
 
-        return Ok(result);
+        return validationResult.IsValid
+            ? Ok(Result.Successful(result, "Registro atualizado com sucesso."))
+            : BadRequest(Result.Failure(validationResult.Errors));
     }
 
     [HttpDelete("{id:int}")]
@@ -95,17 +118,22 @@ public abstract class BaseApiController<TDto, TEntity> : ControllerBase where TD
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public virtual async Task<ActionResult> DeleteAsync(int id, CancellationToken cancellationToken)
     {
+        var validationResult = new ValidationResult();
+
         if (id <= 0)
-            return BadRequest("O ID informado deve ser maior que zero.");
+            validationResult.AddError("ID_INVALIDO", "O ID informado deve ser maior que zero.");
+        else if (!await _service.ExistsAsync(id, cancellationToken))
+            validationResult.AddError("REGISTRO_NAO_ENCONTRADO", "O registro com o ID informado não existe.");
+        else
+        {
+            var result = await _service.DeleteAsync(id, cancellationToken);
+            if (!result)
+                validationResult.AddError("ERRO_INTERNO", "Erro ao excluir as informações enviadas. Entre em contato com o administrador do sistema.");            
+        }
 
-        if (!await _service.ExistsAsync(id, cancellationToken))
-            return NotFound("O registro com o ID informado não existe."); 
-
-        var result = await _service.DeleteAsync(id, cancellationToken);
-        if (result)
-            return Ok("Registro excluído com sucesso.");
-
-        return BadRequest("Erro ao excluir o registro. Entre em contato com o administrador do sistema.");
+        return validationResult.IsValid
+            ? Ok(Result.Successful<string>(message: "Registro excluído com sucesso."))
+            : BadRequest(Result.Failure(validationResult.Errors));
     }
 
     [HttpDelete("delete-range")]
@@ -114,14 +142,20 @@ public abstract class BaseApiController<TDto, TEntity> : ControllerBase where TD
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public virtual async Task<ActionResult> DeleteRangeAsync([FromBody] IEnumerable<int> ids, CancellationToken cancellationToken)
     {
-        if (ids == null || !ids.Any() || ids.Any(id => id <= 0))
-            return BadRequest("Os IDs informados são inválidos.");
+        var validationResult = new ValidationResult();
 
-        var result = await _service.DeleteRangeAsync(ids, cancellationToken);
-        if (result)
-            return Ok($"Os {ids.Count()} registro(s) foi(ram) excluído(s) com sucesso.");
-
-        return BadRequest("Erro ao excluir os registros. Entre em contato com o administrador do sistema.");
+        if (ids == null || !ids.Any() || ids.Any(id => id <= 0)) {
+            validationResult.AddError("IDS_INVALIDOS", "Os IDs informados são inválidos.");
+        }
+        else {
+            var result = await _service.DeleteRangeAsync(ids, cancellationToken);
+            if (!result)
+                validationResult.AddError("ERRO_INTERNO", "Erro ao excluir as informações enviadas. Entre em contato com o administrador do sistema.");            
+        }
+    
+        return validationResult.IsValid
+            ? Ok(Result.Successful<string>(message: $"Os {ids!.Count()} registro(s) foi(ram) excluído(s) com sucesso."))
+            : BadRequest(Result.Failure(validationResult.Errors));
     }
 }
 

@@ -8,7 +8,6 @@
                     id="nome" 
                     formControlName="nome" 
                     pInputText 
-                    required 
                     autofocus 
                     fluid />
                 <app-field-validation-message [control]="form.get('nome')" [label]="fieldsLabels['nome']" />
@@ -22,8 +21,6 @@
                     type="email"
                     formControlName="email" 
                     pInputText 
-                    required 
-                    autofocus 
                     fluid />
                 <app-field-validation-message [control]="form.get('email')" [label]="fieldsLabels['email']" />
             </div>
@@ -35,8 +32,6 @@
                     id="cpf" 
                     formControlName="cpf" 
                     pInputText 
-                    required 
-                    autofocus 
                     mask="000.000.000-00" 
                     [showMaskTyped]="true" 
                     [dropSpecialCharacters]="true"

@@ -97,8 +97,9 @@ export abstract class EntityListComponent<T extends Entity, TParams extends Para
         const params = this.form.value as TParams;
         await this.service.getByParams(params) // maybe just get()
             .then((response => {
+                const result = response.result;
                 response.statusCode === StatusCode.OK
-                    ? this.entityList.set(response.data.items as T[])
+                    ? this.entityList.set(result?.data.items as T[])
                     : this.messageService.showMessageFromReponse(response);
             }))
             .catch((ex: any) => this.messageService.showMessageFromReponse(ex.error as ApiResponse))
@@ -119,9 +120,8 @@ export abstract class EntityListComponent<T extends Entity, TParams extends Para
                 this.isLoading = true;
                 await this.service.delete(entity.id)
                     .then(async (response: ApiResponse) => {
-                        response.statusCode === StatusCode.OK
-                            ? await this.listar()
-                            : this.messageService.showMessageFromReponse(response);
+                        this.messageService.showMessageFromReponse(response);
+                        await this.listar()
                     })
                     .catch((ex: any) => this.messageService.showMessageFromReponse(ex.error))                    
                     .finally(() => this.isLoading = false);                    
@@ -142,9 +142,8 @@ export abstract class EntityListComponent<T extends Entity, TParams extends Para
                 this.isLoading = true;                
                 await this.service.deleteRange(ids)
                     .then(async (response: ApiResponse) => {
-                        response.statusCode === StatusCode.OK
-                            ? await this.listar()
-                            : this.messageService.showMessageFromReponse(response);
+                        this.messageService.showMessageFromReponse(response);
+                        await this.listar()
                     })
                     .catch((ex: any) => this.messageService.showMessageFromReponse(ex.error))                    
                     .finally(() => this.isLoading = false);    
@@ -169,14 +168,15 @@ export abstract class EntityListComponent<T extends Entity, TParams extends Para
 
         onClose.subscribe(
             async (response: ApiResponse) => {
-                this.isLoading = true;
                 if (response && response.statusCode === StatusCode.OK) {
+                    const result = response.result;
                     this.messageService.showMessageFromReponse(
                         response, 
-                        entity === null ? 'Registro criado com sucesso' : 'Registro atualizado com sucesso'
+                        !result?.isSuccessful 
+                            ? 'Erro ao processar a operação.' 
+                            : (entity === null ? 'Registro criado com sucesso.' : 'Registro atualizado com sucesso.')
                     );
                 }
-                this.isLoading = false;
                 await this.listar();                    
             }
         );
