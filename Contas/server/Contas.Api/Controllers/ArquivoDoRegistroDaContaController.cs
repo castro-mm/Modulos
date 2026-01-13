@@ -33,7 +33,7 @@ public class ArquivoDoRegistroDaContaController : BaseApiController<ArquivoDoReg
         
         var result = await _service.GetFilesByRegistroDaContaIdAsync(registroDaContaId, cancellationToken);
 
-        return Ok(Result.Successful<IEnumerable<ArquivoDoRegistroDaContaDto>>(result));
+        return Ok(Result.Successful(result));
     }
 
     [HttpPost("save")]
@@ -45,7 +45,7 @@ public class ArquivoDoRegistroDaContaController : BaseApiController<ArquivoDoReg
            
         var result = await _service.SaveFileAsync(registroDaContaId, tipoDeArquivo, dataDaUltimaModificacao, file, cancellationToken);
 
-        return Ok(Result<ArquivoDoRegistroDaContaDto>.Successful(result));
+        return Ok(Result.Successful(result));
     }  
 
     [HttpGet("download/{arquivoId:int}")]
@@ -59,18 +59,12 @@ public class ArquivoDoRegistroDaContaController : BaseApiController<ArquivoDoReg
 
         var nomeCompleto = $"{arquivo.Nome}{arquivo.Extensao}";
         var contentType = GetContentType(arquivo.Extensao);
-
-        // Adicionar headers para evitar problemas com HTTP/2
-        // Response.Headers.Append("Content-Disposition", $"attachment; filename=\"{nomeCompleto}\"");
-        // Response.Headers.Append("Content-Length", arquivo.Dados.Length.ToString());
-        // Response.Headers.Append("Content-Type", contentType);
-        
+       
         // Usar MemoryStream para evitar problemas com buffering
         var stream = new MemoryStream(arquivo.Dados);
         return new FileStreamResult(stream, contentType)
         {
             FileDownloadName = nomeCompleto,
-            //EnableRangeProcessing = false
         };
     }
     
@@ -91,6 +85,5 @@ public class ArquivoDoRegistroDaContaController : BaseApiController<ArquivoDoReg
             ".zip" => "application/zip",
             _ => "application/octet-stream"
         };
-    }
-    
+    }    
 }

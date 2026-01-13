@@ -1,4 +1,6 @@
+using Contas.Core.Dtos;
 using Contas.Core.Entities;
+using Contas.Core.Interfaces;
 using Contas.Core.Specifications.Base;
 using Contas.Core.Specifications.Params;
 
@@ -13,3 +15,4 @@ public class SegmentoDoCredorSpecification : Specification<SegmentoDoCredor>
         AddCriteria(x => x.Nome.Contains(specParams.Nome ?? string.Empty) || string.IsNullOrEmpty(specParams.Nome));
     }
 }
+

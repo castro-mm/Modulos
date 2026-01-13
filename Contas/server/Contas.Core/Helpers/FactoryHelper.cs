@@ -1,4 +1,7 @@
 using System.Collections.Concurrent;
+using System.Reflection;
+using Contas.Core.Entities.Base;
+using Contas.Core.Specifications.Base;
 
 namespace Contas.Core.Helpers;
 

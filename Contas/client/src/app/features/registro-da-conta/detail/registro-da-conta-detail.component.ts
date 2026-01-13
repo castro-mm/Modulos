@@ -55,7 +55,6 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
         ano: 'Ano',
         credorId: 'Credor',
         pagadorId: 'Pagador',
-        descricao: 'Descrição', // Avaliar se este campo é mesmo necessário.
         codigoDeBarras: 'Código de Barras',
         valor: 'Valor',
         valorDosJuros: 'Valor dos Juros',
@@ -72,7 +71,6 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
             ano: [new Date().getFullYear(), [Validators.required]],
             credorId: [, [Validators.required]],
             pagadorId: [, [Validators.required]],
-            descricao: ['', [Validators.required, Validators.minLength(3)]],
             codigoDeBarras: ['', [Validators.required, Validators.minLength(10)]],
             valor: [, [Validators.required, Validators.min(0.01)]],
             valorDosJuros: [, [Validators.min(0)]],

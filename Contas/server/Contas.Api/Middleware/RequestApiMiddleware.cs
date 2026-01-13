@@ -146,8 +146,6 @@ public class RequestApiMiddleware
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = true
-        });
-
-        _logger.LogInformation("Response sent with status code {StatusCode} for path: {Path}.", httpContext.Response.StatusCode, httpContext.Request.Path);
+        });        
     }
 }

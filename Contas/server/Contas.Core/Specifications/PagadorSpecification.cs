@@ -13,5 +13,5 @@ public class PagadorSpecification : Specification<Pagador>
             (x.Email.Contains(specParams.Email ?? string.Empty) || string.IsNullOrEmpty(specParams.Email)) &&
             (x.CPF == specParams.CPF || specParams.CPF == null)
         );
-    }        
+    }     
 }

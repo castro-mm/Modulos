@@ -1,13 +1,14 @@
 using Contas.Core.Entities.Base;
 using Contas.Core.Interfaces;
 using Contas.Core.Objects;
+using Contas.Core.Specifications.Base;
 
 namespace Contas.Infrastructure.Services.Interfaces;
 
 public interface IService<TDto, TEntity>
     where TDto : IDto
     where TEntity : Entity
-{
+{   
     Task<IEnumerable<TDto>> GetAllAsync(CancellationToken cancellationToken);
     Task<TDto> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task<PagedResult<TDto>> GetPagedResultWithSpecAsync(ISpecification<TEntity> spec, int pageIndex, int pageSize, CancellationToken cancellationToken);

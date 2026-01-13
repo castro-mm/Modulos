@@ -15,6 +15,6 @@ public class CredorSpecification : Specification<Credor>
             (x.NomeFantasia.Contains(specParams.NomeFantasia ?? string.Empty) || string.IsNullOrEmpty(specParams.NomeFantasia)) &&
             (x.RazaoSocial.Contains(specParams.RazaoSocial ?? string.Empty) || string.IsNullOrEmpty(specParams.RazaoSocial)) && 
             (x.CNPJ == specParams.CNPJ || specParams.CNPJ == null || specParams.CNPJ == 0)
-        );
+        );        
     }
 }

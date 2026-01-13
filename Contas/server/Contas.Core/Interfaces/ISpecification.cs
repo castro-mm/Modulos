@@ -4,7 +4,7 @@ using Contas.Core.Entities.Base;
 namespace Contas.Core.Interfaces;
 
 public interface ISpecification<T> where T : Entity
-{
+{    
     Expression<Func<T, bool>>? Criteria { get; }
     Expression<Func<T, object>>? OrderBy { get; }
     Expression<Func<T, object>>? OrderByDescending { get; }

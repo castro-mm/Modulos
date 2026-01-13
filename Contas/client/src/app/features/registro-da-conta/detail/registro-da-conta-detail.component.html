@@ -203,7 +203,7 @@
                 </textarea>
             </div>
         </div>
-        @if (entity() !== null) {
+        @if (entity() !== null && entity()!.id > 0) {
             <div class="mt-2">
                 <app-registro-da-conta-arquivo [registroDaContaId]="entity()!.id" (uploadResult)="onUploadResult($event)" />
             </div>

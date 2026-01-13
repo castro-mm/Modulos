@@ -100,17 +100,17 @@
         </form>        
     </p-panel>    
     <app-table-list
-    [cols]="cols"
-    [rows]="10"
-    [entityList]="entityList()"
-    [modalSize]="modalSize"
-    [globalFilterFields]="['nomeFantasia', 'razaoSocial', 'cnpj']"
-    [isLoading]="isLoading"
-    [detailComponent]="detailComponent"
-    (onListar)="listar()"
-    (onExcluirVarios)="excluirVarios($event)"
-    (onExcluir)="excluir($event)"
-    [templates]="columnTemplates"
+        [cols]="cols"
+        [rows]="10"
+        [entityList]="entityList()"
+        [modalSize]="modalSize"
+        [globalFilterFields]="['nomeFantasia', 'razaoSocial', 'cnpj']"
+        [isLoading]="isLoading"
+        [detailComponent]="detailComponent"
+        (onListar)="listar()"
+        (onExcluirVarios)="excluirVarios($event)"
+        (onExcluir)="excluir($event)"
+        [templates]="columnTemplates"
     />
     <!--Definição dos templates customizados nas colunas-->
     <ng-template #statusTemplate let-item>
@@ -144,7 +144,7 @@
             } 
         } @else {
             <p-button icon="pi pi-upload" severity="warn" class="mr-2" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" />
-            <p-button icon="pi pi-ban" severity="secondary" class="mr-2" outlined disabled pTooltip="Nenhum arquivo disponível" />
+            <!-- <p-button icon="pi pi-ban" severity="secondary" class="mr-2" outlined disabled pTooltip="Nenhum arquivo disponível" /> -->
         }    
     </ng-template>
 </div>

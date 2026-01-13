@@ -16,8 +16,8 @@ public class ArquivoController : BaseApiController<ArquivoDto, Arquivo>
 
     public ArquivoController(IArquivoService service, IArquivoValidator validator) : base(service, validator)
     {
-        this._service = service;
-        this._validator = validator;
+        _service = service;
+        _validator = validator;
     }
 
     [HttpPost("upload")]
@@ -25,9 +25,18 @@ public class ArquivoController : BaseApiController<ArquivoDto, Arquivo>
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UploadFileAsync([FromForm] IFormFile file, [FromForm] DateTime dataDaUltimaModificacao, CancellationToken cancellationToken)
     {
-        // implementar as validações do upload aqui
+        var validationResult = _validator.Validate(file);
+        if (!validationResult.IsValid)
+            return BadRequest(Result.Failure(validationResult.Errors));
+
         var result = await _service.SaveFileAsync(file, dataDaUltimaModificacao, cancellationToken);
-        return Ok(result);
+
+        if (result == null)
+            validationResult.AddError("ERRO_SALVAR_ARQUIVO", "Erro ao salvar o arquivo.");
+
+        return validationResult.IsValid 
+            ? Ok(Result.Successful(result))
+            : BadRequest(Result.Failure(validationResult.Errors)); 
     }     
 
     [HttpGet("download/{id:int}")]

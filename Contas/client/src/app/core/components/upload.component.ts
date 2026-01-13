@@ -54,7 +54,9 @@ export class UploadComponent {
     onUpload(event: FileUploadHandlerEvent) {        
         this.uploading.set(true);
         this.service.upload(event.files[0])
-            .then((response: ApiResponse) => this.uploadResult.emit(response))
+            .then((response: ApiResponse) => {
+                return this.uploadResult.emit(response)
+            })
             .catch(error => this.onError(error))
             .finally(() => this.uploading.set(false));
     }
