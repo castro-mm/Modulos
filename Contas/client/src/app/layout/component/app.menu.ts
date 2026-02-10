@@ -33,7 +33,7 @@ export class AppMenu {
                     { 
                         label: 'Dashboard', 
                         icon: 'pi pi-fw pi-building-columns', 
-                        routerLink: ['/contas/dashboard'], 
+                        routerLink: ['contas'], 
                         routerLinkActiveOptions: { exact: true }, 
                         command: (event) => this.onMenuClick(event)
                     },
