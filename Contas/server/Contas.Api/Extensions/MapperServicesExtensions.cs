@@ -1,6 +1,7 @@
 using Contas.Core.Interfaces.Repositories;
 using Contas.Infrastructure.Data.Repositories;
 using Contas.Infrastructure.Services;
+using Contas.Infrastructure.Services.Dashboard;
 using Contas.Infrastructure.Services.Interfaces;
 using Contas.Infrastructure.Services.Interfaces.System;
 using Contas.Infrastructure.Services.System;
@@ -14,6 +15,7 @@ public static class MapperServicesExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IArquivoDoRegistroDaContaRepository, ArquivoDoRegistroDaContaRepository>();
+        services.AddScoped<IRegistroDaContaRepository, RegistroDaContaRepository>();
 
         services.AddScoped<ISegmentoDoCredorService, SegmentoDoCredorService>();
         services.AddScoped<ILogDeErroService, LogDeErroService>();
@@ -23,5 +25,7 @@ public static class MapperServicesExtensions
         services.AddScoped<IRegistroDaContaService, RegistroDaContaService>();
         services.AddScoped<ICredorService, CredorService>();
         services.AddScoped<IPagadorService, PagadorService>();
+        services.AddScoped<IDashboardService, DashboardService>();
+
     }
 }

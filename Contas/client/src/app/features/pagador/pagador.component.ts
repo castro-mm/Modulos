@@ -29,6 +29,8 @@ export class PagadorComponent extends EntityListComponent<Pagador, PagadorParams
         { field: 'dataDeAtualizacao', header: 'Data de Atualização', width: '8rem', type: 'date', format: 'dd/MM/yyyy HH:mm:ss', sortable: true }
     ];
 
+    filterFields = ['id', 'nome', 'email', 'cpf'];
+
     constructor() {
         super(
             {

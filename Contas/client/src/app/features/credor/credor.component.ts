@@ -37,6 +37,8 @@ export class CredorComponent extends EntityListComponent<Credor, CredorParams, C
         { field: 'dataDeAtualizacao', header: 'Data de Atualização', width: '8rem', type: 'date', format: 'dd/MM/yyyy HH:mm:ss', sortable: true },
     ];
 
+    filterFields = ['id', 'razaoSocial', 'nomeFantasia', 'cnpj'];
+
     constructor() {
         super(
             {

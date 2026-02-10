@@ -64,6 +64,8 @@ export class RegistroDaContaComponent extends EntityListComponent<RegistroDaCont
         { field: 'dataDeAtualizacao', header: 'Data de Atualização', width: '8rem', type: 'date', format: 'dd/MM/yyyy HH:mm:ss', align: 'center', sortable: true },
     ];
 
+    filterFields = ['id', 'credor.nomeFantasia', 'pagador.nome'];
+
     constructor() {
         super(
             { 

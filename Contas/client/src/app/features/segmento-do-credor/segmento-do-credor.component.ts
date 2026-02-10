@@ -24,6 +24,8 @@ export class SegmentoDoCredorComponent extends EntityListComponent<SegmentoDoCre
         { field: 'dataDeAtualizacao', header: 'Data de Atualização', type: 'date', format: 'dd/MM/yyyy HH:mm:ss', width: '12rem', sortable: true },
     ];
 
+    filterFields = ['id', 'nome'];
+
     constructor() {
         super({ nome: [''] }, SegmentoDoCredorDetailComponent, '20%');
     }

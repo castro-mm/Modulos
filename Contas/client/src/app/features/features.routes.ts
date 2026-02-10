@@ -4,11 +4,15 @@ import { Routes } from "@angular/router";
 
 export default [
     { 
+        path: 'dashboard', 
+        loadComponent: () => import('../dashboard/dashboard.component').then(m => m.DashboardComponent),
+    },
+    { 
         path: 'segmento-do-credor', 
         loadComponent: () => import('./segmento-do-credor/segmento-do-credor.component').then(m => m.SegmentoDoCredorComponent),
         // resolve: { entity: entityResolver },
         // providers: [
-        //     { provide: DATA_SERVICE_TOKEN, useClass: SegmentoDoCredorService }
+        //     { provide: DATA_SERVICE_TOKEN, useClass: DashboardService }
         // ]
     },
     {
