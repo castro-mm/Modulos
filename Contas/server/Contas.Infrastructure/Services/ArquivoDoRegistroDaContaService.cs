@@ -1,11 +1,10 @@
 using Contas.Core.Dtos;
-using Contas.Core.Dtos.System;
 using Contas.Core.Entities;
 using Contas.Core.Interfaces.Repositories;
+using Contas.Core.Interfaces.Services;
+using Contas.Core.Interfaces.Services.System;
 using Contas.Core.Mappings;
 using Contas.Infrastructure.Services.Base;
-using Contas.Infrastructure.Services.Interfaces;
-using Contas.Infrastructure.Services.Interfaces.System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using static Contas.Core.Objects.Enumerations;

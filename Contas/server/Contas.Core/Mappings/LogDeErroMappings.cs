@@ -22,7 +22,9 @@ public static class LogDeErroMappings
             DataDeAtualizacao = logDeErroDto.DataDeAtualizacao,
             Usuario = logDeErroDto.Usuario,
             TraceId = logDeErroDto.TraceId,
-            Hash = logDeErroDto.Hash
+            Hash = logDeErroDto.Hash,
+            UserId = logDeErroDto.UserId,
+            User = null! // Assuming User will be set later
         };
     }
 
@@ -42,7 +44,8 @@ public static class LogDeErroMappings
             DataDeCriacao = logDeErro.DataDeCriacao,
             DataDeAtualizacao = logDeErro.DataDeAtualizacao,
             Usuario = logDeErro.Usuario,
-            TraceId = logDeErro.TraceId
+            TraceId = logDeErro.TraceId,
+            UserId = logDeErro.UserId,
         };
     }
 
@@ -62,5 +65,6 @@ public static class LogDeErroMappings
         logDeErro.Usuario = logDeErroDto.Usuario;
         logDeErro.TraceId = logDeErroDto.TraceId;
         logDeErro.Hash = logDeErroDto.Hash;
+        logDeErro.UserId = logDeErroDto.UserId;
     }
 }

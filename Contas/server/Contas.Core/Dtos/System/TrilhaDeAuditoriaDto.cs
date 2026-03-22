@@ -20,6 +20,7 @@ public class TrilhaDeAuditoriaDto : IDto, IConvertibleToEntity<TrilhaDeAuditoria
     public required string Usuario { get; set; }
     public required Guid TraceId { get; set; }
     public required string Hash { get; set; }
+    public int UserId { get; set; }
 
     public TrilhaDeAuditoria ConvertToEntity() => this.ToEntity();
 }

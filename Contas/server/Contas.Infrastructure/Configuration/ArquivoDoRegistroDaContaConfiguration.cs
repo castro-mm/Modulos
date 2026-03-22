@@ -2,7 +2,7 @@ using Contas.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contas.Infrastructure.Configuration;
+namespace Contas.Core.Configuration;
 
 public class ArquivoDoRegistroDaContaConfiguration : IEntityTypeConfiguration<ArquivoDoRegistroDaConta>
 {
@@ -29,5 +29,7 @@ public class ArquivoDoRegistroDaContaConfiguration : IEntityTypeConfiguration<Ar
     {
         builder.HasOne(ar => ar.RegistroDaConta).WithMany(rc => rc.ArquivosDoRegistroDaConta).HasForeignKey(ar => ar.RegistroDaContaId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(ar => ar.Arquivo).WithOne(ar => ar.ArquivoDoRegistroDaConta).HasForeignKey<ArquivoDoRegistroDaConta>(ar => ar.ArquivoId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId).OnDelete(DeleteBehavior.Restrict);
+
     }
 }

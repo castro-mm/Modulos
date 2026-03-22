@@ -19,6 +19,7 @@ public class LogDeErroDto : IDto, IConvertibleToEntity<LogDeErro>
     public required string Usuario { get; set; } // Pode ser o ID do usuário ou outro identificador
     public required Guid TraceId { get; set; }
     public string Hash => HashMD5Helper.Encrypt(this);
+    public int UserId { get; set; }
 
     public LogDeErro ConvertToEntity() => this.ToEntity();
 }

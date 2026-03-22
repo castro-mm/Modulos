@@ -22,6 +22,7 @@ public class RegistroDaContaDto : IDto, IConvertibleToEntity<RegistroDaConta>
     public string? Observacoes { get; set; }
     public DateTime DataDeCriacao { get; set; } = DateTime.Now;
     public DateTime DataDeAtualizacao { get; set; } = DateTime.Now;
+    public int UserId { get; set; }
     public StatusDaConta? Status { get; set; }
     public int? DiasParaVencer { get; set; }
     public int? DiasEmAtraso { get; set; }

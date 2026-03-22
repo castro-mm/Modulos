@@ -3,9 +3,9 @@ using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Entities.Base;
 using Contas.Core.Helpers;
 using Contas.Core.Interfaces;
+using Contas.Core.Interfaces.Services;
 using Contas.Core.Objects;
 using Contas.Core.Specifications.Base;
-using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Contas.Api.Controllers.Base;

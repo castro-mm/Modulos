@@ -6,8 +6,9 @@ using Contas.Core.Entities;
 using Contas.Core.Objects;
 using Contas.Core.Specifications;
 using Contas.Core.Specifications.Params;
-using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Contas.Core.Interfaces.Services;
+using Contas.Core.Interfaces.Services.Security;
 
 namespace Contas.Api.Controllers;
 
@@ -15,11 +16,13 @@ public class RegistroDaContaController : BaseApiController<RegistroDaContaDto, R
 {
     private readonly IRegistroDaContaService _service;
     private readonly IRegistroDaContaValidator _validator;
+    private readonly ICurrentUserService _currentUserService;
 
-    public RegistroDaContaController(IRegistroDaContaService service, IRegistroDaContaValidator validator) : base(service, validator)
+    public RegistroDaContaController(IRegistroDaContaService service, IRegistroDaContaValidator validator, ICurrentUserService currentUserService) : base(service, validator)
     {
         _service = service;
         _validator = validator;
+        _currentUserService = currentUserService;
     }
 
     [HttpGet("get-by-params")]
@@ -36,7 +39,7 @@ public class RegistroDaContaController : BaseApiController<RegistroDaContaDto, R
             return BadRequest(Result.Failure(validationResult.Errors));
         }
 
-        var spec = new RegistroDaContaSpecification(specParams);
+        var spec = new RegistroDaContaSpecification(specParams, _currentUserService);
         var pagedResult = await _service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult.Items == null || pagedResult.Count == 0)

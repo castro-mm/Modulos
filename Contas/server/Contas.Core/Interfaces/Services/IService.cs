@@ -1,9 +1,7 @@
 using Contas.Core.Entities.Base;
-using Contas.Core.Interfaces;
 using Contas.Core.Objects;
-using Contas.Core.Specifications.Base;
 
-namespace Contas.Infrastructure.Services.Interfaces;
+namespace Contas.Core.Interfaces.Services;
 
 public interface IService<TDto, TEntity>
     where TDto : IDto

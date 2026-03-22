@@ -12,7 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services/System/Dashboard/" />
+    <Folder Include="Configuration/System/Security/" />
+    <Folder Include="Objects/" />
+    <Folder Include="Objects/Requests/" />
+    <Folder Include="Services/Interfaces/" />
   </ItemGroup>
 
   <PropertyGroup>

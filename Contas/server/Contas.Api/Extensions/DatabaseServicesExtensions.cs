@@ -1,5 +1,4 @@
-using Contas.Infrastructure.Data;
-using Contas.Infrastructure.Interceptors;
+using Contas.Core.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Contas.Api.Extensions;

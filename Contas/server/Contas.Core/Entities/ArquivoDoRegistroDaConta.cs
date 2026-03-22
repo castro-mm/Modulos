@@ -19,8 +19,3 @@ public class ArquivoDoRegistroDaConta : Entity, IConvertibleToDto<ArquivoDoRegis
     public void ConvertFromDto(ArquivoDoRegistroDaContaDto dto) => this.FromDto(dto);
     public ArquivoDoRegistroDaContaDto ConvertToDto() => this.ToDto();
 }
-
-public static class ArquivoDoRegistroDaContaExtensions
-{
-    
-}

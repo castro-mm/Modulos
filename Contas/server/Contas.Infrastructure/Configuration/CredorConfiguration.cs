@@ -2,7 +2,7 @@ using Contas.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contas.Infrastructure.Configuration;
+namespace Contas.Core.Configuration;
 
 public class CredorConfiguration : IEntityTypeConfiguration<Credor>
 {
@@ -30,5 +30,6 @@ public class CredorConfiguration : IEntityTypeConfiguration<Credor>
     {
         builder.HasOne(c => c.SegmentoDoCredor).WithMany(s => s.Credores).HasForeignKey(c => c.SegmentoDoCredorId).OnDelete(DeleteBehavior.Restrict);
         builder.HasMany(c => c.RegistrosDaConta).WithOne(r => r.Credor).HasForeignKey(r => r.CredorId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId).OnDelete(DeleteBehavior.Restrict);
     }
 }

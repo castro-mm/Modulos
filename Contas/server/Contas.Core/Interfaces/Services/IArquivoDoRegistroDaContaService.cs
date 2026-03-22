@@ -3,7 +3,7 @@ using Contas.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using static Contas.Core.Objects.Enumerations;
 
-namespace Contas.Infrastructure.Services.Interfaces;
+namespace Contas.Core.Interfaces.Services;
 
 public interface IArquivoDoRegistroDaContaService : IService<ArquivoDoRegistroDaContaDto, ArquivoDoRegistroDaConta>
 {

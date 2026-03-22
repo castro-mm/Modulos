@@ -2,7 +2,7 @@ using Contas.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contas.Infrastructure.Configuration;
+namespace Contas.Core.Configuration;
 
 public class SegmentoDoCredorConfiguration : IEntityTypeConfiguration<SegmentoDoCredor>
 {
@@ -26,5 +26,6 @@ public class SegmentoDoCredorConfiguration : IEntityTypeConfiguration<SegmentoDo
     private void ConfigureRelationships(EntityTypeBuilder<SegmentoDoCredor> builder)
     {
         builder.HasMany(s => s.Credores).WithOne(c => c.SegmentoDoCredor).HasForeignKey(c => c.SegmentoDoCredorId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId).OnDelete(DeleteBehavior.Restrict);
     }
 }

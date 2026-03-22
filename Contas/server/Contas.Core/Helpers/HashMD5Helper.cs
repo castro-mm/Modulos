@@ -17,6 +17,7 @@ public static class HashMD5Helper
 
         foreach (var property in properties)
         {
+            // Ignora as propriedades "Id" e "Hash" para evitar que sejam incluídas no hash.
             if (property.Name != "Id" && property.Name != "Hash")
             {
                 var value = property.GetValue(obj)?.ToString() ?? string.Empty;

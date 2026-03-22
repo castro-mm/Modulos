@@ -1,6 +1,6 @@
 using Contas.Core.Dtos.Dahsboard;
 
-namespace Contas.Infrastructure.Services.Interfaces;
+namespace Contas.Core.Interfaces.Services;
 
 public interface IDashboardService
 {

@@ -1,7 +1,7 @@
 using Contas.Core.Dtos.System;
 using Contas.Core.Entities.System;
 
-namespace Contas.Infrastructure.Services.Interfaces.System;
+namespace Contas.Core.Interfaces.Services.System;
 
 public interface ITrilhaDeAuditoriaService : IService<TrilhaDeAuditoriaDto, TrilhaDeAuditoria>
 {

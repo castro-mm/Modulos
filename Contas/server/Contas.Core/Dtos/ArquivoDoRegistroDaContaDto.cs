@@ -13,6 +13,7 @@ public class ArquivoDoRegistroDaContaDto : IDto, IConvertibleToEntity<ArquivoDoR
     public required ModalidadeDoArquivo ModalidadeDoArquivo { get; set; }
     public DateTime DataDeCriacao { get; set; }
     public DateTime DataDeAtualizacao { get; set; }
+    public int UserId { get; set; }
 
     public RegistroDaContaDto? RegistroDaConta { get; set; }
     public System.ArquivoDto? Arquivo { get; set; }

@@ -1,6 +1,5 @@
-using Contas.Core.Businesses.Validators;
 using Contas.Core.Businesses.Validators.Interfaces;
-using Contas.Infrastructure.Services.Businesses.Validators;
+using Contas.Core.Services.Businesses.Validators;
 
 namespace Contas.Api.Extensions;
 

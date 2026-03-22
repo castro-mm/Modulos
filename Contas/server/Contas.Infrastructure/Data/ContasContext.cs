@@ -1,11 +1,23 @@
 using Contas.Core.Entities;
 using Contas.Core.Entities.System;
-using Contas.Infrastructure.Interceptors;
+using Contas.Core.Entities.System.Security;
+using Contas.Core.Interceptors;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contas.Infrastructure.Data;
+namespace Contas.Core.Data;
 
-public class ContasContext : DbContext
+public class ContasContext : IdentityDbContext<
+    ApplicationUser, 
+    ApplicationRole, 
+    int, 
+    IdentityUserClaim<int>, 
+    ApplicationUserRole, 
+    IdentityUserLogin<int>, 
+    IdentityRoleClaim<int>, 
+    IdentityUserToken<int>
+    >
 {
     private readonly AuditSaveChangesInterceptor _auditInterceptor;
 

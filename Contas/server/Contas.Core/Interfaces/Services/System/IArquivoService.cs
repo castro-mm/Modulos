@@ -2,7 +2,7 @@ using Contas.Core.Dtos.System;
 using Contas.Core.Entities.System;
 using Microsoft.AspNetCore.Http;
 
-namespace Contas.Infrastructure.Services.Interfaces.System;
+namespace Contas.Core.Interfaces.Services.System;
 
 public interface IArquivoService : IService<ArquivoDto, Arquivo>
 {

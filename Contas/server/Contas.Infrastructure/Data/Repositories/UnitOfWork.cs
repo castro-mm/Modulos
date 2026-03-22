@@ -3,7 +3,7 @@ using Contas.Core.Entities.Base;
 using Contas.Core.Helpers;
 using Contas.Core.Interfaces.Repositories;
 
-namespace Contas.Infrastructure.Data.Repositories;
+namespace Contas.Core.Data.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {

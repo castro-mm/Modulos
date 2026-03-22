@@ -1,8 +1,8 @@
 using Contas.Core.Dtos.System;
 using Contas.Core.Entities.System;
 using Contas.Core.Interfaces.Repositories;
+using Contas.Core.Interfaces.Services.System;
 using Contas.Infrastructure.Services.Base;
-using Contas.Infrastructure.Services.Interfaces.System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
@@ -48,6 +48,7 @@ public class ArquivoService : Service<ArquivoDto, Arquivo>, IArquivoService
                 Dados = memoryStream.ToArray(),
                 DataDeAtualizacao = DateTime.Now,
                 DataDeCriacao = DateTime.Now,
+                UserId = 0 // Assuming UserId will be set later based on the authenticated user context
             },
             cancellationToken
         ) ?? throw new InvalidOperationException("Erro ao salvar o arquivo.");

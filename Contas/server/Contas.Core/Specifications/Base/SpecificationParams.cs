@@ -11,5 +11,5 @@ public class SpecificationParams : ISpecificationParams
         get => _pageSize; 
         set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
     }
-    public int PageIndex { get; set; } = 1;
+    public int PageIndex { get; set; } = 1;    
 }

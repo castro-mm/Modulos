@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Contas.Infrastructure.Migrations
+namespace Contas.Core.Migrations
 {
     /// <inheritdoc />
     public partial class TabelasDaSolucao : Migration

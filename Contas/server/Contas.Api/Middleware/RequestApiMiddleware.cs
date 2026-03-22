@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Contas.Api.Objects;
 using Contas.Core.Dtos.System;
-using Contas.Infrastructure.Services.Interfaces.System;
+using Contas.Core.Interfaces.Services.System;
 
 namespace Contas.Api.Middleware;
 

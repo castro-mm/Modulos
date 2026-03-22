@@ -16,7 +16,9 @@ public static class PagadorMappings
             Email = pagadorDto.Email,
             CPF = pagadorDto.CPF,
             DataDeCriacao = pagadorDto.DataDeCriacao,
-            DataDeAtualizacao = pagadorDto.DataDeAtualizacao
+            DataDeAtualizacao = pagadorDto.DataDeAtualizacao,
+            UserId = pagadorDto.UserId,
+            User = null! 
         };
     }
     public static PagadorDto ToDto(this Pagador pagador)
@@ -31,6 +33,7 @@ public static class PagadorMappings
             CPF = pagador.CPF,
             DataDeCriacao = pagador.DataDeCriacao,
             DataDeAtualizacao = pagador.DataDeAtualizacao,
+            UserId = pagador.UserId
         };
     }    
 
@@ -42,6 +45,7 @@ public static class PagadorMappings
         pagador.Nome = pagadorDto.Nome;
         pagador.Email = pagadorDto.Email;
         pagador.CPF = pagadorDto.CPF;
-        pagador.DataDeAtualizacao = DateTime.UtcNow; // Assuming you want to update the timestamp
+        pagador.DataDeAtualizacao = DateTime.Now;
+        pagador.UserId = pagadorDto.UserId;
     }
 }

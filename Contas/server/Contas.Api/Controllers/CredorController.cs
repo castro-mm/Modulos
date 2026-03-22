@@ -3,10 +3,11 @@ using Contas.Api.Objects;
 using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
+using Contas.Core.Interfaces.Services;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Objects;
 using Contas.Core.Specifications;
 using Contas.Core.Specifications.Params;
-using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Contas.Api.Controllers;
@@ -15,11 +16,13 @@ public class CredorController : BaseApiController<CredorDto, Credor>
 {    
     private readonly ICredorService _service;
     private readonly ICredorValidator _validator;
+    private readonly ICurrentUserService _currentUserService;
 
-    public CredorController(ICredorService service, ICredorValidator validator) : base(service, validator)
+    public CredorController(ICredorService service, ICredorValidator validator, ICurrentUserService currentUserService) : base(service, validator)
     {
         _service = service;
         _validator = validator;
+        _currentUserService = currentUserService;
     }
 
     [HttpGet("get-by-params")]
@@ -36,7 +39,7 @@ public class CredorController : BaseApiController<CredorDto, Credor>
             return BadRequest(Result.Failure(validationResult.Errors));
         }
 
-        var spec = new CredorSpecification(specParams);
+        var spec = new CredorSpecification(specParams, _currentUserService);
         var pagedResult = await _service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult == null || !pagedResult.Items.Any())

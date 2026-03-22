@@ -15,7 +15,7 @@ public class ArquivoDto : IDto, IConvertibleToEntity<Arquivo>
     public required DateTime DataDaUltimaModificacao { get; set; }
     public DateTime DataDeCriacao { get; set; }
     public DateTime DataDeAtualizacao { get; set; }
-
+    public int UserId { get; set; }
     public ArquivoDoRegistroDaContaDto? ArquivoDoRegistroDaConta { get; set; }
 
     Arquivo IConvertibleToEntity<Arquivo>.ConvertToEntity() => this.ToEntity();

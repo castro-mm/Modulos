@@ -5,7 +5,7 @@ using Contas.Core.Interfaces.Repositories;
 using Contas.Core.Specifications.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contas.Infrastructure.Data.Repositories;
+namespace Contas.Core.Data.Repositories;
 
 public class Repository<T> : IRepository<T> where T : Entity
 {

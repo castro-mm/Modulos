@@ -1,4 +1,4 @@
-using Contas.Infrastructure.Interceptors;
+using Contas.Core.Interceptors;
 
 namespace Contas.Api.Extensions;
 

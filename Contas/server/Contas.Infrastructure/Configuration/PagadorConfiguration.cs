@@ -2,7 +2,7 @@ using Contas.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contas.Infrastructure.Configuration;
+namespace Contas.Core.Configuration;
 
 public class PagadorConfiguration : IEntityTypeConfiguration<Pagador>
 {
@@ -29,5 +29,6 @@ public class PagadorConfiguration : IEntityTypeConfiguration<Pagador>
     {
         // Configure relationships here if needed
         builder.HasMany(p => p.RegistrosDaConta).WithOne(c => c.Pagador).HasForeignKey(c => c.PagadorId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId).OnDelete(DeleteBehavior.Restrict);
     }
 }

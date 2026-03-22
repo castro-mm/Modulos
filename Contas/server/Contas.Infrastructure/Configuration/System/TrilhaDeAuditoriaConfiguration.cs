@@ -2,7 +2,7 @@ using Contas.Core.Entities.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contas.Infrastructure.Configuration.System;
+namespace Contas.Core.Configuration.System;
 
 public class TrilhaDeAuditoriaConfiguration : IEntityTypeConfiguration<TrilhaDeAuditoria>
 {
@@ -23,6 +23,8 @@ public class TrilhaDeAuditoriaConfiguration : IEntityTypeConfiguration<TrilhaDeA
         builder.Property(t => t.Hash).IsRequired().HasMaxLength(32).HasColumnType("VARCHAR(32)");
         builder.Property(t => t.DataDeCriacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
         builder.Property(t => t.DataDeAtualizacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+
+        ConfigureRelationships(builder);
     }
 
     private void ConfigureTable(EntityTypeBuilder<TrilhaDeAuditoria> builder)
@@ -31,4 +33,9 @@ public class TrilhaDeAuditoriaConfiguration : IEntityTypeConfiguration<TrilhaDeA
 
         builder.HasKey(t => t.Id);
     }
+
+    private void ConfigureRelationships(EntityTypeBuilder<TrilhaDeAuditoria> builder)
+    {        
+    }
+    
 }

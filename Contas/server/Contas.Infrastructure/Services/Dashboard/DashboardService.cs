@@ -1,6 +1,6 @@
 using Contas.Core.Dtos.Dahsboard;
 using Contas.Core.Interfaces.Repositories;
-using Contas.Infrastructure.Services.Interfaces;
+using Contas.Core.Interfaces.Services;
 
 namespace Contas.Infrastructure.Services.Dashboard;
 

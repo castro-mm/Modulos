@@ -3,8 +3,8 @@ using Contas.Api.Objects;
 using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
+using Contas.Core.Interfaces.Services;
 using Contas.Core.Objects;
-using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using static Contas.Core.Objects.Enumerations;
 

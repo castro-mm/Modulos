@@ -3,10 +3,11 @@ using Contas.Api.Objects;
 using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
+using Contas.Core.Interfaces.Services;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Objects;
 using Contas.Core.Specifications;
 using Contas.Core.Specifications.Params;
-using Contas.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Contas.Api.Controllers;
@@ -15,11 +16,13 @@ public class PagadorController : BaseApiController<PagadorDto, Pagador>
 {    
     private readonly IPagadorService _service;
     private readonly IPagadorValidator _validator;
+    private readonly ICurrentUserService _currentUserService;
 
-    public PagadorController(IPagadorService service, IPagadorValidator validator) : base(service, validator)
+    public PagadorController(IPagadorService service, IPagadorValidator validator, ICurrentUserService currentUserService) : base(service, validator)
     {
         _service = service;
         _validator = validator;
+        _currentUserService = currentUserService;
     }
 
     [HttpGet("get-by-params")]
@@ -36,7 +39,7 @@ public class PagadorController : BaseApiController<PagadorDto, Pagador>
             return BadRequest(Result.Failure(validationResult.Errors));
         }
 
-        var spec = new PagadorSpecification(specParams);
+        var spec = new PagadorSpecification(specParams, _currentUserService);
         var pagedResult = await _service.GetPagedResultWithSpecAsync(spec, specParams.PageIndex, specParams.PageSize, cancellationToken);
 
         if (pagedResult == null || !pagedResult.Items.Any())

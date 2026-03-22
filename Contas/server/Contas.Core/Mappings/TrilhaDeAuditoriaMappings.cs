@@ -5,27 +5,6 @@ namespace Contas.Core.Mappings;
 
 public static class TrilhaDeAuditoriaMappings
 {
-    public static TrilhaDeAuditoriaDto ToDto(this TrilhaDeAuditoria trilhaDeAuditoria)
-    {
-        ArgumentNullException.ThrowIfNull(trilhaDeAuditoria);
-
-        return new TrilhaDeAuditoriaDto
-        {
-            Id = trilhaDeAuditoria.Id,
-            Entidade = trilhaDeAuditoria.Entidade,
-            Metodo = trilhaDeAuditoria.Metodo,
-            Caminho = trilhaDeAuditoria.Caminho,
-            Operacao = trilhaDeAuditoria.Operacao,
-            ValoresAntigos = trilhaDeAuditoria.ValoresAntigos,
-            ValoresNovos = trilhaDeAuditoria.ValoresNovos,
-            Ip = trilhaDeAuditoria.Ip,
-            Navegador = trilhaDeAuditoria.Navegador,
-            Usuario = trilhaDeAuditoria.Usuario,
-            TraceId = trilhaDeAuditoria.TraceId,
-            Hash = trilhaDeAuditoria.Hash
-        };
-    }
-
     public static TrilhaDeAuditoria ToEntity(this TrilhaDeAuditoriaDto trilhaDeAuditoriaDto)
     {
         ArgumentNullException.ThrowIfNull(trilhaDeAuditoriaDto);
@@ -43,7 +22,31 @@ public static class TrilhaDeAuditoriaMappings
             Navegador = trilhaDeAuditoriaDto.Navegador,
             Usuario = trilhaDeAuditoriaDto.Usuario,
             TraceId = trilhaDeAuditoriaDto.TraceId,
-            Hash = trilhaDeAuditoriaDto.Hash
+            Hash = trilhaDeAuditoriaDto.Hash,
+            UserId = trilhaDeAuditoriaDto.UserId,
+            User = null! // Assuming User will be set later
+        };
+    }
+
+    public static TrilhaDeAuditoriaDto ToDto(this TrilhaDeAuditoria trilhaDeAuditoria)
+    {
+        ArgumentNullException.ThrowIfNull(trilhaDeAuditoria);
+
+        return new TrilhaDeAuditoriaDto
+        {
+            Id = trilhaDeAuditoria.Id,
+            Entidade = trilhaDeAuditoria.Entidade,
+            Metodo = trilhaDeAuditoria.Metodo,
+            Caminho = trilhaDeAuditoria.Caminho,
+            Operacao = trilhaDeAuditoria.Operacao,
+            ValoresAntigos = trilhaDeAuditoria.ValoresAntigos,
+            ValoresNovos = trilhaDeAuditoria.ValoresNovos,
+            Ip = trilhaDeAuditoria.Ip,
+            Navegador = trilhaDeAuditoria.Navegador,
+            Usuario = trilhaDeAuditoria.Usuario,
+            TraceId = trilhaDeAuditoria.TraceId,
+            Hash = trilhaDeAuditoria.Hash,
+            UserId = trilhaDeAuditoria.UserId
         };
     }
 
@@ -63,5 +66,6 @@ public static class TrilhaDeAuditoriaMappings
         trilhaDeAuditoria.Usuario = dto.Usuario;
         trilhaDeAuditoria.TraceId = dto.TraceId;
         trilhaDeAuditoria.Hash = dto.Hash;
+        trilhaDeAuditoria.UserId = dto.UserId;
     }
 }

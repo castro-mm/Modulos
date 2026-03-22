@@ -14,7 +14,9 @@ public static class SegmentoDoCredorMappings
             Id = segmentoDoCredorDto.Id,
             Nome = segmentoDoCredorDto.Nome,
             DataDeCriacao = segmentoDoCredorDto.DataDeCriacao,
-            DataDeAtualizacao = segmentoDoCredorDto.DataDeAtualizacao
+            DataDeAtualizacao = segmentoDoCredorDto.DataDeAtualizacao,
+            UserId = segmentoDoCredorDto.UserId,
+            User = null!, // Assuming User will be set later
         };
     }
 
@@ -27,7 +29,8 @@ public static class SegmentoDoCredorMappings
             Id = segmentoDoCredor.Id,
             Nome = segmentoDoCredor.Nome,
             DataDeCriacao = segmentoDoCredor.DataDeCriacao,
-            DataDeAtualizacao = segmentoDoCredor.DataDeAtualizacao
+            DataDeAtualizacao = segmentoDoCredor.DataDeAtualizacao,
+            UserId = segmentoDoCredor.UserId
         };
     }
 
@@ -38,4 +41,6 @@ public static class SegmentoDoCredorMappings
 
         segmentoDoCredor.Nome = segmentoDoCredorDto.Nome;
         segmentoDoCredor.DataDeAtualizacao = segmentoDoCredorDto.DataDeAtualizacao;
-    }}
+        segmentoDoCredor.UserId = segmentoDoCredorDto.UserId;
+    }
+}

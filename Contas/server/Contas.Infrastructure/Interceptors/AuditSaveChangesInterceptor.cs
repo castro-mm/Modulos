@@ -7,7 +7,7 @@ using System.Text.Json;
 using Contas.Core.Entities.System;
 using Contas.Core.Helpers;
 
-namespace Contas.Infrastructure.Interceptors;
+namespace Contas.Core.Interceptors;
 
 public class AuditSaveChangesInterceptor : SaveChangesInterceptor
 {
@@ -48,6 +48,15 @@ public class AuditSaveChangesInterceptor : SaveChangesInterceptor
             return;
         }
 
+        var userIdClaim = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = int.TryParse(userIdClaim, out var id) ? id : 0;
+
+        if (userId == 0)
+        {
+            _logger.LogInformation("Usuário não autenticado. Auditoria ignorada para esta operação.");
+            return;
+        }
+
         _logger.LogInformation("Criando a trilha de auditoria para as mudanças no Contexto.");
 
         // Obtém as entradas que foram adicionadas, modificadas ou excluídas.
@@ -74,8 +83,11 @@ public class AuditSaveChangesInterceptor : SaveChangesInterceptor
                     : null,
                 Ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "IP não disponível",
                 Navegador = httpContext.Request.Headers["User-Agent"].ToString(),
-                Usuario = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "Anonymous",
+                //Usuario = userIdClaim ?? "Anonymous",
+                Usuario = httpContext.User.FindFirstValue(ClaimTypes.Email) ?? "Anonymous",
                 Hash = string.Empty,
+                UserId = userId,
+                User = null!, 
                 TraceId = Guid.NewGuid()
             };
             trilhaDeAuditoria.Hash = HashMD5Helper.Encrypt(trilhaDeAuditoria);

@@ -2,7 +2,7 @@ using Contas.Core.Entities;
 using Contas.Core.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contas.Infrastructure.Data.Repositories;
+namespace Contas.Core.Data.Repositories;
 
 public class ArquivoDoRegistroDaContaRepository : Repository<ArquivoDoRegistroDaConta>, IArquivoDoRegistroDaContaRepository
 {

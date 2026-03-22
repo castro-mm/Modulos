@@ -1,4 +1,5 @@
 using Contas.Core.Entities;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Specifications.Base;
 using Contas.Core.Specifications.Params;
 using static Contas.Core.Objects.Enumerations;
@@ -7,7 +8,7 @@ namespace Contas.Core.Specifications;
 
 public class RegistroDaContaSpecification : Specification<RegistroDaConta>
 {
-    public RegistroDaContaSpecification(RegistroDaContaSpecParams specParams) : base(specParams)
+    public RegistroDaContaSpecification(RegistroDaContaSpecParams specParams, ICurrentUserService currentUserService) : base(specParams)
     {
         AddInclude(x => x.Credor);
         AddInclude(x => x.Pagador);
@@ -26,7 +27,8 @@ public class RegistroDaContaSpecification : Specification<RegistroDaConta>
                     x.DataDeVencimento >= DateTime.Now && (specParams.StatusDaConta == StatusDaConta.Pendente) 
                 ) ||               
                 (specParams.StatusDaConta == StatusDaConta.Todos || specParams.StatusDaConta == null)
-            )
+            ) &&
+            (x.UserId == currentUserService.UserId)
         );
     }
 }

@@ -17,8 +17,10 @@ public static class ArquivoDoRegistroDaContaMappings
             ModalidadeDoArquivo = dto.ModalidadeDoArquivo,
             DataDeCriacao = dto.DataDeCriacao,
             DataDeAtualizacao = dto.DataDeAtualizacao,
+            UserId = dto.UserId,
             RegistroDaConta = null!,
-            Arquivo = null!
+            Arquivo = null!,
+            User = null!
         };
     }    
     public static ArquivoDoRegistroDaContaDto ToDto(this ArquivoDoRegistroDaConta entity)
@@ -33,8 +35,10 @@ public static class ArquivoDoRegistroDaContaMappings
             ModalidadeDoArquivo = entity.ModalidadeDoArquivo,
             DataDeCriacao = entity.DataDeCriacao,
             DataDeAtualizacao = entity.DataDeAtualizacao,
+            UserId = entity.UserId,
             RegistroDaConta = null, // Evita referência circular
-            Arquivo = entity.Arquivo?.ToDto()
+            Arquivo = entity.Arquivo?.ToDto(),
+            //User = entity.User?.ToDto()
         };
     }
 
@@ -48,5 +52,6 @@ public static class ArquivoDoRegistroDaContaMappings
         entity.ArquivoId = dto.ArquivoId;
         entity.ModalidadeDoArquivo = dto.ModalidadeDoArquivo;
         entity.DataDeAtualizacao = dto.DataDeAtualizacao;
+        entity.UserId = dto.UserId;
     }    
 }

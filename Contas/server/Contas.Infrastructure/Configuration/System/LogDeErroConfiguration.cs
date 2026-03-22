@@ -2,7 +2,7 @@ using Contas.Core.Entities.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contas.Infrastructure.Configuration.System;
+namespace Contas.Core.Configuration.System;
 
 public class LogDeErroConfiguration : IEntityTypeConfiguration<LogDeErro>
 {
@@ -21,6 +21,8 @@ public class LogDeErroConfiguration : IEntityTypeConfiguration<LogDeErro>
         builder.Property(l => l.Hash).IsRequired().HasMaxLength(32).HasColumnType("VARCHAR(32)");
         builder.Property(l => l.DataDeCriacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
         builder.Property(l => l.DataDeAtualizacao).IsRequired().HasColumnType("DATETIME2").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+    
+        ConfigureRelationships(builder);
     }
 
     private void ConfigureTable(EntityTypeBuilder<LogDeErro> builder)
@@ -29,5 +31,10 @@ public class LogDeErroConfiguration : IEntityTypeConfiguration<LogDeErro>
 
         builder.HasKey(l => l.Id);
         builder.HasIndex(l => l.TraceId).IsUnique();
+    }
+
+    private void ConfigureRelationships(EntityTypeBuilder<LogDeErro> builder)
+    {
+        builder.HasOne(l => l.User).WithMany().HasForeignKey(l => l.UserId).OnDelete(DeleteBehavior.Restrict);
     }
 }

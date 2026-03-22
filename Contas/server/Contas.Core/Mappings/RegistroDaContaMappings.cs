@@ -28,6 +28,7 @@ public static class RegistroDaContaMappings
             Observacoes = registroDaConta.Observacoes,
             DataDeCriacao = registroDaConta.DataDeCriacao,
             DataDeAtualizacao = registroDaConta.DataDeAtualizacao,
+            UserId = registroDaConta.UserId,
             Credor = registroDaConta.Credor?.ToDto(),
             Pagador = registroDaConta.Pagador?.ToDto(),
             Arquivos = registroDaConta.ArquivosDoRegistroDaConta?.Select(a => a.ToDto()).ToList() ?? [],
@@ -70,8 +71,10 @@ public static class RegistroDaContaMappings
             Observacoes = dto.Observacoes,
             DataDeCriacao = dto.DataDeCriacao,
             DataDeAtualizacao = dto.DataDeAtualizacao,
+            UserId = dto.UserId,
             Credor = null!,
-            Pagador = null!                     
+            Pagador = null!,
+            User = null!                
         };
     }
 
@@ -93,6 +96,7 @@ public static class RegistroDaContaMappings
         registroDaConta.ValorDoDesconto = dto.ValorDoDesconto;
         registroDaConta.Observacoes = dto.Observacoes;
         registroDaConta.DataDeAtualizacao = dto.DataDeAtualizacao;
+        registroDaConta.UserId = dto.UserId;
     }
 
     private static string GetMonthName(int month)

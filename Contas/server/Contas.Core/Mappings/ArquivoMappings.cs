@@ -19,7 +19,9 @@ public static class ArquivoMappings
             Dados = arquivoDto.Dados,
             DataDaUltimaModificacao = arquivoDto.DataDaUltimaModificacao,
             DataDeCriacao = arquivoDto.DataDeCriacao,
-            DataDeAtualizacao = arquivoDto.DataDeAtualizacao
+            DataDeAtualizacao = arquivoDto.DataDeAtualizacao,
+            UserId = arquivoDto.UserId,
+            User = null! // Assuming User will be set later
         };
     }
 
@@ -38,6 +40,7 @@ public static class ArquivoMappings
             DataDaUltimaModificacao = arquivo.DataDaUltimaModificacao,
             DataDeCriacao = arquivo.DataDeCriacao,
             DataDeAtualizacao = arquivo.DataDeAtualizacao,
+            UserId = arquivo.UserId,
         };
     }
 
@@ -54,5 +57,6 @@ public static class ArquivoMappings
         arquivo.Dados = arquivoDto.Dados;
         arquivo.DataDaUltimaModificacao = arquivoDto.DataDaUltimaModificacao;
         arquivo.DataDeAtualizacao = arquivoDto.DataDeAtualizacao;
+        arquivo.UserId = arquivoDto.UserId;
     }    
 }

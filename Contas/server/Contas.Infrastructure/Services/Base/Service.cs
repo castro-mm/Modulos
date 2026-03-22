@@ -1,8 +1,8 @@
 using Contas.Core.Entities.Base;
 using Contas.Core.Interfaces;
 using Contas.Core.Interfaces.Repositories;
+using Contas.Core.Interfaces.Services;
 using Contas.Core.Objects;
-using Contas.Infrastructure.Services.Interfaces;
 
 namespace Contas.Infrastructure.Services.Base;
 

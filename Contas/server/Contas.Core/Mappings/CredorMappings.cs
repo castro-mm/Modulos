@@ -18,7 +18,9 @@ public static class CredorMappings
             CNPJ = dto.CNPJ,
             DataDeCriacao = dto.DataDeCriacao,
             DataDeAtualizacao = dto.DataDeAtualizacao,
-            SegmentoDoCredor = null! // Assuming SegmentoDoCredor will be set later
+            UserId = dto.UserId,
+            SegmentoDoCredor = null!, // Assuming SegmentoDoCredor will be set later
+            User = null! // Assuming User will be set later
         };
     }
 
@@ -35,6 +37,7 @@ public static class CredorMappings
             CNPJ = credor.CNPJ,
             DataDeCriacao = credor.DataDeCriacao,
             DataDeAtualizacao = credor.DataDeAtualizacao,
+            UserId = credor.UserId,
             SegmentoDoCredor = credor.SegmentoDoCredor?.ToDto()
         };
     }
@@ -49,6 +52,7 @@ public static class CredorMappings
         credor.NomeFantasia = dto.NomeFantasia;
         credor.CNPJ = dto.CNPJ;
         credor.DataDeAtualizacao = dto.DataDeAtualizacao;
+        credor.UserId = dto.UserId;
     }
 
     public static List<CredorDto> ToDtoList(List<Credor> arquivos)
@@ -57,6 +61,5 @@ public static class CredorMappings
 
         // TODO: Continuar a partir daqui, pois o método ToDtoList não está sendo utilizado em lugar nenhum.
         // será preciso implementar este metodo nas chamadas
-
         return [.. arquivos.Select(ToDto)];
     }}

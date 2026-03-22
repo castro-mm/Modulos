@@ -1,6 +1,6 @@
 using Contas.Core.Dtos.System;
+using Contas.Core.Interfaces.Services.System;
 using Contas.Core.Objects;
-using Contas.Infrastructure.Services.Interfaces.System;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Contas.Api.Controllers.System;

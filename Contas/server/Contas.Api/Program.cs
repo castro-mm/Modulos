@@ -10,6 +10,8 @@ builder.Services.AddDatabaseServices(builder);
 builder.Services.AddMappingServices();
 builder.Services.AddControllersServices();
 builder.Services.AddBusinessServices();
+builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddEmailServices(builder.Configuration);
 
 builder.Host.UseSerilog((context, services, configuration) =>
 {
@@ -21,6 +23,9 @@ builder.Host.UseSerilog((context, services, configuration) =>
 
 var app = builder.Build();
 
+// Seed de Roles e Admin padrão
+await app.SeedIdentityAsync();
+
 // Configure the HTTP request pipeline.
 app.UseMiddleware<RequestApiMiddleware>();
 app.UseHttpsRedirection();
@@ -30,6 +35,9 @@ app.UseCors(x => x.AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials()
                   .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
