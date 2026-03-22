@@ -1,15 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule, DatePipe } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
+import { PopoverModule } from 'primeng/popover';
+import { TagModule } from 'primeng/tag';
+import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
+import { AuthService } from '../../secure/services/auth.service';
+import { MessagesService } from '../../core/services/messages.service';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator],
+    imports: [RouterModule, CommonModule, StyleClassModule, PopoverModule, TagModule, DividerModule, ButtonModule, TooltipModule, DatePipe, AppConfigurator],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
@@ -64,29 +71,152 @@ import { LayoutService } from '../service/layout.service';
 
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-calendar"></i>
-                        <span>Calendar</span>
+                    <button type="button" class="layout-topbar-action" (click)="userPopover.toggle($event)">
+                        @if (authService.userPhoto()) {
+                            <img [src]="authService.userPhoto()" alt="Foto" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" />
+                        } @else {
+                            <i class="pi pi-user"></i>
+                        }
+                        <span>{{ authService.userName() }}</span>
                     </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-inbox"></i>
-                        <span>Messages</span>
-                    </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-user"></i>
-                        <span>Profile</span>
-                    </button>
+                    <p-popover #userPopover>
+                        <div style="min-width: 280px">
+                            <!-- Cabeçalho do perfil -->
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="relative">
+                                    @if (authService.userPhoto()) {
+                                        <img [src]="authService.userPhoto()" alt="Foto de perfil"
+                                            style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; cursor: pointer;"
+                                            pTooltip="Clique para alterar a foto" tooltipPosition="bottom"
+                                            (click)="fileInput.click()" />
+                                        <button type="button"
+                                            class="p-button p-button-rounded p-button-danger p-button-sm"
+                                            style="position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                            pTooltip="Remover foto" tooltipPosition="right"
+                                            (click)="onRemovePhoto()">
+                                            <i class="pi pi-times" style="font-size: 0.6rem"></i>
+                                        </button>
+                                    } @else {
+                                        <div class="flex items-center justify-center bg-primary text-primary-contrast"
+                                            style="width: 56px; height: 56px; border-radius: 50%; cursor: pointer;"
+                                            pTooltip="Clique para adicionar uma foto" tooltipPosition="bottom"
+                                            (click)="fileInput.click()">
+                                            <i class="pi pi-camera" style="font-size: 1.4rem"></i>
+                                        </div>
+                                    }
+                                    <input #fileInput type="file" accept="image/png,image/jpeg,image/webp"
+                                        style="display: none" (change)="onPhotoSelected($event)" />
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-lg">{{ authService.userName() }}</div>
+                                    <div class="text-muted-color text-sm">{{ authService.userEmail() }}</div>
+                                    <p-tag [value]="authService.userRole()" [severity]="authService.isAdmin() ? 'contrast' : 'info'" class="mt-1" />
+                                </div>
+                            </div>
+
+                            <!-- Último acesso -->
+                            @if (authService.lastAccess()) {
+                                <p-divider />
+                                <div class="flex items-center gap-2 text-muted-color text-sm py-1">
+                                    <i class="pi pi-clock"></i>
+                                    <div>
+                                        <span class="font-medium">Último acesso</span><br/>
+                                        <span>{{ authService.lastAccess() | date: 'dd/MM/yyyy' }} às {{ authService.lastAccess() | date: 'HH:mm' }}</span>
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- Ações -->
+                            <p-divider />
+                            <div class="flex flex-column gap-1">
+                                <button pButton 
+                                    label="Alterar Senha" 
+                                    icon="pi pi-lock" 
+                                    class="p-button-text p-button-plain w-full justify-start" 
+                                    (click)="onChangePassword(userPopover)">
+                                </button>
+                            </div>
+                            <p-divider />
+                            <div class="flex flex-column gap-1">
+                                <button pButton 
+                                    label="Sair" 
+                                    icon="pi pi-sign-out" 
+                                    class="p-button-text p-button-danger w-full justify-start" 
+                                    (click)="onLogout()">
+                                </button>
+                            </div>
+                        </div>
+                    </p-popover>
                 </div>
             </div>
         </div>
     </div>`
 })
 export class AppTopbar {
+    private static readonly MAX_PHOTO_SIZE = 500 * 1024; // 500KB
+    private static readonly ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+
     items!: MenuItem[];
+    authService = inject(AuthService);
+    private messagesService = inject(MessagesService);
+    private router = inject(Router);
 
     constructor(public layoutService: LayoutService) {}
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+    }
+
+    onLogout() {
+        this.authService.logout();
+    }
+
+    async onPhotoSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0];
+        input.value = '';
+
+        if (!file) return;
+
+        if (!AppTopbar.ALLOWED_TYPES.includes(file.type)) {
+            this.messagesService.showWarn('Formato inválido. Use PNG, JPEG ou WebP.', 'Foto de perfil');
+            return;
+        }
+
+        if (file.size > AppTopbar.MAX_PHOTO_SIZE) {
+            this.messagesService.showWarn('A imagem deve ter no máximo 500KB.', 'Foto de perfil');
+            return;
+        }
+
+        try {
+            const base64 = await this.fileToBase64(file);
+            const response = await this.authService.updatePhoto(base64);
+            this.messagesService.showMessageFromReponse(response);
+        } catch (ex: any) {
+            this.messagesService.showMessageFromReponse(ex.error);
+        }
+    }
+
+    async onRemovePhoto() {
+        try {
+            const response = await this.authService.removePhoto();
+            this.messagesService.showMessageFromReponse(response);
+        } catch (ex: any) {
+            this.messagesService.showMessageFromReponse(ex.error);
+        }
+    }
+
+    onChangePassword(popover: any) {
+        popover.hide();
+        this.router.navigate(['/change-password']);
+    }
+
+    private fileToBase64(file: File): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
     }
 }

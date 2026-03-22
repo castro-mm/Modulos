@@ -6,6 +6,8 @@ import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { appRoutes } from './app.routes';
+import { authInterceptor } from '@/secure/interceptors/auth.interceptor';
+import { loadingInterceptor } from '@/core/interceptors/loading.interceptor';
 
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -27,7 +29,7 @@ export const appConfig: ApplicationConfig = {
             ), 
             withEnabledBlockingInitialNavigation()
         ),
-        provideHttpClient(withFetch()/*, withInterceptors([dateFormatInterceptor])*/),
+        provideHttpClient(withFetch(), withInterceptors([authInterceptor, loadingInterceptor])),
         provideAnimationsAsync(),
         providePrimeNG(
             {

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
+import { AuthService } from '../../secure/services/auth.service';
 
 @Component({
     selector: 'app-menu',
@@ -22,10 +23,11 @@ import { AppMenuitem } from './app.menuitem';
     `
 })
 export class AppMenu {
+    private authService = inject(AuthService);
+
     model: MenuItem[] = [];   
 
     ngOnInit() {
-        // TODO: Load menu items from a service or configuration
         this.model = [
             {
                 label: 'Contas',
@@ -68,6 +70,29 @@ export class AppMenu {
                 ]
             }
         ];
+
+        // Menu de Administração visível apenas para Admin
+        if (this.authService.isAdmin()) {
+            this.model.push({
+                label: 'Administração',
+                items: [
+                    {
+                        label: 'Usuários',
+                        icon: 'pi pi-fw pi-users',
+                        routerLink: ['/contas/usuarios'],
+                        routerLinkActiveOptions: { exact: true },
+                        command: (event) => this.onMenuClick(event)
+                    },
+                    {
+                        label: 'Perfis',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/contas/perfil'],
+                        routerLinkActiveOptions: { exact: true },
+                        command: (event) => this.onMenuClick(event)
+                    }
+                ]
+            });
+        }
     }
 
     private onMenuClick(event: MenuItemCommandEvent) {

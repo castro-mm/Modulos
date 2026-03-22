@@ -38,5 +38,13 @@ export default [
         // providers: [
         //     { provide: DATA_SERVICE_TOKEN, useClass: RegistroDaContaService }
         // ]
+    },
+    {
+        path: 'usuarios',
+        loadComponent: () => import('./usuario/usuario.component').then(m => m.UsuarioComponent),
+    },
+    {
+        path: 'perfil',
+        loadComponent: () => import('./perfil/perfil.component').then(m => m.PerfilComponent),
     }
 ] as Routes;

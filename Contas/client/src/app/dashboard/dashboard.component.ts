@@ -36,8 +36,6 @@ export class DashboardComponent implements OnInit {
 
     quantitativoDeContas: QuantitativoDeContas | null = null;
     registros: RegistroDaConta[] = [];
-
-    //isLoading: boolean = false;
     isLoading = signal<boolean>(false);
 
     statusTemplate = viewChild<TemplateRef<any>>('statusTemplate');
@@ -73,6 +71,9 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.getQuantitativoDeContas();
+        this.getRegistrosDeContas();
+
         setInterval(() => {
             this.getQuantitativoDeContas();
             this.getRegistrosDeContas();
@@ -97,9 +98,10 @@ export class DashboardComponent implements OnInit {
         
         const response = await this.registroDaContaService.getByParams(params);
         if (response.statusCode === StatusCode.OK) {
-            this.registros = response.result?.data.items.filter(
-                (x: RegistroDaConta) => x.status === StatusDaConta.Pendente || x.status === StatusDaConta.Vencida
-            ) as RegistroDaConta[];
+            this.registros = response.result?.data.items
+                .filter(
+                    (x: RegistroDaConta) => x.status === StatusDaConta.Pendente || x.status === StatusDaConta.Vencida
+                ) as RegistroDaConta[];
         } else {
             console.error('Erro ao obter registros de contas:', response.result?.message ?? response.message);
         }
