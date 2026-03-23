@@ -1,5 +1,6 @@
 using Contas.Core.Entities.System.Security;
 using Contas.Core.Data;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,9 @@ public static class IdentityServicesExtensions
 
     public static void AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
     {
+        // Desabilitar o mapeamento automático de claims do JWT
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
         services
             .AddIdentity<ApplicationUser, ApplicationRole>(
                 options =>
@@ -39,7 +43,7 @@ public static class IdentityServicesExtensions
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer("JwtBearer", options =>
+            .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {

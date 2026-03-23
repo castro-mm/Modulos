@@ -14,6 +14,8 @@ import { SegmentoDoCredorService } from '@/shared/services/segmento-do-credor.se
 import { Component, inject, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { SegmentoDoCredorDetailComponent } from '@/features/segmento-do-credor/detail/segmento-do-credor-detail.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-credor-detail.component',
@@ -23,8 +25,11 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 })
 export class CredorDetailComponent extends EntityDetailComponent<Credor> implements OnInit {
     segmentoDoCredorService = inject(SegmentoDoCredorService);
+    dialogService = inject(DialogService);
 
     segmentoDoCredorOptions: SelectOption[] = [];
+    ref: DynamicDialogRef | null = null;
+
 
     fieldsLabels: { [key: string]: string } = {
         razaoSocial: 'Razão Social',
@@ -46,13 +51,38 @@ export class CredorDetailComponent extends EntityDetailComponent<Credor> impleme
     }
 
     async ngOnInit(): Promise<void> {
-        const response: ApiResponse = await this.segmentoDoCredorService.getAll();
+        await this.carregarListaDeSegmentosDoCredor();
+    }    
+
+    abrirModalDoSegmentoDoCredor() {
+        this.abrirModal(SegmentoDoCredorDetailComponent, 'Segmento do Credor - Novo Registro');
+
+        this.ref?.onClose.subscribe((response: ApiResponse) => {
+            if (response && response.statusCode === StatusCode.OK) {
+                this.carregarListaDeSegmentosDoCredor();
+                this.messageService.showSuccess('Segmento do Credor criado com sucesso.');
+            }
+        });
+    }
+
+    abrirModal(component: any, titulo: string = 'Novo Registro') {
+        this.ref = this.dialogService.open(component, {
+            header: titulo,
+            width: '30%',
+            closable: true,
+            contentStyle: { overflow: 'auto' },
+            baseZIndex: 10000
+        });
+    }
+
+    async carregarListaDeSegmentosDoCredor() {
+        const response = await this.segmentoDoCredorService.getAll();
 
         if (response.statusCode === StatusCode.OK) {
             const items = response.result?.data.items as SegmentoDoCredor[];
-            this.segmentoDoCredorOptions = items.map(x => ({ label: x.nome, value: x.id, icon: '' }));
+            this.segmentoDoCredorOptions = items.map((x: SegmentoDoCredor) => ({ value: x.id, label: x.nome, icon: '' }));
         } else {
             this.messageService.showMessageFromReponse((response as any).error);
         }
-    }    
+    }
 }

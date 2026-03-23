@@ -61,7 +61,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful(new { Token = token }));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer")]
+    [Authorize]
     [HttpPut("change-password")]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
     {
@@ -127,7 +127,7 @@ public class AccountController : ControllerBase
 
     #region [ Usuario Autenticado ]
 
-    [Authorize(AuthenticationSchemes = "JwtBearer")]
+    [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> GetCurrentUser()
     {
@@ -151,7 +151,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful(user));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer")]
+    [Authorize]
     [HttpPut("me/photo")]
     public async Task<IActionResult> UpdatePhoto([FromBody] UpdatePhotoRequest request)
     {
@@ -166,7 +166,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful("Foto de perfil atualizada com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer")]
+    [Authorize]
     [HttpDelete("me/photo")]
     public async Task<IActionResult> RemovePhoto()
     {
@@ -186,7 +186,7 @@ public class AccountController : ControllerBase
 
     #region [ Gestão de Usuários (Admin) ]
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpGet("users")]
     public async Task<ActionResult> GetAllUsers()
     {
@@ -194,7 +194,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful(users));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpGet("users/{id}")]
     public async Task<ActionResult> GetUserById(int id)
     {
@@ -205,7 +205,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful(user));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpPut("users/{id}")]
     public async Task<ActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
     {
@@ -216,7 +216,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful("Usuário atualizado com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpPut("users/{id}/role")]
     public async Task<ActionResult> UpdateUserRole(int id, [FromBody] UpdateUserRoleRequest request)
     {
@@ -227,7 +227,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful("Função do usuário atualizada com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpPut("users/{id}/deactivate")]
     public async Task<ActionResult> DeactivateUser(int id)
     {
@@ -238,7 +238,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful("Usuário desativado com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpPut("users/{id}/activate")]
     public async Task<ActionResult> ActivateUser(int id)
     {
@@ -249,7 +249,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful("Usuário ativado com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("users/{id}")]
     public async Task<ActionResult> DeleteUser(int id)
     {
@@ -260,7 +260,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful("Usuário excluído com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpPost("users/{id}/admin-reset-password")]
     public async Task<ActionResult> AdminResetPassword(int id)
     {
@@ -293,7 +293,7 @@ public class AccountController : ControllerBase
 
     #region [ Gestão de Roles (Admin) ]
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpGet("roles")]
     public async Task<ActionResult> GetAllRoles()
     {
@@ -301,7 +301,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful(roles));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpGet("roles/{id}")]
     public async Task<ActionResult> GetRoleById(int id)
     {
@@ -312,7 +312,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful(role));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpPost("roles")]
     public async Task<ActionResult> CreateRole([FromBody] CreateRoleRequest request)
     {
@@ -330,7 +330,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful(new { Id = roleId }, "Perfil criado com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpPut("roles/{id}")]
     public async Task<ActionResult> UpdateRole(int id, [FromBody] UpdateRoleRequest request)
     {
@@ -341,7 +341,7 @@ public class AccountController : ControllerBase
         return Ok(Result.Successful("Perfil atualizado com sucesso."));
     }
 
-    [Authorize(AuthenticationSchemes = "JwtBearer", Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("roles/{id}")]
     public async Task<ActionResult> DeleteRole(int id)
     {

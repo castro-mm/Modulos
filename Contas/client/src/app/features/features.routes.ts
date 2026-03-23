@@ -41,10 +41,10 @@ export default [
     },
     {
         path: 'usuarios',
-        loadComponent: () => import('./usuario/usuario.component').then(m => m.UsuarioComponent),
+        loadComponent: () => import('./admin/usuario/usuario.component').then(m => m.UsuarioComponent),
     },
     {
         path: 'perfil',
-        loadComponent: () => import('./perfil/perfil.component').then(m => m.PerfilComponent),
+        loadComponent: () => import('./admin/perfil/perfil.component').then(m => m.PerfilComponent),
     }
 ] as Routes;

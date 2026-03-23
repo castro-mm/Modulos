@@ -33,6 +33,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
     credorService = inject(CredorService);
     pagadorService = inject(PagadorService);
     codigoDeBarrasService = inject(CodigoDeBarrasService);
+    dialogService = inject(DialogService);
 
     mesOptions: SelectOption[] = [];
     anoOptions: SelectOption[] = [];
@@ -65,7 +66,7 @@ export class RegistroDaContaDetailComponent extends EntityDetailComponent<Regist
         observacoes: 'Instruções/Observações'
     };
 
-    constructor(private dialogService: DialogService) {
+    constructor() {
         super({
             mes: [new Date().getMonth(), [Validators.required]],
             ano: [new Date().getFullYear(), [Validators.required]],

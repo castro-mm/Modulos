@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Contas.Core.Services.Security;
+namespace Contas.Infrastructure.Services.Security;
 
 public class JwtService : IJwtService
 {

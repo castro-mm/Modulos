@@ -2,17 +2,15 @@ using Contas.Core.Dtos;
 using Contas.Core.Entities;
 using Contas.Core.Interfaces.Repositories;
 using Contas.Core.Interfaces.Services;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Infrastructure.Services.Base;
 
 namespace Contas.Infrastructure.Services;
 
 public class RegistroDaContaService : Service<RegistroDaContaDto, RegistroDaConta>, IRegistroDaContaService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public RegistroDaContaService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public RegistroDaContaService(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : base(unitOfWork, currentUserService)
     {
-        _unitOfWork = unitOfWork;
     }
 
     // Implement any additional methods specific to RegistroDaConta if needed

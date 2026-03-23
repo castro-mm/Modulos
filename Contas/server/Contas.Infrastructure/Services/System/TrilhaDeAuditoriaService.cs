@@ -1,6 +1,7 @@
 using Contas.Core.Dtos.System;
 using Contas.Core.Entities.System;
 using Contas.Core.Interfaces.Repositories;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Interfaces.Services.System;
 using Contas.Infrastructure.Services.Base;
 
@@ -10,7 +11,7 @@ public class TrilhaDeAuditoriaService : Service<TrilhaDeAuditoriaDto, TrilhaDeAu
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public TrilhaDeAuditoriaService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public TrilhaDeAuditoriaService(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : base(unitOfWork, currentUserService)
     {
         _unitOfWork = unitOfWork;
     }

@@ -1,9 +1,9 @@
 using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Dtos;
 using Contas.Core.Objects;
-using Contas.Core.Services.Base;
+using Contas.Infrastructure.Services.Base;
 
-namespace Contas.Core.Services.Businesses.Validators;
+namespace Contas.Infrastructure.Services.Businesses.Validators;
 
 public class ArquivoDoRegistroDaContaValidator : Validator<ArquivoDoRegistroDaContaDto>, IArquivoDoRegistroDaContaValidator
 {

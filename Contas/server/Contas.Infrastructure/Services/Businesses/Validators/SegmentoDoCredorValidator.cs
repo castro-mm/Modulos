@@ -2,9 +2,9 @@ using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Dtos;
 using Contas.Core.Objects;
 using Contas.Core.Data;
-using Contas.Core.Services.Base;
+using Contas.Infrastructure.Services.Base;
 
-namespace Contas.Core.Services.Businesses.Validators;
+namespace Contas.Infrastructure.Services.Businesses.Validators;
 
 public class SegmentoDoCredorValidator : Validator<SegmentoDoCredorDto>, ISegmentoDoCredorValidator
 {
@@ -32,7 +32,6 @@ public class SegmentoDoCredorValidator : Validator<SegmentoDoCredorDto>, ISegmen
 
         validationResult.AddErrorIf(!string.IsNullOrWhiteSpace(dto.Nome) && dto.Nome.Length < 3, "NOME_INVALIDO", "O nome do segmento do credor deve ter pelo menos 03 caracteres.");
         validationResult.AddErrorIf(!string.IsNullOrWhiteSpace(dto.Nome) && dto.Nome.Length > 100, "NOME_EXCEDENTE", "O nome do segmento do credor não pode exceder 100 caracteres.");
-        validationResult.AddErrorIf(!string.IsNullOrWhiteSpace(dto.Nome) && !dto.Nome.All(char.IsLetterOrDigit), "NOME_INVALIDO_CARACTERES", "O nome do segmento do credor não pode conter caracteres especiais.");
 
         validationResult.AddErrorIf(
             _context.SegmentosDoCredor.Any(s => s.Nome.ToLower() == dto.Nome.ToLower() && (s.Id != dto.Id || dto.Id == 0)), 

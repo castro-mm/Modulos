@@ -3,7 +3,6 @@ using Contas.Core.Interfaces.Repositories;
 using Contas.Core.Interfaces.Services;
 using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Interfaces.Services.System;
-using Contas.Core.Services.Security;
 using Contas.Infrastructure.Services;
 using Contas.Infrastructure.Services.Dashboard;
 using Contas.Infrastructure.Services.Security;

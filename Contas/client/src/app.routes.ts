@@ -1,10 +1,7 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
-import { Dashboard } from './app/pages/dashboard/dashboard';
-import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
-import { DashboardComponent } from '@/dashboard/dashboard.component';
 import { ChangePasswordComponent } from '@/secure/components/change-password.component';
 import { authGuard } from '@/secure/guards/auth.guard';
 
@@ -14,7 +11,7 @@ export const appRoutes: Routes = [
         component: AppLayout,
         canActivate: [authGuard],
         children: [
-            { path: 'contas', component: DashboardComponent },
+            { path: '', redirectTo: 'contas', pathMatch: 'full' },
             { path: 'contas', loadChildren: () => import('@/features/features.routes') },
             { path: 'change-password', component: ChangePasswordComponent }
         ]

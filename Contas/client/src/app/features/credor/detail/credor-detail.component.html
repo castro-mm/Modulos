@@ -51,7 +51,13 @@
                     optionValue="value" 
                     appendTo="body"
                     placeholder="Selecione..."
-                    fluid />            
+                    fluid >
+                    <ng-template #footer>
+                        <div class="p-2">
+                            <p-button label="Novo" fluid severity="success" outlined icon="pi pi-plus" (click)="abrirModalDoSegmentoDoCredor()" />
+                        </div>
+                    </ng-template>                
+                </p-select>            
                 <app-field-validation-message [control]="form.get('segmentoDoCredorId')" [label]="fieldsLabels['segmentoDoCredorId']" />
             </div>
         </div>

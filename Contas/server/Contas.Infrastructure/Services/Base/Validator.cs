@@ -3,7 +3,7 @@ using Contas.Core.Interfaces;
 using Contas.Core.Objects;
 using Contas.Core.Specifications.Base;
 
-namespace Contas.Core.Services.Base;
+namespace Contas.Infrastructure.Services.Base;
 
 /// <summary>
 /// Validador genérico dos Dtos

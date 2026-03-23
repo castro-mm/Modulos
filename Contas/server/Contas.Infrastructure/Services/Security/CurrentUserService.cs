@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Contas.Core.Interfaces.Services.Security;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,16 @@ public class CurrentUserService : ICurrentUserService
 
     private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 
-    public int UserId => int.TryParse(User?.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : 0;
+    public int UserId
+    {
+        get
+        {
+            var value = User?.FindFirstValue(ClaimTypes.NameIdentifier)
+                     ?? User?.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+            return int.TryParse(value, out var id) ? id : 0;
+        }
+    }
 
     public string? UserName => User?.FindFirstValue(ClaimTypes.Name);
 

@@ -1,10 +1,10 @@
 using Contas.Core.Businesses.Validators.Interfaces;
 using Contas.Core.Dtos.System;
 using Contas.Core.Objects;
-using Contas.Core.Services.Base;
+using Contas.Infrastructure.Services.Base;
 using Microsoft.AspNetCore.Http;
 
-namespace Contas.Core.Services.Businesses.Validators;
+namespace Contas.Infrastructure.Services.Businesses.Validators;
 
 public class ArquivoValidator : Validator<ArquivoDto>, IArquivoValidator
 {

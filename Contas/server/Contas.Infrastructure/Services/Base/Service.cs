@@ -2,6 +2,7 @@ using Contas.Core.Entities.Base;
 using Contas.Core.Interfaces;
 using Contas.Core.Interfaces.Repositories;
 using Contas.Core.Interfaces.Services;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Objects;
 
 namespace Contas.Infrastructure.Services.Base;
@@ -11,10 +12,12 @@ public abstract class Service<TDto, TEntity> : IService<TDto, TEntity>
     where TEntity : Entity, IConvertibleToDto<TDto>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserService _currentUserService;
 
-    public Service(IUnitOfWork unitOfWork)
+    public Service(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
     {        
         _unitOfWork = unitOfWork;
+        _currentUserService = currentUserService;
     }
 
     public async Task<PagedResult<TDto>> GetPagedResultWithSpecAsync(ISpecification<TEntity> spec, int pageIndex, int pageSize, CancellationToken cancellationToken)
@@ -46,6 +49,7 @@ public abstract class Service<TDto, TEntity> : IService<TDto, TEntity>
 
     public virtual async Task<TDto> CreateAsync(TDto dto, CancellationToken cancellationToken)
     {
+        dto.UserId = _currentUserService.UserId;
         var entity = dto.ConvertToEntity();
 
         await _unitOfWork.Repository<TEntity>().AddAsync(entity, cancellationToken);
@@ -62,6 +66,7 @@ public abstract class Service<TDto, TEntity> : IService<TDto, TEntity>
         if (existingEntity == null)
             return default!;
 
+        dto.UserId = _currentUserService.UserId;
         dto.DataDeAtualizacao = DateTime.Now;
         existingEntity.ConvertFromDto(dto);
 

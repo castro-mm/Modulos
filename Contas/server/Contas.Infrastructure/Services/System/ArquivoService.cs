@@ -1,6 +1,7 @@
 using Contas.Core.Dtos.System;
 using Contas.Core.Entities.System;
 using Contas.Core.Interfaces.Repositories;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Interfaces.Services.System;
 using Contas.Infrastructure.Services.Base;
 using Microsoft.AspNetCore.Http;
@@ -10,13 +11,14 @@ namespace Contas.Infrastructure.Services.System;
 
 public class ArquivoService : Service<ArquivoDto, Arquivo>, IArquivoService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IConfiguration _configuration;
+    private readonly ICurrentUserService _currentUserService;
 
-    public ArquivoService(IUnitOfWork unitOfWork, IConfiguration configuration) : base(unitOfWork)
+    public ArquivoService(IUnitOfWork unitOfWork, IConfiguration configuration, ICurrentUserService currentUserService) : base(unitOfWork, currentUserService)
     {
-        _unitOfWork = unitOfWork;
+        
         _configuration = configuration;
+        _currentUserService = currentUserService;
     }
 
     public async Task<ArquivoDto> SaveFileAsync(IFormFile file, DateTime dataDaUltimaModificacao, CancellationToken cancellationToken)
@@ -48,9 +50,8 @@ public class ArquivoService : Service<ArquivoDto, Arquivo>, IArquivoService
                 Dados = memoryStream.ToArray(),
                 DataDeAtualizacao = DateTime.Now,
                 DataDeCriacao = DateTime.Now,
-                UserId = 0 // Assuming UserId will be set later based on the authenticated user context
-            },
-            cancellationToken
+                UserId = _currentUserService.UserId
+            }, cancellationToken
         ) ?? throw new InvalidOperationException("Erro ao salvar o arquivo.");
     }        
 }

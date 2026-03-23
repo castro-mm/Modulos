@@ -35,7 +35,8 @@ public class TrilhaDeAuditoriaConfiguration : IEntityTypeConfiguration<TrilhaDeA
     }
 
     private void ConfigureRelationships(EntityTypeBuilder<TrilhaDeAuditoria> builder)
-    {        
+    {
+        builder.HasOne(t => t.User).WithMany().HasForeignKey(t => t.UserId).OnDelete(DeleteBehavior.Restrict);
     }
     
 }

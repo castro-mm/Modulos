@@ -1,16 +1,15 @@
 using Contas.Core.Dtos;
 using Contas.Core.Entities;
-using Contas.Core.Interfaces;
 using Contas.Core.Interfaces.Repositories;
 using Contas.Core.Interfaces.Services;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Infrastructure.Services.Base;
 
 namespace Contas.Infrastructure.Services;
 
 public class SegmentoDoCredorService : Service<SegmentoDoCredorDto, SegmentoDoCredor>, ISegmentoDoCredorService
 {
-
-    public SegmentoDoCredorService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public SegmentoDoCredorService(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : base(unitOfWork, currentUserService)
     {
     }
 

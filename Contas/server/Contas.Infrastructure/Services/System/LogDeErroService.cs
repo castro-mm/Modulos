@@ -1,6 +1,7 @@
 using Contas.Core.Dtos.System;
 using Contas.Core.Entities.System;
 using Contas.Core.Interfaces.Repositories;
+using Contas.Core.Interfaces.Services.Security;
 using Contas.Core.Interfaces.Services.System;
 using Contas.Infrastructure.Services.Base;
 
@@ -10,7 +11,7 @@ public class LogDeErroService : Service<LogDeErroDto, LogDeErro>, ILogDeErroServ
 {    
     private readonly IUnitOfWork _unitOfWork;
 
-    public LogDeErroService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public LogDeErroService(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : base(unitOfWork, currentUserService)
     {
         _unitOfWork = unitOfWork;
     }

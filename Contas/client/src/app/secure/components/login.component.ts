@@ -115,7 +115,7 @@ export class LoginComponent implements AfterViewInit {
             if (errors?.length) {
                 this.errorMessages = errors.map((e: any) => e.message);
             } else {
-                this.errorMessages = [ex?.error?.result?.message || 'Erro ao alterar a senha. Tente novamente.'];
+                this.errorMessages = [ex?.error?.result?.message || 'Falha na autenticação. Tente novamente.'];
             }
             this.clearFieldsAndFocus();
         } finally {

@@ -71,13 +71,16 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.getQuantitativoDeContas();
-        this.getRegistrosDeContas();
+        this.atualizarDashboard();
 
         setInterval(() => {
-            this.getQuantitativoDeContas();
-            this.getRegistrosDeContas();
-        }, 50 * 100000) // 5 minutos
+            this.atualizarDashboard();
+        }, 10 * 1000) // 10 segundos
+    }
+
+    async atualizarDashboard() {
+        this.getQuantitativoDeContas();
+        this.getRegistrosDeContas();
     }
 
     async getQuantitativoDeContas() {
@@ -91,21 +94,18 @@ export class DashboardComponent implements OnInit {
 
     async getRegistrosDeContas() {
         this.isLoading.set(true);
-        const params = {
-            mes: new Date().getMonth(),
-            ano: new Date().getFullYear()
-        };
         
-        const response = await this.registroDaContaService.getByParams(params);
-        if (response.statusCode === StatusCode.OK) {
+        try {
+            const response = await this.registroDaContaService.getAll();
             this.registros = response.result?.data.items
-                .filter(
-                    (x: RegistroDaConta) => x.status === StatusDaConta.Pendente || x.status === StatusDaConta.Vencida
+                .sort((a: RegistroDaConta, b: RegistroDaConta) => new Date(a.dataDeVencimento).getTime() - new Date(b.dataDeVencimento).getTime())
+                .filter((x: RegistroDaConta) => x.status === StatusDaConta.Pendente || x.status === StatusDaConta.Vencida
                 ) as RegistroDaConta[];
-        } else {
-            console.error('Erro ao obter registros de contas:', response.result?.message ?? response.message);
+        } catch (ex) {
+            console.error('Erro ao obter registros de contas:', ex);
+        } finally {
+            this.isLoading.set(false);
         }
-        this.isLoading.set(false);
     }
 
     getStatusIcon(status: number): string {
@@ -202,7 +202,7 @@ export class DashboardComponent implements OnInit {
             if (response) {
                 this.messageService.showSuccess('Arquivo vinculado com sucesso.');
             }
-            await this.getRegistrosDeContas();
+            await this.atualizarDashboard();
         });
     }
 
@@ -230,7 +230,7 @@ export class DashboardComponent implements OnInit {
                 const response = await this.registroDaContaService.deleteRange(ids);
                 if (response.statusCode === StatusCode.OK) {
                     this.messageService.showSuccess('Registros excluídos com sucesso.');
-                    this.getRegistrosDeContas();
+                    this.atualizarDashboard();
                 } else {
                     this.messageService.showMessageFromReponse(response);
                 }
