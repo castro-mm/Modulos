@@ -1,0 +1,429 @@
+/* ==========================================================================
+   RESPONSIVE GLOBAL STYLES
+   Breakpoints:
+   - Mobile:  < 576px
+   - Tablet:  576px - 991px  (inclui iPad Mini portrait)
+   - iPad:    768px - 1024px (iPad portrait e landscape)
+   - Desktop: > 991px
+   ========================================================================== */
+
+/* ---------- Viewport / Touch ---------- */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    touch-action: manipulation;
+}
+
+/* ---------- Card global ---------- */
+.card {
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+/* ---------- MOBILE (< 576px) ---------- */
+@media screen and (max-width: 575.98px) {
+
+    /* Layout principal */
+    .layout-main-container {
+        padding: 5rem 0.75rem 0 0.75rem !important;
+    }
+
+    /* Cards utilitários */
+    .card {
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Container-fluid com menos padding */
+    .container-fluid {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+
+    /* Bootstrap row columns: todas 100% */
+    .row > [class*="col-"] {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Panels do PrimeNG */
+    :host ::ng-deep .p-panel .p-panel-content,
+    .p-panel .p-panel-content {
+        padding: 0.75rem !important;
+    }
+
+    /* Tabela - scroll horizontal */
+    .p-datatable {
+        .p-datatable-wrapper {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    /* Tabela - cabeçalho caption */
+    .p-datatable .p-datatable-header {
+        .flex {
+            flex-direction: column !important;
+            gap: 0.75rem !important;
+            align-items: stretch !important;
+        }
+    }
+
+    /* Botões de ação na tabela - mais compactos */
+    .p-datatable .p-datatable-tbody > tr > td {
+        .p-button {
+            width: 2rem !important;
+            height: 2rem !important;
+            padding: 0 !important;
+
+            .p-button-icon {
+                font-size: 0.8rem !important;
+            }
+        }
+    }
+
+    /* Breadcrumb - compacto */
+    .p-toolbar {
+        padding: 0.5rem !important;
+
+        .breadcrumb {
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Topbar */
+    .layout-topbar {
+        padding: 0 0.75rem !important;
+    }
+
+    /* PrimeNG Dialog / DynamicDialog - fullscreen em mobile */
+    .p-dialog {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        margin: 0.5rem !important;
+    }
+
+    .p-dynamicdialog .p-dialog {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        max-height: 95vh !important;
+    }
+
+    /* Footer da dialog - botões empilhados */
+    .p-dialog .p-dialog-footer {
+        .p-button {
+            font-size: 0.85rem !important;
+        }
+    }
+
+    /* Select / Dropdown */
+    .p-select-panel {
+        max-width: 90vw !important;
+    }
+
+    /* Popover do usuário */
+    .p-popover {
+        max-width: 90vw !important;
+
+        .p-popover-content {
+            min-width: auto !important;
+            max-width: 85vw !important;
+        }
+    }
+
+    /* Charts */
+    .p-chart {
+        canvas {
+            max-width: 100% !important;
+        }
+    }
+
+    /* Toast - posicionamento */
+    .p-toast {
+        max-width: 90vw !important;
+        left: 5vw !important;
+        right: 5vw !important;
+
+        &.p-toast-top-right,
+        &.p-toast-top-left,
+        &.p-toast-top-center {
+            top: 70px !important;
+        }
+    }
+
+    /* FileUpload */
+    .p-fileupload {
+        .p-button {
+            font-size: 0.85rem !important;
+        }
+    }
+
+    /* Confirm dialog */
+    .p-confirmdialog {
+        width: 90vw !important;
+        max-width: 90vw !important;
+    }
+
+    /* Containers com border-radius arredondado - reduzir em mobile */
+    [style*="border-radius: 56px"] {
+        border-radius: 24px !important;
+    }
+
+    [style*="border-radius: 53px"] {
+        border-radius: 21px !important;
+    }
+
+    /* Títulos de autenticação */
+    .text-3xl {
+        font-size: 1.5rem !important;
+    }
+
+    .text-xl {
+        font-size: 1rem !important;
+    }
+
+    /* Padding interno dos forms de auth */
+    .py-20 {
+        padding-top: 2.5rem !important;
+        padding-bottom: 2.5rem !important;
+    }
+
+    /* Footer responsivo */
+    .layout-footer {
+        flex-direction: column;
+        font-size: 0.8rem;
+        padding: 0.75rem 0.5rem;
+    }
+}
+
+/* ---------- TABLET / IPAD PORTRAIT (576px - 991px) ---------- */
+@media screen and (min-width: 576px) and (max-width: 991.98px) {
+
+    /* Layout principal */
+    .layout-main-container {
+        padding: 5.5rem 1rem 0 1rem !important;
+    }
+
+    .card {
+        padding: 1.25rem !important;
+    }
+
+    .container-fluid {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    /* Colunas de formulário: adaptar para telas médias */
+    .row > .col-2 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    .row > .col-3 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    .row > .col-4 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .row > .col-5 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .row > .col-6 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .row > .col-8 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .row > .col-9 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .row > .col-10 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Tabela - scroll horizontal */
+    .p-datatable {
+        .p-datatable-wrapper {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    /* PrimeNG Dialog - responsivo tablet */
+    .p-dialog {
+        width: 90vw !important;
+        max-width: 90vw !important;
+    }
+
+    .p-dynamicdialog .p-dialog {
+        width: 90vw !important;
+        max-width: 90vw !important;
+        max-height: 90vh !important;
+    }
+
+    /* Confirm dialog */
+    .p-confirmdialog {
+        width: 70vw !important;
+        max-width: 70vw !important;
+    }
+
+    /* Popover */
+    .p-popover .p-popover-content {
+        min-width: auto !important;
+    }
+
+    [style*="border-radius: 56px"] {
+        border-radius: 36px !important;
+    }
+
+    [style*="border-radius: 53px"] {
+        border-radius: 33px !important;
+    }
+
+    .py-20 {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+}
+
+/* ---------- IPAD LANDSCAPE / SMALL DESKTOP (992px - 1199px) ---------- */
+@media screen and (min-width: 992px) and (max-width: 1199.98px) {
+
+    .layout-main-container {
+        padding: 6rem 1.5rem 0 1.5rem !important;
+    }
+
+    /* Colunas médias - ajuste fino */
+    .row > .col-2 {
+        flex: 0 0 33.333% !important;
+        max-width: 33.333% !important;
+    }
+
+    .row > .col-3 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    /* PrimeNG Dialog - ajuste */
+    .p-dynamicdialog .p-dialog {
+        width: 75vw !important;
+        max-width: 75vw !important;
+    }
+
+    .p-confirmdialog {
+        width: 50vw !important;
+    }
+}
+
+/* ---------- TOUCH DEVICES - Melhorias gerais ---------- */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Alvos de toque maiores */
+    .p-button {
+        min-height: 2.5rem;
+    }
+
+    /* Links do menu */
+    .layout-menu ul a {
+        padding: 0.875rem 1rem !important;
+    }
+
+    /* Inputs maiores para toque */
+    .p-inputtext,
+    .p-select,
+    .p-datepicker input,
+    .p-inputnumber input {
+        min-height: 2.75rem !important;
+        font-size: 16px !important; /* Previne zoom automático no iOS */
+    }
+
+    /* Checkbox e toggle */
+    .p-checkbox .p-checkbox-box {
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+    }
+
+    /* Table rows com mais espaço para toque */
+    .p-datatable .p-datatable-tbody > tr > td {
+        padding: 0.75rem 0.5rem !important;
+    }
+
+    /* Scrollbar sutil em mobile */
+    .p-datatable-wrapper::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .p-datatable-wrapper::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
+}
+
+/* ---------- SAFE AREA (iPhone notch / Dynamic Island) ---------- */
+@supports (padding: env(safe-area-inset-top)) {
+    .layout-topbar {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    .layout-main-container {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .layout-sidebar {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* ---------- LANDSCAPE MOBILE ---------- */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .layout-main-container {
+        padding-top: 4.5rem !important;
+    }
+
+    .layout-sidebar {
+        top: 4rem !important;
+        height: calc(100vh - 4rem) !important;
+    }
+
+    .p-dialog {
+        max-height: 95vh !important;
+    }
+}
+
+/* ---------- PRINT ---------- */
+@media print {
+    .layout-topbar,
+    .layout-sidebar,
+    .layout-mask,
+    .p-toolbar,
+    .p-button {
+        display: none !important;
+    }
+
+    .layout-main-container {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* ---------- DASHBOARD CARDS ---------- */
+.dashboard-card-value {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+.dashboard-card-currency {
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+}

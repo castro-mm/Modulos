@@ -2,7 +2,7 @@
     <form #f [formGroup]="form" (submit)="salvar()">
         <p-divider class="mt-1" />
         <div class="row mt-2">
-            <div class="col-2">
+            <div class="col-6 col-md-4 col-lg-2">
                 <label for="mes" class="mb-1">{{fieldsLabels['mes']}}:</label>
                 <p-select 
                     formControlName="mes" 
@@ -17,7 +17,7 @@
                 />
                 <app-field-validation-message [control]="form.get('mes')" [label]="fieldsLabels['mes']" />
             </div>
-            <div class="col-2">
+            <div class="col-6 col-md-4 col-lg-2">
                 <label for="ano" class="mb-1">{{fieldsLabels['ano']}}:</label>
                 <p-select 
                     formControlName="ano" 
@@ -33,7 +33,7 @@
             </div>            
         </div>
         <div class="row mt-2">
-            <div class="col-6">
+            <div class="col-12 col-md-8 col-lg-6">
                 <label for="credorId" class="mb-1">{{fieldsLabels['credorId']}}:</label>
                 <p-select 
                     formControlName="credorId" 
@@ -57,7 +57,7 @@
             </div>
         </div>            
         <div class="row mt-2">
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <label for="pagadorId" class="mb-1">{{fieldsLabels['pagadorId']}}:</label>
                 <p-select 
                     formControlName="pagadorId" 
@@ -81,7 +81,7 @@
             </div>
         </div>               
         <div class="row mt-2">
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
                 <label for="codigoDeBarras" class="mb-1">{{fieldsLabels['codigoDeBarras']}}:</label>
                 <input 
                     id="codigoDeBarras" 
@@ -100,7 +100,7 @@
                     }
                 }                
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <label for="dataDeVencimento" class="mb-1">{{fieldsLabels['dataDeVencimento']}}:</label>
                 <p-datepicker 
                     formControlName="dataDeVencimento" 
@@ -115,7 +115,7 @@
                 />
                 <app-field-validation-message [control]="form.get('dataDeVencimento')" [label]="fieldsLabels['dataDeVencimento']" />
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <label for="dataDePagamento" class="mb-1">{{fieldsLabels['dataDePagamento']}}:</label>
                 <p-datepicker 
                     formControlName="dataDePagamento" 
@@ -131,7 +131,7 @@
             </div>
         </div> 
         <div class="row mt-2">
-            <div class="col-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <label for="valor" class="mb-1">{{fieldsLabels['valor']}}:</label>
                 <p-inputNumber 
                     formControlName="valor" 
@@ -146,7 +146,7 @@
                 />                                
                 <app-field-validation-message [control]="form.get('valor')" [label]="fieldsLabels['valor']" />
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <label for="valorDosJuros" class="mb-1">{{fieldsLabels['valorDosJuros']}}:</label>
                 <p-inputNumber 
                     formControlName="valorDosJuros" 
@@ -156,11 +156,12 @@
                     [minFractionDigits]="2"
                     [maxFractionDigits]="2"
                     placeholder="R$ 0,00"
+                    fluid
                     (onInput)="onValorDosJurosChange($event)"
                 />            
                 <app-field-validation-message [control]="form.get('valorDosJuros')" [label]="fieldsLabels['valorDosJuros']" />
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <label for="valorDoDesconto" class="mb-1">{{fieldsLabels['valorDoDesconto']}}:</label>
                 <p-inputNumber 
                     formControlName="valorDoDesconto" 
@@ -174,7 +175,7 @@
                 />
                 <app-field-validation-message [control]="form.get('valorDoDesconto')" [label]="fieldsLabels['valorDoDesconto']" />
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <label for="valorTotal" class="mb-1">{{fieldsLabels['valorTotal']}}:</label>
                 <p-inputNumber 
                     formControlName="valorTotal" 
@@ -209,13 +210,13 @@
             </div>
             <p-divider class="mt-3" />
             <div class="row mt-2">
-                <div class="col-2">
+                <div class="col-6 col-md-4 col-lg-2">
                     <div>
                         <label class="mb-1">Data de Criação: </label>
                         <p>{{ entity()?.dataDeCriacao | date:'dd/MM/yyyy HH:mm:ss' }}</p>
                     </div>            
                 </div>
-                <div class="col-2">
+                <div class="col-6 col-md-4 col-lg-2">
                     <div>
                         <label class="mb-1">Última Atualização: </label>
                         <p>{{ entity()?.dataDeAtualizacao | date:'dd/MM/yyyy HH:mm:ss' }}</p>
@@ -226,8 +227,10 @@
         <p-divider class="mt-3" />
         <div class="row mt-2">
             <div class="col-12 text-end">
-                <p-button icon="pi pi-times" label="Fechar" class="me-2" text (click)="closeDialog()"/>
-                <p-button icon="pi pi-check" [label]="isLoading ? 'Executando...' : 'Salvar'" [loading]="isLoading" type="submit" [disabled]="form.invalid || isLoading"/>
+                <div class="flex flex-wrap justify-end gap-2">
+                    <p-button icon="pi pi-times" label="Fechar" text (click)="closeDialog()"/>
+                    <p-button icon="pi pi-check" [label]="isLoading ? 'Executando...' : 'Salvar'" [loading]="isLoading" type="submit" [disabled]="form.invalid || isLoading"/>
+                </div>
             </div>    
         </div>
     </form>    

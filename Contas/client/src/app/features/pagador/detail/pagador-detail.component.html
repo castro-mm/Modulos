@@ -2,7 +2,7 @@
     <form #f [formGroup]="form" (submit)="salvar()">
         <p-divider class="mt-1" />
         <div class="row mt-2">
-            <div class="col-8">
+            <div class="col-12 col-lg-8">
                 <label for="nome" class="mb-1">{{fieldsLabels['nome']}}</label>
                 <input 
                     id="nome" 
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="row mt-2">
-            <div class="col-8">
+            <div class="col-12 col-lg-8">
                 <label for="email" class="mb-1">{{fieldsLabels['email']}}</label>
                 <input 
                     id="email" 
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="row mt-2">
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-4">
                 <label for="cpf" class="mb-1">{{fieldsLabels['cpf']}}</label>
                 <input 
                     id="cpf" 
@@ -43,18 +43,19 @@
         <p-divider class="mt-3" />
         <div class="row mt-2">
             <div class="col-12 text-end">
-                <p-button 
-                    icon="pi pi-times" 
-                    label="Fechar" 
-                    class="me-2" 
-                    text 
-                    (click)="closeDialog()"/>
-                <p-button 
-                    icon="pi pi-check" 
-                    [label]="isLoading ? 'Executando...' : 'Salvar'" 
-                    [loading]="isLoading" 
-                    type="submit" 
-                    [disabled]="form.invalid || isLoading"/>
+                <div class="flex flex-wrap justify-end gap-2">
+                    <p-button 
+                        icon="pi pi-times" 
+                        label="Fechar" 
+                        text 
+                        (click)="closeDialog()"/>
+                    <p-button 
+                        icon="pi pi-check" 
+                        [label]="isLoading ? 'Executando...' : 'Salvar'" 
+                        [loading]="isLoading" 
+                        type="submit" 
+                        [disabled]="form.invalid || isLoading"/>
+                </div>
             </div>    
         </div>
     </form>

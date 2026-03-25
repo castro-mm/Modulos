@@ -80,9 +80,9 @@ import { MessagesService } from '../../core/services/messages.service';
                         <span>{{ authService.userName() }}</span>
                     </button>
                     <p-popover #userPopover>
-                        <div style="min-width: 280px">
+                        <div style="min-width: 250px; max-width: 90vw;">
                             <!-- Cabeçalho do perfil -->
-                            <div class="flex items-center gap-3 mb-3">
+                            <div class="flex items-center gap-3 mb-3" style="overflow-wrap: break-word; word-break: break-word;">
                                 <div class="relative">
                                     @if (authService.userPhoto()) {
                                         <img [src]="authService.userPhoto()" alt="Foto de perfil"

@@ -64,4 +64,88 @@ public class RegistroDaContaRepository : Repository<RegistroDaConta>, IRegistroD
             ValorMedio = quantidade > 0 ? valorTotal / quantidade : 0
         };
     }
+
+    public async Task<GastoMensalPorCredorDto> ObterGastoMensalPorCredorAsync(int ano, CancellationToken cancellationToken)
+    {
+        // Obtém os anos disponíveis para o filtro
+        var anosDisponiveis = await _context.Set<RegistroDaConta>()
+            .AsNoTracking()
+            .Select(x => x.Ano)
+            .Distinct()
+            .OrderByDescending(x => x)
+            .ToListAsync(cancellationToken);
+
+        // Busca os dados agrupados por credor e mês para o ano selecionado
+        var dados = await _context.Set<RegistroDaConta>()
+            .AsNoTracking()
+            .Where(x => x.Ano == ano)
+            .GroupBy(x => new { x.CredorId, x.Credor.NomeFantasia, x.Mes })
+            .Select(g => new
+            {
+                g.Key.CredorId,
+                g.Key.NomeFantasia,
+                g.Key.Mes,
+                ValorTotal = g.Sum(x => x.ValorTotal)
+            })
+            .ToListAsync(cancellationToken);
+
+        // Agrupa por credor e distribui os valores nos 12 meses
+        var credores = dados
+            .GroupBy(x => new { x.CredorId, x.NomeFantasia })
+            .Select(g =>
+            {
+                var valores = new decimal[12];
+                foreach (var item in g)
+                {
+                    if (item.Mes >= 1 && item.Mes <= 12)
+                        valores[item.Mes - 1] = item.ValorTotal;
+                }
+
+                return new CredorGastoMensalDto
+                {
+                    CredorId = g.Key.CredorId,
+                    NomeFantasia = g.Key.NomeFantasia,
+                    Valores = valores
+                };
+            })
+            .OrderBy(x => x.NomeFantasia)
+            .ToList();
+
+        return new GastoMensalPorCredorDto
+        {
+            Ano = ano,
+            AnosDisponiveis = anosDisponiveis,
+            Credores = credores
+        };
+    }
+
+    public async Task<GastoPorSegmentoDoCredorDto> ObterGastoPorSegmentoDoCredorAsync(int ano, CancellationToken cancellationToken)
+    {
+        var anosDisponiveis = await _context.Set<RegistroDaConta>()
+            .AsNoTracking()
+            .Select(x => x.Ano)
+            .Distinct()
+            .OrderByDescending(x => x)
+            .ToListAsync(cancellationToken);
+
+        var segmentos = await _context.Set<RegistroDaConta>()
+            .AsNoTracking()
+            .Where(x => x.Ano == ano)
+            .GroupBy(x => new { x.Credor.SegmentoDoCredorId, x.Credor.SegmentoDoCredor.Nome })
+            .Select(g => new SegmentoGastoDto
+            {
+                SegmentoDoCredorId = g.Key.SegmentoDoCredorId,
+                Nome = g.Key.Nome,
+                ValorTotal = g.Sum(x => x.ValorTotal)
+            })
+            .OrderByDescending(x => x.ValorTotal)
+            .ToListAsync(cancellationToken);
+
+        return new GastoPorSegmentoDoCredorDto
+        {
+            Ano = ano,
+            AnosDisponiveis = anosDisponiveis,
+            Segmentos = segmentos
+        };
+    }
 }

@@ -1,4 +1,4 @@
-import { QuantitativoDeContas } from '@/shared/models/dashboard.model';
+import { QuantitativoDeContas, GastoMensalPorCredor, GastoPorSegmentoDoCredor } from '@/shared/models/dashboard.model';
 import { DashboardService } from '@/shared/services/dashboard.service';
 import { Component, inject, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
@@ -21,10 +21,13 @@ import { ArquivoService } from '@/shared/services/arquivo.service';
 import { VisualizacaoDeArquivo } from '@/shared/types/visualizacao-de-arquivo.type';
 import { SafePipe } from '@/shared/pipes/safe.pipe';
 import { RegistroDaContaArquivoComponent } from '@/features/registro-da-conta/registro-da-conta-arquivo/registro-da-conta-arquivo';
+import { ChartModule } from 'primeng/chart';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-dashboard.component',
-    imports: [...sharedConfig.imports, CurrencyPipe, DecimalPipe, BreadcrumbComponent, TableListComponent, StatusDaContaPipe, Tag, Badge, SafePipe],
+    imports: [...sharedConfig.imports, CurrencyPipe, DecimalPipe, BreadcrumbComponent, TableListComponent, StatusDaContaPipe, Tag, Badge, SafePipe, ChartModule, SelectModule, FormsModule],
     templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
@@ -61,6 +64,18 @@ export class DashboardComponent implements OnInit {
 
     filterFields = ['id', 'credor.nomeFantasia', 'pagador.nome'];
 
+    // Gráfico de gastos mensais por credor
+    gastoMensalChartData: any = null;
+    gastoMensalChartOptions: any = null;
+    anosDisponiveis: { label: string; value: number }[] = [];
+    anoSelecionado: number = new Date().getFullYear();
+
+    // Gráfico de gastos por segmento do credor (Doughnut)
+    segmentoChartData: any = null;
+    segmentoChartOptions: any = null;
+    anosDisponiveisSegmento: { label: string; value: number }[] = [];
+    anoSelecionadoSegmento: number = new Date().getFullYear();
+
     constructor() { }
 
     get columnTemplates(): { [key: string]: TemplateRef<any> } {
@@ -71,16 +86,20 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.configurarOpcoesDoGrafico();
+        this.configurarOpcoesDoGraficoDoughnut();
         this.atualizarDashboard();
 
         setInterval(() => {
             this.atualizarDashboard();
-        }, 10 * 1000) // 10 segundos
+        }, 10 * 100000) // 1 minuto
     }
 
     async atualizarDashboard() {
         this.getQuantitativoDeContas();
         this.getRegistrosDeContas();
+        this.getGastoMensalPorCredor();
+        this.getGastoPorSegmentoDoCredor();
     }
 
     async getQuantitativoDeContas() {
@@ -94,7 +113,6 @@ export class DashboardComponent implements OnInit {
 
     async getRegistrosDeContas() {
         this.isLoading.set(true);
-        
         try {
             const response = await this.registroDaContaService.getAll();
             this.registros = response.result?.data.items
@@ -106,6 +124,166 @@ export class DashboardComponent implements OnInit {
         } finally {
             this.isLoading.set(false);
         }
+    }
+
+    async getGastoMensalPorCredor() {
+        try {
+            const response = await this.service.getGastoMensalPorCredor(this.anoSelecionado);
+            if (response.result?.isSuccessful) {
+                const dados = response.result.data as GastoMensalPorCredor;
+
+                this.anosDisponiveis = dados.anosDisponiveis.map(ano => ({
+                    label: ano.toString(),
+                    value: ano
+                }));
+
+                this.montarDadosDoGrafico(dados);
+            } else {
+                console.error('Erro ao obter gastos mensais por credor:', response.result?.message ?? response.message);
+            }
+        } catch (ex) {
+            console.error('Erro ao obter gastos mensais por credor:', ex);
+        }
+    }
+
+    async getGastoPorSegmentoDoCredor() {
+        try {
+            const response = await this.service.getGastoPorSegmentoDoCredor(this.anoSelecionadoSegmento);
+            if (response.result?.isSuccessful) {
+                const dados = response.result.data as GastoPorSegmentoDoCredor;
+
+                this.anosDisponiveisSegmento = dados.anosDisponiveis.map(ano => ({
+                    label: ano.toString(),
+                    value: ano
+                }));
+
+                this.montarDadosDoGraficoDoughnut(dados);
+            } else {
+                console.error('Erro ao obter gastos por segmento:', response.result?.message ?? response.message);
+            }
+        } catch (ex) {
+            console.error('Erro ao obter gastos por segmento:', ex);
+        }
+    }
+
+    async onAnoChange() {
+        await this.getGastoMensalPorCredor();
+    }
+
+    async onAnoSegmentoChange() {
+        await this.getGastoPorSegmentoDoCredor();
+    }
+
+    private readonly coresPaleta: string[] = [
+        '#4285F4', '#EA4335', '#FBBC04', '#34A853', '#FF6D01',
+        '#46BDC6', '#7B1FA2', '#C2185B', '#0097A7', '#689F38',
+        '#F57F17', '#5C6BC0', '#00897B', '#D81B60', '#8E24AA',
+    ];
+
+    private montarDadosDoGrafico(dados: GastoMensalPorCredor) {
+        const labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+        const datasets = dados.credores.map((credor, index) => {
+            const cor = this.coresPaleta[index % this.coresPaleta.length];
+            return {
+                label: credor.nomeFantasia,
+                data: credor.valores,
+                fill: false,
+                borderColor: cor,
+                backgroundColor: cor,
+                tension: 0.3,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+            };
+        });
+
+        this.gastoMensalChartData = { labels, datasets };
+    }
+
+    private montarDadosDoGraficoDoughnut(dados: GastoPorSegmentoDoCredor) {
+        const labels = dados.segmentos.map(s => s.nome);
+        const valores = dados.segmentos.map(s => s.valorTotal);
+        const cores = dados.segmentos.map((_, i) => this.coresPaleta[i % this.coresPaleta.length]);
+
+        this.segmentoChartData = {
+            labels,
+            datasets: [{
+                data: valores,
+                backgroundColor: cores,
+                hoverBackgroundColor: cores.map(c => c + 'CC'),
+                borderWidth: 2,
+                borderColor: '#ffffff',
+            }]
+        };
+    }
+
+    private configurarOpcoesDoGrafico() {
+        this.gastoMensalChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 16,
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: (context: any) => {
+                            const valor = context.raw as number;
+                            return `${context.dataset.label}: ${valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 })
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false,
+            }
+        };
+    }
+
+    private configurarOpcoesDoGraficoDoughnut() {
+        this.segmentoChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '55%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 14,
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (context: any) => {
+                            const valor = context.raw as number;
+                            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+                            const percentual = ((valor / total) * 100).toFixed(1);
+                            return `${context.label}: ${valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} (${percentual}%)`;
+                        }
+                    }
+                }
+            }
+        };
     }
 
     getStatusIcon(status: number): string {

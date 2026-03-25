@@ -16,8 +16,8 @@ import { Password } from 'primeng/password';
     standalone: true,
     imports: [CommonModule, FormsModule, RouterModule, ButtonModule, PasswordModule, RippleModule, MessageModule, FluidModule, CardModule],
     template: `
-        <div class="flex items-center justify-center py-8">
-            <p-card header="Alterar Senha" [style]="{ 'min-width': '400px', 'max-width': '500px', 'width': '100%' }">
+        <div class="flex items-center justify-center py-4 px-2 sm:py-8">
+            <p-card header="Alterar Senha" [style]="{ 'min-width': '300px', 'max-width': '500px', 'width': '100%' }">
                 <div class="text-center mb-6">
                     <span class="text-muted-color font-medium">Informe sua senha atual e a nova senha</span>
                 </div>

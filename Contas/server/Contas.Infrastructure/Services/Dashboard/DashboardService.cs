@@ -17,4 +17,14 @@ public class DashboardService : IDashboardService
     {
         return await _registroDaContaRepository.ObterQuantitativoDeContasAsync(CancellationToken.None);
     }
+
+    public async Task<GastoMensalPorCredorDto> ObterGastoMensalPorCredorAsync(int ano)
+    {
+        return await _registroDaContaRepository.ObterGastoMensalPorCredorAsync(ano, CancellationToken.None);
+    }
+
+    public async Task<GastoPorSegmentoDoCredorDto> ObterGastoPorSegmentoDoCredorAsync(int ano)
+    {
+        return await _registroDaContaRepository.ObterGastoPorSegmentoDoCredorAsync(ano, CancellationToken.None);
+    }
 }

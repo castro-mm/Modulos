@@ -30,11 +30,14 @@ import { DynamicFormatPipe } from "../../shared/pipes/dynamic-format.pipe";
             size="small"
             [loading]="isLoading()"
             [loadingIcon]="'pi pi-spinner pi-spin'"
+            [scrollable]="true"
+            scrollDirection="horizontal"
+            styleClass="p-datatable-responsive"
         >
             <ng-template #caption>
-                <div class="flex items-center justify-between">
-                    <div class="m-0">
-                        <p-button pTooltip="Novo registro" icon="pi pi-plus" (click)="openDialog()" class="mr-2"></p-button>
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex flex-wrap gap-2">
+                        <p-button pTooltip="Novo registro" icon="pi pi-plus" (click)="openDialog()"></p-button>
                         <p-button pTooltip="Excluir itens selcionados" severity="danger" icon="pi pi-trash" (click)="excluirVarios()" [disabled]="!itensSelecionados || !itensSelecionados.length" />        
                     </div>
                     <p-iconfield>
@@ -49,14 +52,14 @@ import { DynamicFormatPipe } from "../../shared/pipes/dynamic-format.pipe";
                         <p-tableHeaderCheckbox />
                     </th>
                     @for(col of columns; track col) {
-                        <th [style.min-width]="col.width || 'auto'" [style.text-align]="col.align || 'left'" [pSortableColumn]="col.sortable ? col.field : null" style="background-color: #f8f9fa">
+                        <th [style.min-width]="col.width || 'auto'" [style.text-align]="col.align || 'left'" [pSortableColumn]="col.sortable ? col.field : null" style="background-color: #f8f9fa; white-space: nowrap;">
                             {{ col.header }}
                             @if (col.sortable) {
                                 <p-sortIcon [field]="col.field" />
                             }
                         </th>
                     }                    
-                    <th style="min-width: 3rem; background-color: #f8f9fa"></th>
+                    <th style="min-width: 6rem; background-color: #f8f9fa; position: sticky; right: 0; z-index: 1;">Ações</th>
                 </tr>
             </ng-template>
             <ng-template #body let-item let-columns="columns">
@@ -65,26 +68,24 @@ import { DynamicFormatPipe } from "../../shared/pipes/dynamic-format.pipe";
                         <p-tableCheckbox [value]="item" />
                     </td>
                     @for(col of columns; track col) {
-                        <td [style.min-width]="col.width || 'auto'" [style.text-align]="col.align || 'left'">
+                        <td [style.min-width]="col.width || 'auto'" [style.text-align]="col.align || 'left'" style="white-space: nowrap;">
                             @if (col.template && templates()[col.template]) {
-                                <!-- Usa template customizado -->
                                 <ng-container *ngTemplateOutlet="templates()[col.template]; context: { $implicit: item }"></ng-container>
                             }
                             @else if (col.pipe) {
-                                <!-- Usa pipe customizado (cnpj, cpf, etc) -->
                                 {{ item | nestedField: col.field | customFormat: col }}
                             } @else if (col.type) { 
-                                <!-- Usa formatação por tipo (date, currency, etc) -->
                                  {{ item | nestedField: col.field | dynamicFormat: col }}
                             } @else {
-                                <!-- Texto simples -->
                                 {{ item | nestedField: col.field }}
                             }
                         </td>
                     }
-                    <td style="text-align: right">    
-                        <p-button icon="pi pi-pencil" class="mr-2" outlined (click)="openDialog(item)" pTooltip="Editar" />
-                        <p-button icon="pi pi-trash" severity="danger" outlined (click)="this.onExcluir.emit(item)" pTooltip="Excluir" />
+                    <td style="text-align: right; position: sticky; right: 0; background-color: inherit; z-index: 1;">
+                        <div class="flex flex-wrap justify-end gap-1">
+                            <p-button icon="pi pi-pencil" outlined (click)="openDialog(item)" pTooltip="Editar" size="small" />
+                            <p-button icon="pi pi-trash" severity="danger" outlined (click)="this.onExcluir.emit(item)" pTooltip="Excluir" size="small" />
+                        </div>
                     </td>
                 </tr>
             </ng-template>

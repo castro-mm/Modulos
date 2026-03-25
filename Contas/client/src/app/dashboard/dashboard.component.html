@@ -4,103 +4,149 @@
     <div class="row g-3 mb-4">
         <!-- Contas Abertas -->
         <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <p class="text-muted mb-1 fw-bold">Contas Abertas</p>
-                            <h3 class="mb-0 fw-bold">{{ quantitativoDeContas?.contasAbertas?.quantidade ?? 0 }}</h3>
+            <div class="card border-0 shadow-sm h-100 rounded-4" style="background-color: #e8f0fe; border-left: 4px solid #4285F4 !important;">
+                <div class="card-body py-2 px-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #d0e1fd;">
+                            <i class="pi pi-file-edit" style="font-size: 1rem; color: #4285F4;"></i>
                         </div>
-                        <div class="bg-primary bg-opacity-10 rounded-circle p-3">
-                            <i class="pi pi-file-edit text-primary" style="font-size: 1.5rem;"></i>
-                        </div>
+                        <small class="text-muted fw-semibold" style="font-size: 0.75rem;">{{ quantitativoDeContas?.contasAbertas?.percentual ?? 0 | number:'1.1-1':'pt-BR' }}% do total</small>
                     </div>
-                    <div class="mt-3">
-                        <p class="mb-1 small text-muted fw-bold">Valor Total</p>
-                        <h5 class="text-primary mb-0">{{ quantitativoDeContas?.contasAbertas?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</h5>
-                    </div>
-                </div>
-                <div class="card-footer bg-primary text-white text-center py-2">
-                    <small>{{ quantitativoDeContas?.contasAbertas?.percentual ?? 0 | number:'1.2-2':'pt-BR' }}% do total</small>
+                    <p class="mb-0 fw-bold" style="color: #4285F4; font-size: 0.85rem;">Contas Abertas</p>
+                    <h4 class="mb-0 fw-bold dashboard-card-value">{{ quantitativoDeContas?.contasAbertas?.quantidade ?? 0 }}</h4>
+                    <span class="fw-semibold dashboard-card-currency" style="color: #4285F4;">{{ quantitativoDeContas?.contasAbertas?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Contas Vencidas -->
         <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <p class="text-muted mb-1 fw-bold">Contas Vencidas</p>
-                            <h3 class="mb-0 fw-bold">{{ quantitativoDeContas?.contasVencidas?.quantidade ?? 0 }}</h3>
+            <div class="card border-0 shadow-sm h-100 rounded-4" style="background-color: #fce8e8; border-left: 4px solid #EA4335 !important;">
+                <div class="card-body py-2 px-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #f8d0cd;">
+                            <i class="pi pi-exclamation-triangle" style="font-size: 1rem; color: #EA4335;"></i>
                         </div>
-                        <div class="bg-danger bg-opacity-10 rounded-circle p-3">
-                            <i class="pi pi-exclamation-triangle text-danger" style="font-size: 1.5rem;"></i>
-                        </div>
+                        <small class="text-muted fw-semibold" style="font-size: 0.75rem;">{{ quantitativoDeContas?.contasVencidas?.percentual ?? 0 | number:'1.1-1':'pt-BR' }}% do total</small>
                     </div>
-                    <div class="mt-3">
-                        <p class="mb-1 small text-muted fw-bold">Valor Total</p>
-                        <h5 class="text-danger mb-0">{{ quantitativoDeContas?.contasVencidas?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</h5>
-                    </div>
-                </div>
-                <div class="card-footer bg-danger text-white text-center py-2">
-                    <small>{{ quantitativoDeContas?.contasVencidas?.percentual ?? 0 | number:'1.2-2':'pt-BR' }}% do total</small>
+                    <p class="mb-0 fw-bold" style="color: #EA4335; font-size: 0.85rem;">Contas Vencidas</p>
+                    <h4 class="mb-0 fw-bold dashboard-card-value">{{ quantitativoDeContas?.contasVencidas?.quantidade ?? 0 }}</h4>
+                    <span class="fw-semibold dashboard-card-currency" style="color: #EA4335;">{{ quantitativoDeContas?.contasVencidas?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Contas Pagas -->
         <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <p class="text-muted mb-1 fw-bold">Contas Pagas</p>
-                            <h3 class="mb-0 fw-bold">{{ quantitativoDeContas?.contasPagas?.quantidade ?? 0 }}</h3>
+            <div class="card border-0 shadow-sm h-100 rounded-4" style="background-color: #e6f4ea; border-left: 4px solid #34A853 !important;">
+                <div class="card-body py-2 px-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #c8e6c9;">
+                            <i class="pi pi-check-circle" style="font-size: 1rem; color: #34A853;"></i>
                         </div>
-                        <div class="bg-success bg-opacity-10 rounded-circle p-3">
-                            <i class="pi pi-check-circle text-success" style="font-size: 1.5rem;"></i>
-                        </div>
+                        <small class="text-muted fw-semibold" style="font-size: 0.75rem;">{{ quantitativoDeContas?.contasPagas?.percentual ?? 0 | number:'1.1-1':'pt-BR' }}% do total</small>
                     </div>
-                    <div class="mt-3">
-                        <p class="mb-1 small text-muted fw-bold">Valor Total</p>
-                        <h5 class="text-success mb-0">{{ quantitativoDeContas?.contasPagas?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</h5>
-                    </div>
-                </div>
-                <div class="card-footer bg-success text-white text-center py-2">
-                    <small>{{ quantitativoDeContas?.contasPagas?.percentual ?? 0 | number:'1.2-2':'pt-BR' }}% do total</small>
+                    <p class="mb-0 fw-bold" style="color: #34A853; font-size: 0.85rem;">Contas Pagas</p>
+                    <h4 class="mb-0 fw-bold dashboard-card-value">{{ quantitativoDeContas?.contasPagas?.quantidade ?? 0 }}</h4>
+                    <span class="fw-semibold dashboard-card-currency" style="color: #34A853;">{{ quantitativoDeContas?.contasPagas?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Contas que Vencem Hoje -->
         <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <p class="text-muted mb-1 fw-bold">Vencem Hoje</p>
-                            <h3 class="mb-0 fw-bold">{{ quantitativoDeContas?.contasQueVencemHoje?.quantidade ?? 0 }}</h3>
+            <div class="card border-0 shadow-sm h-100 rounded-4" style="background-color: #f3e8fd; border-left: 4px solid #7B1FA2 !important;">
+                <div class="card-body py-2 px-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #e1bee7;">
+                            <i class="pi pi-clock" style="font-size: 1rem; color: #7B1FA2;"></i>
                         </div>
-                        <div class="bg-warning bg-opacity-10 rounded-circle p-3">
-                            <i class="pi pi-clock text-warning" style="font-size: 1.5rem;"></i>
-                        </div>
+                        <small class="text-muted fw-semibold" style="font-size: 0.75rem;">{{ quantitativoDeContas?.contasQueVencemHoje?.percentual ?? 0 | number:'1.1-1':'pt-BR' }}% do total</small>
                     </div>
-                    <div class="mt-2">
-                        <p class="small text-muted fw-bold">Valor Total</p>
-                        <h5 class="text-warning mb-0">{{ quantitativoDeContas?.contasQueVencemHoje?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</h5>
-                    </div>
-                </div>
-                <div class="card-footer bg-warning text-dark text-center py-2">
-                    <small>{{ quantitativoDeContas?.contasQueVencemHoje?.percentual ?? 0 | number:'1.2-2':'pt-BR' }}% do total</small>
+                    <p class="mb-0 fw-bold" style="color: #7B1FA2; font-size: 0.85rem;">Vencem Hoje</p>
+                    <h4 class="mb-0 fw-bold dashboard-card-value">{{ quantitativoDeContas?.contasQueVencemHoje?.quantidade ?? 0 }}</h4>
+                    <span class="fw-semibold dashboard-card-currency" style="color: #7B1FA2;">{{ quantitativoDeContas?.contasQueVencemHoje?.valor ?? 0 | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <p-card header="Contas em Aberto" class="mb-4 shadow-sm">
-        <p class="mt-3">
+    <!-- Gráficos lado a lado -->
+    <div class="row g-3 mb-4">
+        <!-- Gráfico de Gastos Mensais por Credor (Line) -->
+        <div class="col-12 col-lg-8">
+            <p-card class="shadow-sm h-100">
+                <ng-template #header>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 px-3 pt-3">
+                        <h5 class="mb-0 fw-bold" style="font-size: clamp(0.85rem, 2vw, 1.1rem);">
+                            <i class="pi pi-chart-line me-2"></i>Gastos Mensais por Credor
+                        </h5>
+                        <p-select
+                            [options]="anosDisponiveis"
+                            [(ngModel)]="anoSelecionado"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Selecione o ano"
+                            (onChange)="onAnoChange()"
+                            [style]="{ width: '8rem' }"
+                        />
+                    </div>
+                </ng-template>
+                @if (gastoMensalChartData) {
+                    <div style="height: 300px; position: relative;">
+                        <p-chart type="line" height="300" [data]="gastoMensalChartData" [options]="gastoMensalChartOptions" />
+                    </div>
+                } @else {
+                    <div class="text-center text-muted py-5">
+                        <i class="pi pi-chart-line" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Nenhum dado disponível para o ano selecionado.</p>
+                    </div>
+                }
+            </p-card>
+        </div>
+
+        <!-- Gráfico de Gastos por Segmento do Credor (Doughnut) -->
+        <div class="col-12 col-lg-4">
+            <p-card class="shadow-sm h-100">
+                <ng-template #header>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 px-3 pt-3">
+                        <h5 class="mb-0 fw-bold" style="font-size: clamp(0.85rem, 2vw, 1.1rem);">
+                            <i class="pi pi-chart-pie me-2"></i>Gastos por Segmento
+                        </h5>
+                        <p-select
+                            [options]="anosDisponiveisSegmento"
+                            [(ngModel)]="anoSelecionadoSegmento"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Ano"
+                            (onChange)="onAnoSegmentoChange()"
+                            [style]="{ width: '7rem' }"
+                        />
+                    </div>
+                </ng-template>
+                @if (segmentoChartData) {
+                    <div style="height: 300px; position: relative;">
+                        <p-chart height="300" type="doughnut" [data]="segmentoChartData" [options]="segmentoChartOptions" />
+                    </div>
+                } @else {
+                    <div class="text-center text-muted py-5">
+                        <i class="pi pi-chart-pie" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Nenhum dado disponível para o ano selecionado.</p>
+                    </div>
+                }
+            </p-card>
+        </div>
+    </div>
+
+    <p-card class="mb-4 shadow-sm">
+        <ng-template #header>
+            <div class="d-flex justify-content-between align-items-center px-3 pt-3">
+                <h5 class="mb-0 fw-bold" style="font-size: clamp(0.85rem, 2vw, 1.1rem);">
+                    <i class="pi pi-money-bill me-2"></i>Contas em Aberto
+                </h5>
+            </div>
+        </ng-template>
+        <div class="mt-3">
             <app-table-list
                 [cols]="cols"
                 [rows]="10"
@@ -134,21 +180,23 @@
                 </span>
             </ng-template>
             <ng-template #arquivoTemplate let-item>
-                @if (item.arquivos.length > 0) {
-                    @if(item.arquivos.length < 2) {
-                        <p-button icon="pi pi-upload" severity="warn" class="mr-2" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" />
-                    } 
-                    @if(obterArquivo(item, 1)) {
-                        <p-button icon="pi pi-dollar" severity="info" class="mr-2" outlined (click)="visualizarArquivo(obterArquivo(item, 1)!)" pTooltip="Visualizar Boleto" />
-                    } 
-                    @if(obterArquivo(item, 2)) { 
-                        <p-button icon="pi pi-receipt" severity="help" class="mr-2" outlined (click)="visualizarArquivo(obterArquivo(item, 2)!)" pTooltip="Visualizar Comprovante" />
-                    } 
-                } @else {
-                    <p-button icon="pi pi-upload" severity="warn" class="mr-2" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" />
-                }    
+                <div class="flex flex-wrap gap-1">
+                    @if (item.arquivos.length > 0) {
+                        @if(item.arquivos.length < 2) {
+                            <p-button icon="pi pi-upload" severity="warn" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" size="small" />
+                        } 
+                        @if(obterArquivo(item, 1)) {
+                            <p-button icon="pi pi-dollar" severity="info" outlined (click)="visualizarArquivo(obterArquivo(item, 1)!)" pTooltip="Visualizar Boleto" size="small" />
+                        } 
+                        @if(obterArquivo(item, 2)) { 
+                            <p-button icon="pi pi-receipt" severity="help" outlined (click)="visualizarArquivo(obterArquivo(item, 2)!)" pTooltip="Visualizar Comprovante" size="small" />
+                        } 
+                    } @else {
+                        <p-button icon="pi pi-upload" severity="warn" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" size="small" />
+                    }
+                </div>
             </ng-template>
-        </p>
+        </div>
     </p-card>
 </div>
 
@@ -157,7 +205,8 @@
     header="Visualizar Arquivo" 
     [visible]="exibirDialog" 
     [modal]="true" 
-    [style]="{width: '90vw', height: '90vh'}" 
+    [style]="{width: '95vw', height: '90vh'}" 
+    [breakpoints]="{'992px': '95vw', '768px': '98vw'}"
     [contentStyle]="{height: 'calc(100% - 60px)', overflow: 'hidden'}"
     [closable]="false"
     [maximizable]="true"
@@ -172,9 +221,9 @@
         </div>
     }
     <ng-template pTemplate="footer">
-        <div class="col-12" style="text-align: right;">
-            <p-button label="Baixar" icon="pi pi-download" severity="success" (click)="baixarArquivo(visualizacaoConfig?.arquivoSelecionado)" class="mr-2" ></p-button>
-            <p-button label="Excluir" icon="pi pi-trash" severity="danger" (click)="excluirArquivo(visualizacaoConfig?.arquivoSelecionado)" class="mr-2" ></p-button>    
+        <div class="flex flex-wrap justify-end gap-2">
+            <p-button label="Baixar" icon="pi pi-download" severity="success" (click)="baixarArquivo(visualizacaoConfig?.arquivoSelecionado)"></p-button>
+            <p-button label="Excluir" icon="pi pi-trash" severity="danger" (click)="excluirArquivo(visualizacaoConfig?.arquivoSelecionado)"></p-button>    
             <p-button label="Fechar" icon="pi pi-times" severity="secondary" (click)="exibirDialog = false"></p-button>
         </div>
     </ng-template>

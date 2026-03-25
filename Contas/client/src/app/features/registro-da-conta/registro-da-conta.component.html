@@ -4,7 +4,7 @@
         <form [formGroup]="form" (submit)="listar()" #f>
             <p-divider class="mt-1" />
             <div class="row mt-2">            
-                <div class="col-2">
+                <div class="col-6 col-md-4 col-lg-2">
                     <label for="mes" class="mb-1">Mês:</label>
                     <p-select 
                         formControlName="mes" 
@@ -18,7 +18,7 @@
                         required
                         />
                 </div>
-                <div class="col-2">
+                <div class="col-6 col-md-4 col-lg-2">
                     <label for="ano" class="mb-1">Ano:</label>
                     <p-select 
                         formControlName="ano" 
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-6">
+                <div class="col-12 col-md-8 col-lg-6">
                     <label for="credorId" class="mb-1">Credor:</label>
                     <p-select 
                         formControlName="credorId" 
@@ -49,7 +49,7 @@
                 </div>
             </div>            
             <div class="row mt-2">
-                <div class="col-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <label for="pagadorId" class="mb-1">Pagador:</label>
                     <p-select 
                         formControlName="pagadorId" 
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-2">
+                <div class="col-12 col-md-4 col-lg-2">
                     <label for="statusDaConta" class="mb-1">Status da Conta:</label>
                     <p-select 
                         formControlName="statusDaConta" 
@@ -81,20 +81,21 @@
             <p-divider class="mt-3" />
             <div class="row mt-3">
                 <div class="col-12 text-end mt-1">
-                    <p-button 
-                        icon="pi pi-times" 
-                        label="Limpar" 
-                        severity="secondary" 
-                        class="me-2" 
-                        text 
-                        (click)="f.reset()"/>
-                    <p-button 
-                        icon="pi pi-search" 
-                        [loading]="isLoading" 
-                        [label]="isLoading ? 'Executando...': 'Pesquisar'" 
-                        severity="primary" 
-                        [disabled]="form.invalid || isLoading"
-                        type="submit"/>
+                    <div class="flex flex-wrap justify-end gap-2">
+                        <p-button 
+                            icon="pi pi-times" 
+                            label="Limpar" 
+                            severity="secondary" 
+                            text 
+                            (click)="f.reset()"/>
+                        <p-button 
+                            icon="pi pi-search" 
+                            [loading]="isLoading" 
+                            [label]="isLoading ? 'Executando...': 'Pesquisar'" 
+                            severity="primary" 
+                            [disabled]="form.invalid || isLoading"
+                            type="submit"/>
+                    </div>
                 </div>
             </div>
         </form>        
@@ -132,27 +133,29 @@
         </span>
     </ng-template>
     <ng-template #arquivoTemplate let-item>
-        @if (item.arquivos.length > 0) {
-            @if(item.arquivos.length < 2) {
-                <p-button icon="pi pi-upload" severity="warn" class="mr-2" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" />
-            } 
-            @if(obterArquivo(item, 1)) {
-                <p-button icon="pi pi-dollar" severity="info" class="mr-2" outlined (click)="visualizarArquivo(obterArquivo(item, 1)!)" pTooltip="Visualizar Boleto" />
-            } 
-            @if(obterArquivo(item, 2)) { 
-                <p-button icon="pi pi-receipt" severity="help" class="mr-2" outlined (click)="visualizarArquivo(obterArquivo(item, 2)!)" pTooltip="Visualizar Comprovante" />
-            } 
-        } @else {
-            <p-button icon="pi pi-upload" severity="warn" class="mr-2" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" />
-            <!-- <p-button icon="pi pi-ban" severity="secondary" class="mr-2" outlined disabled pTooltip="Nenhum arquivo disponível" /> -->
-        }    
+        <div class="flex flex-wrap gap-1">
+            @if (item.arquivos.length > 0) {
+                @if(item.arquivos.length < 2) {
+                    <p-button icon="pi pi-upload" severity="warn" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" size="small" />
+                } 
+                @if(obterArquivo(item, 1)) {
+                    <p-button icon="pi pi-dollar" severity="info" outlined (click)="visualizarArquivo(obterArquivo(item, 1)!)" pTooltip="Visualizar Boleto" size="small" />
+                } 
+                @if(obterArquivo(item, 2)) { 
+                    <p-button icon="pi pi-receipt" severity="help" outlined (click)="visualizarArquivo(obterArquivo(item, 2)!)" pTooltip="Visualizar Comprovante" size="small" />
+                } 
+            } @else {
+                <p-button icon="pi pi-upload" severity="warn" outlined (click)="openArquivoDialog(item.id)" pTooltip="Adicionar Arquivo" size="small" />
+            }
+        </div>
     </ng-template>
 </div>
 <p-dialog 
     header="Visualizar Arquivo" 
     [visible]="exibirDialog" 
     [modal]="true" 
-    [style]="{width: '90vw', height: '90vh'}" 
+    [style]="{width: '95vw', height: '90vh'}" 
+    [breakpoints]="{'992px': '95vw', '768px': '98vw'}"
     [contentStyle]="{height: 'calc(100% - 60px)', overflow: 'hidden'}"
     [closable]="false"
     [maximizable]="true"
@@ -167,9 +170,9 @@
         </div>
     }
     <ng-template pTemplate="footer">
-        <div class="col-12" style="text-align: right;">
-            <p-button label="Baixar" icon="pi pi-download" severity="success" (click)="baixarArquivo(visualizacaoConfig?.arquivoSelecionado)" class="mr-2" ></p-button>
-            <p-button label="Excluir" icon="pi pi-trash" severity="danger" (click)="excluirArquivo(visualizacaoConfig?.arquivoSelecionado)" class="mr-2" ></p-button>    
+        <div class="flex flex-wrap justify-end gap-2">
+            <p-button label="Baixar" icon="pi pi-download" severity="success" (click)="baixarArquivo(visualizacaoConfig?.arquivoSelecionado)"></p-button>
+            <p-button label="Excluir" icon="pi pi-trash" severity="danger" (click)="excluirArquivo(visualizacaoConfig?.arquivoSelecionado)"></p-button>    
             <p-button label="Fechar" icon="pi pi-times" severity="secondary" (click)="exibirDialog = false"></p-button>
         </div>
     </ng-template>
