@@ -78,7 +78,6 @@ export class RegistroDaContaArquivoComponent implements OnInit {
         }
     }
 
-    // Nova proposta de solução para 
     async onUploadResult(response: ApiResponse): Promise<void> {
         const arquivo = response.result?.data as Arquivo;
         if (!arquivo) {

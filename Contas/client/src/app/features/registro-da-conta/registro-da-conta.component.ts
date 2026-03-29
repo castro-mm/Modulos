@@ -78,6 +78,7 @@ export class RegistroDaContaComponent extends EntityListComponent<RegistroDaCont
             RegistroDaContaDetailComponent, 
             '60%'
         );
+        this.form.patchValue({ mes: new Date().getMonth() + 1, ano: new Date().getFullYear() });
     }
 
     get columnTemplates(): { [key: string]: TemplateRef<any> } {
